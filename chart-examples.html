@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commit Timeline Visualizations</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0d1117;
+            color: #c9d1d9;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #58a6ff;
+            border-bottom: 1px solid #30363d;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #8b949e;
+            margin-top: 40px;
+        }
+        .chart-container {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 15px;
+            justify-content: center;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+        }
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+        }
+        .axis text {
+            fill: #8b949e;
+            font-size: 11px;
+        }
+        .axis line, .axis path {
+            stroke: #30363d;
+        }
+        .tooltip {
+            position: absolute;
+            background: #1f2937;
+            border: 1px solid #374151;
+            border-radius: 4px;
+            padding: 8px 12px;
+            font-size: 12px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .heatmap-row-label {
+            font-size: 11px;
+            fill: #8b949e;
+        }
+        .summary {
+            background: #21262d;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+        .summary h3 {
+            margin-top: 0;
+            color: #58a6ff;
+        }
+        .stat {
+            display: inline-block;
+            margin-right: 30px;
+        }
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #f0f6fc;
+        }
+        .stat-label {
+            font-size: 12px;
+            color: #8b949e;
+        }
+    </style>
+</head>
+<body>
+    <h1>Your Claude Code Journey: Oct-Nov 2025</h1>
+
+    <div class="summary">
+        <h3>Summary Statistics</h3>
+        <div class="stat">
+            <div class="stat-value">1,128</div>
+            <div class="stat-label">Total Commits</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">6</div>
+            <div class="stat-label">Projects</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">26</div>
+            <div class="stat-label">Active Days</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">43</div>
+            <div class="stat-label">Avg Commits/Day</div>
+        </div>
+    </div>
+
+    <h2>1. Stacked Area Chart (Streamgraph)</h2>
+    <p>Shows how your focus shifted between projects over time. Width = commit intensity.</p>
+    <div class="chart-container">
+        <div id="streamgraph"></div>
+        <div class="legend" id="streamgraph-legend"></div>
+    </div>
+
+    <h2>2. GitHub-style Heatmap (Multi-row)</h2>
+    <p>Each row is a project. Color intensity = commits that day.</p>
+    <div class="chart-container">
+        <div id="heatmap"></div>
+    </div>
+
+    <h2>3. Gantt Timeline with Bubbles</h2>
+    <p>Horizontal bars show active periods. Bubble size = daily commit count.</p>
+    <div class="chart-container">
+        <div id="gantt"></div>
+    </div>
+
+    <h2>4. Ridge Plot (Joy Plot)</h2>
+    <p>Each project shows a "mountain range" of activity. Peaks = high-commit days.</p>
+    <div class="chart-container">
+        <div id="ridgeplot"></div>
+    </div>
+
+    <h2>5. Radial Timeline</h2>
+    <p>Time flows clockwise. Dot size = commits. Color = project.</p>
+    <div class="chart-container">
+        <div id="radial"></div>
+    </div>
+
+    <h2>6. Commit Sentiment Analysis</h2>
+    <p>Analyzes commit messages for emotional indicators. Uses AFINN-inspired lexicon + developer-specific terms. Green = positive (features, fixes, celebrations), Red = negative (bugs, crashes, critical issues).</p>
+    <div class="chart-container">
+        <div id="sentiment"></div>
+        <div class="legend" id="sentiment-legend"></div>
+    </div>
+
+    <h2>7. Per-Project Sentiment Breakdown</h2>
+    <p>Shows the emotional journey of each project. Bars show cumulative positive vs negative sentiment.</p>
+    <div class="chart-container">
+        <div id="sentiment-bars"></div>
+    </div>
+
+    <div class="tooltip" id="tooltip"></div>
+
+    <script>
+        // Raw commit data
+        const rawData = [
+            {date: "2025-10-20", commits: 3, project: "gellyscope"},
+            {date: "2025-10-21", commits: 4, project: "gellyscope"},
+            {date: "2025-10-22", commits: 60, project: "gellyscope"},
+            {date: "2025-10-22", commits: 40, project: "gellyscape"},
+            {date: "2025-10-23", commits: 35, project: "wolfpack"},
+            {date: "2025-10-23", commits: 44, project: "gellyscope"},
+            {date: "2025-10-23", commits: 19, project: "gellyscape"},
+            {date: "2025-10-24", commits: 101, project: "wolfpack"},
+            {date: "2025-10-24", commits: 25, project: "gellyscope"},
+            {date: "2025-10-25", commits: 70, project: "wolfpack"},
+            {date: "2025-10-26", commits: 14, project: "wolfpack"},
+            {date: "2025-10-29", commits: 89, project: "wolfpack"},
+            {date: "2025-10-30", commits: 140, project: "wolfpack"},
+            {date: "2025-10-31", commits: 14, project: "wolfpack"},
+            {date: "2025-10-31", commits: 15, project: "gellyscape"},
+            {date: "2025-11-01", commits: 37, project: "wolfpack"},
+            {date: "2025-11-02", commits: 53, project: "wolfpack"},
+            {date: "2025-11-03", commits: 2, project: "wolfpack"},
+            {date: "2025-11-04", commits: 2, project: "wolfpack"},
+            {date: "2025-11-05", commits: 7, project: "wolfpack"},
+            {date: "2025-11-06", commits: 40, project: "wolfpack"},
+            {date: "2025-11-06", commits: 9, project: "vt-geodata"},
+            {date: "2025-11-07", commits: 3, project: "wolfpack"},
+            {date: "2025-11-08", commits: 45, project: "drunk-simulator"},
+            {date: "2025-11-08", commits: 54, project: "vt-geodata"},
+            {date: "2025-11-09", commits: 63, project: "drunk-simulator"},
+            {date: "2025-11-12", commits: 14, project: "wolfpack"},
+            {date: "2025-11-14", commits: 12, project: "gellyscape"},
+            {date: "2025-11-16", commits: 2, project: "gellyscope"},
+            {date: "2025-11-16", commits: 2, project: "gellyscape"},
+            {date: "2025-11-18", commits: 3, project: "vt-geodata"},
+            {date: "2025-11-18", commits: 6, project: "svg-grouper"},
+            {date: "2025-11-19", commits: 1, project: "vt-geodata"},
+            {date: "2025-11-23", commits: 1, project: "gellyscape"},
+            {date: "2025-11-23", commits: 14, project: "vt-geodata"},
+            {date: "2025-11-24", commits: 2, project: "svg-grouper"},
+            {date: "2025-11-24", commits: 27, project: "vt-geodata"},
+            {date: "2025-11-25", commits: 3, project: "gellyscape"},
+            {date: "2025-11-25", commits: 1, project: "svg-grouper"},
+            {date: "2025-11-26", commits: 6, project: "gellyscape"},
+            {date: "2025-11-26", commits: 7, project: "svg-grouper"},
+            {date: "2025-11-27", commits: 1, project: "gellyscape"},
+            {date: "2025-11-27", commits: 7, project: "svg-grouper"},
+            {date: "2025-11-28", commits: 3, project: "gellyscape"},
+            {date: "2025-11-28", commits: 7, project: "svg-grouper"},
+            {date: "2025-11-28", commits: 6, project: "vt-geodata"},
+            {date: "2025-11-29", commits: 11, project: "svg-grouper"}
+        ];
+
+        const projects = ["wolfpack", "gellyscope", "gellyscape", "drunk-simulator", "vt-geodata", "svg-grouper"];
+        const colors = {
+            "wolfpack": "#f97316",
+            "gellyscope": "#22c55e",
+            "gellyscape": "#3b82f6",
+            "drunk-simulator": "#ec4899",
+            "vt-geodata": "#a855f7",
+            "svg-grouper": "#eab308"
+        };
+
+        const parseDate = d3.timeParse("%Y-%m-%d");
+        rawData.forEach(d => d.dateObj = parseDate(d.date));
+
+        const startDate = parseDate("2025-10-01");
+        const endDate = parseDate("2025-11-30");
+
+        const tooltip = d3.select("#tooltip");
+
+        // ============ 1. STREAMGRAPH ============
+        (function() {
+            const width = 1100, height = 350;
+            const margin = {top: 20, right: 30, bottom: 40, left: 50};
+
+            const svg = d3.select("#streamgraph")
+                .append("svg")
+                .attr("width", width)
+                .attr("height", height);
+
+            // Create daily data for all dates
+            const allDates = d3.timeDays(startDate, endDate);
+            const dailyData = allDates.map(date => {
+                const entry = {date: date};
+                projects.forEach(p => entry[p] = 0);
+                rawData.filter(d => d.dateObj.getTime() === date.getTime())
+                    .forEach(d => entry[d.project] = d.commits);
+                return entry;
+            });
+
+            const stack = d3.stack()
+                .keys(projects)
+                .offset(d3.stackOffsetWiggle);
+
+            const series = stack(dailyData);
+
+            const x = d3.scaleTime()
+                .domain([startDate, endDate])
+                .range([margin.left, width - margin.right]);
+
+            const y = d3.scaleLinear()
+                .domain([d3.min(series, s => d3.min(s, d => d[0])), d3.max(series, s => d3.max(s, d => d[1]))])
+                .range([height - margin.bottom, margin.top]);
+
+            const area = d3.area()
+                .x(d => x(d.data.date))
+                .y0(d => y(d[0]))
+                .y1(d => y(d[1]))
+                .curve(d3.curveBasis);
+
+            svg.selectAll("path")
+                .data(series)
+                .join("path")
+                .attr("fill", d => colors[d.key])
+                .attr("d", area)
+                .attr("opacity", 0.85)
+                .on("mouseover", function(event, d) {
+                    d3.select(this).attr("opacity", 1);
+                    tooltip.style("opacity", 1).html(`<strong>${d.key}</strong>`);
+                })
+                .on("mousemove", function(event) {
+                    tooltip.style("left", (event.pageX + 10) + "px").style("top", (event.pageY - 20) + "px");
+                })
+                .on("mouseout", function() {
+                    d3.select(this).attr("opacity", 0.85);
+                    tooltip.style("opacity", 0);
+                });
+
+            // X axis
+            svg.append("g")
+                .attr("class", "axis")
+                .attr("transform", `translate(0,${height - margin.bottom})`)
+                .call(d3.axisBottom(x).ticks(d3.timeWeek.every(1)).tickFormat(d3.timeFormat("%b %d")));
+
+            // Legend
+            const legend = d3.select("#streamgraph-legend");
+            projects.forEach(p => {
+                legend.append("div").attr("class", "legend-item")
+                    .html(`<div class="legend-color" style="background:${colors[p]}"></div>${p}`);
+            });
+        })();
+
+        // ============ 2. HEATMAP ============
+        (function() {
+            const width = 1100, height = 220;
+            const margin = {top: 20, right: 30, bottom: 40, left: 120};
+            const cellSize = 14;
+
+            const svg = d3.select("#heatmap")
+                .append("svg")
+                .attr("width", width)
+                .attr("height", height);
+
+            const allDates = d3.timeDays(startDate, endDate);
+
+            const x = d3.scaleBand()
+                .domain(allDates)
+                .range([margin.left, width - margin.right])
+                .padding(0.1);
+
+            const y = d3.scaleBand()
+                .domain(projects)
+                .range([margin.top, height - margin.bottom])
+                .padding(0.15);
+
+            // Create lookup
+            const lookup = {};
+            rawData.forEach(d => {
+                lookup[`${d.date}-${d.project}`] = d.commits;
+            });
+
+            const maxCommits = d3.max(rawData, d => d.commits);
+
+            // Draw cells
+            projects.forEach(project => {
+                allDates.forEach(date => {
+                    const dateStr = d3.timeFormat("%Y-%m-%d")(date);
+                    const commits = lookup[`${dateStr}-${project}`] || 0;
+                    const intensity = commits / maxCommits;
+
+                    svg.append("rect")
+                        .attr("x", x(date))
+                        .attr("y", y(project))
+                        .attr("width", x.bandwidth())
+                        .attr("height", y.bandwidth())
+                        .attr("rx", 2)
+                        .attr("fill", commits === 0 ? "#21262d" : colors[project])
+                        .attr("opacity", commits === 0 ? 1 : 0.3 + intensity * 0.7)
+                        .on("mouseover", function(event) {
+                            if (commits > 0) {
+                                tooltip.style("opacity", 1)
+                                    .html(`<strong>${project}</strong><br>${dateStr}<br>${commits} commits`);
+                            }
+                        })
+                        .on("mousemove", function(event) {
+                            tooltip.style("left", (event.pageX + 10) + "px").style("top", (event.pageY - 20) + "px");
+                        })
+                        .on("mouseout", function() {
+                            tooltip.style("opacity", 0);
+                        });
+                });
+            });
+
+            // Y axis labels
+            svg.selectAll(".row-label")
+                .data(projects)
+                .join("text")
+                .attr("class", "heatmap-row-label")
+                .attr("x", margin.left - 10)
+                .attr("y", d => y(d) + y.bandwidth() / 2)
+                .attr("dy", "0.35em")
+                .attr("text-anchor", "end")
+                .text(d => d);
+
+            // Month labels
+            const months = [parseDate("2025-10-01"), parseDate("2025-11-01")];
+            svg.selectAll(".month-label")
+                .data(months)
+                .join("text")
+                .attr("class", "axis")
+                .attr("x", d => x(d) || margin.left)
+                .attr("y", height - 10)
+                .style("fill", "#8b949e")
+                .style("font-size", "12px")
+                .text(d => d3.timeFormat("%B")(d));
+        })();
+
+        // ============ 3. GANTT WITH BUBBLES ============
+        (function() {
+            const width = 1100, height = 280;
+            const margin = {top: 20, right: 30, bottom: 40, left: 120};
+
+            const svg = d3.select("#gantt")
+                .append("svg")
+                .attr("width", width)
+                .attr("height", height);
+
+            // Find date ranges per project
+            const projectRanges = {};
+            projects.forEach(p => {
+                const projectData = rawData.filter(d => d.project === p);
+                if (projectData.length > 0) {
+                    projectRanges[p] = {
+                        start: d3.min(projectData, d => d.dateObj),
+                        end: d3.max(projectData, d => d.dateObj)
+                    };
+                }
+            });
+
+            const x = d3.scaleTime()
+                .domain([startDate, endDate])
+                .range([margin.left, width - margin.right]);
+
+            const y = d3.scaleBand()
+                .domain(projects)
+                .range([margin.top, height - margin.bottom])
+                .padding(0.3);
+
+            // Draw bars
+            projects.forEach(project => {
+                if (projectRanges[project]) {
+                    svg.append("rect")
+                        .attr("x", x(projectRanges[project].start))
+                        .attr("y", y(project))
+                        .attr("width", x(projectRanges[project].end) - x(projectRanges[project].start) + 10)
+                        .attr("height", y.bandwidth())
+                        .attr("fill", colors[project])
+                        .attr("opacity", 0.3)
+                        .attr("rx", 4);
+                }
+            });
+
+            // Draw bubbles
+            const maxCommits = d3.max(rawData, d => d.commits);
+            const r = d3.scaleSqrt().domain([0, maxCommits]).range([3, 18]);
+
+            svg.selectAll("circle")
+                .data(rawData)
+                .join("circle")
+                .attr("cx", d => x(d.dateObj))
+                .attr("cy", d => y(d.project) + y.bandwidth() / 2)
+                .attr("r", d => r(d.commits))
+                .attr("fill", d => colors[d.project])
+                .attr("opacity", 0.9)
+                .on("mouseover", function(event, d) {
+                    tooltip.style("opacity", 1)
+                        .html(`<strong>${d.project}</strong><br>${d.date}<br>${d.commits} commits`);
+                })
+                .on("mousemove", function(event) {
+                    tooltip.style("left", (event.pageX + 10) + "px").style("top", (event.pageY - 20) + "px");
+                })
+                .on("mouseout", function() {
+                    tooltip.style("opacity", 0);
+                });
+
+            // Y axis labels
+            svg.selectAll(".row-label")
+                .data(projects)
+                .join("text")
+                .attr("class", "heatmap-row-label")
+                .attr("x", margin.left - 10)
+                .attr("y", d => y(d) + y.bandwidth() / 2)
+                .attr("dy", "0.35em")
+                .attr("text-anchor", "end")
+                .text(d => d);
+
+            // X axis
+            svg.append("g")
+                .attr("class", "axis")
+                .attr("transform", `translate(0,${height - margin.bottom})`)
+                .call(d3.axisBottom(x).ticks(d3.timeWeek.every(1)).tickFormat(d3.timeFormat("%b %d")));
+        })();
+
+        // ============ 4. RIDGE PLOT ============
+        (function() {
+            const width = 1100, height = 350;
+            const margin = {top: 30, right: 30, bottom: 40, left: 120};
+            const overlap = 0.7;
+
+            const svg = d3.select("#ridgeplot")
+                .append("svg")
+                .attr("width", width)
+                .attr("height", height);
+
+            const allDates = d3.timeDays(startDate, endDate);
+            const maxCommits = d3.max(rawData, d => d.commits);
+
+            const x = d3.scaleTime()
+                .domain([startDate, endDate])
+                .range([margin.left, width - margin.right]);
+
+            const rowHeight = (height - margin.top - margin.bottom) / projects.length;
+
+            projects.forEach((project, i) => {
+                const yBase = margin.top + (i + 1) * rowHeight;
+
+                // Build area data
+                const lookup = {};
+                rawData.filter(d => d.project === project).forEach(d => lookup[d.date] = d.commits);
+
+                const areaData = allDates.map(date => ({
+                    date: date,
+                    commits: lookup[d3.timeFormat("%Y-%m-%d")(date)] || 0
+                }));
+
+                const yScale = d3.scaleLinear()
+                    .domain([0, maxCommits])
+                    .range([0, rowHeight * 2]);
+
+                const area = d3.area()
+                    .x(d => x(d.date))
+                    .y0(yBase)
+                    .y1(d => yBase - yScale(d.commits))
+                    .curve(d3.curveBasis);
+
+                svg.append("path")
+                    .datum(areaData)
+                    .attr("fill", colors[project])
+                    .attr("opacity", 0.8)
+                    .attr("stroke", colors[project])
+                    .attr("stroke-width", 1.5)
+                    .attr("d", area);
+
+                // Label
+                svg.append("text")
+                    .attr("x", margin.left - 10)
+                    .attr("y", yBase - rowHeight * 0.3)
+                    .attr("text-anchor", "end")
+                    .attr("class", "heatmap-row-label")
+                    .text(project);
+            });
+
+            // X axis
+            svg.append("g")
+                .attr("class", "axis")
+                .attr("transform", `translate(0,${height - margin.bottom + 10})`)
+                .call(d3.axisBottom(x).ticks(d3.timeWeek.every(1)).tickFormat(d3.timeFormat("%b %d")));
+        })();
+
+        // ============ 5. RADIAL TIMELINE ============
+        (function() {
+            const width = 600, height = 600;
+            const radius = Math.min(width, height) / 2 - 60;
+
+            const svg = d3.select("#radial")
+                .append("svg")
+                .attr("width", width)
+                .attr("height", height)
+                .append("g")
+                .attr("transform", `translate(${width/2},${height/2})`);
+
+            const allDates = d3.timeDays(startDate, endDate);
+            const maxCommits = d3.max(rawData, d => d.commits);
+
+            // Angle scale (time)
+            const angle = d3.scaleTime()
+                .domain([startDate, endDate])
+                .range([0, 2 * Math.PI]);
+
+            // Radius scale (by project, stacked)
+            const projectRadius = d3.scaleBand()
+                .domain(projects)
+                .range([radius * 0.3, radius])
+                .padding(0.15);
+
+            // Dot size scale
+            const r = d3.scaleSqrt().domain([0, maxCommits]).range([2, 15]);
+
+            // Draw concentric rings for reference
+            projects.forEach(project => {
+                svg.append("circle")
+                    .attr("r", projectRadius(project) + projectRadius.bandwidth() / 2)
+                    .attr("fill", "none")
+                    .attr("stroke", "#30363d")
+                    .attr("stroke-width", 0.5);
+            });
+
+            // Draw month markers
+            const monthStarts = [parseDate("2025-10-01"), parseDate("2025-11-01")];
+            monthStarts.forEach(date => {
+                const a = angle(date) - Math.PI / 2;
+                svg.append("line")
+                    .attr("x1", 0)
+                    .attr("y1", 0)
+                    .attr("x2", Math.cos(a) * radius)
+                    .attr("y2", Math.sin(a) * radius)
+                    .attr("stroke", "#30363d")
+                    .attr("stroke-dasharray", "4,4");
+
+                svg.append("text")
+                    .attr("x", Math.cos(a) * (radius + 25))
+                    .attr("y", Math.sin(a) * (radius + 25))
+                    .attr("text-anchor", "middle")
+                    .attr("fill", "#8b949e")
+                    .attr("font-size", "11px")
+                    .text(d3.timeFormat("%b")(date));
+            });
+
+            // Draw data points
+            rawData.forEach(d => {
+                const a = angle(d.dateObj) - Math.PI / 2;
+                const rPos = projectRadius(d.project) + projectRadius.bandwidth() / 2;
+
+                svg.append("circle")
+                    .attr("cx", Math.cos(a) * rPos)
+                    .attr("cy", Math.sin(a) * rPos)
+                    .attr("r", r(d.commits))
+                    .attr("fill", colors[d.project])
+                    .attr("opacity", 0.85)
+                    .on("mouseover", function(event) {
+                        tooltip.style("opacity", 1)
+                            .html(`<strong>${d.project}</strong><br>${d.date}<br>${d.commits} commits`);
+                    })
+                    .on("mousemove", function(event) {
+                        tooltip.style("left", (event.pageX + 10) + "px").style("top", (event.pageY - 20) + "px");
+                    })
+                    .on("mouseout", function() {
+                        tooltip.style("opacity", 0);
+                    });
+            });
+
+            // Center label
+            svg.append("text")
+                .attr("text-anchor", "middle")
+                .attr("dy", "-0.5em")
+                .attr("fill", "#f0f6fc")
+                .attr("font-size", "14px")
+                .attr("font-weight", "bold")
+                .text("Oct-Nov 2025");
+
+            svg.append("text")
+                .attr("text-anchor", "middle")
+                .attr("dy", "1em")
+                .attr("fill", "#8b949e")
+                .attr("font-size", "11px")
+                .text("1,128 commits");
+        })();
+
+        // ============ 6. SENTIMENT ANALYSIS ============
+        (function() {
+            // Developer-specific sentiment lexicon (inspired by AFINN + git conventions)
+            const sentimentLexicon = {
+                // Highly positive (+3 to +5)
+                "complete": 4, "🎉": 5, "milestone": 4, "breakthrough": 5, "works": 3,
+                "implement": 3, "feature": 3, "enhance": 3, "improve": 3, "add": 2,
+                "success": 4, "release": 3, "ready": 2, "validated": 3, "production": 2,
+                // Moderately positive (+1 to +2)
+                "refactor": 1, "clean": 2, "optimize": 2, "update": 1, "merge": 1,
+                "support": 2, "integration": 1, "comprehensive": 2, "major": 2,
+                // Negative (-1 to -3)
+                "fix": -1, "bug": -2, "error": -2, "crash": -3, "broken": -3,
+                "issue": -1, "stuck": -2, "frozen": -2, "fail": -2, "missing": -1,
+                // Highly negative (-4 to -5)
+                "critical": -4, "urgent": -3, "severe": -4, "fatal": -5,
+                "regression": -3, "blocker": -4, "hack": -2, "workaround": -1
+            };
+
+            // Commit message data with dates and projects
+            const commitMessages = [
+                // wolfpack - major milestones and struggles
+                {date: "2025-10-23", project: "wolfpack", msg: "claude scaffolding lake trout game"},
+                {date: "2025-10-23", project: "wolfpack", msg: "Implement fish fighting mechanics with line tension system"},
+                {date: "2025-10-23", project: "wolfpack", msg: "Fix canvas growth bug - stop creating objects every frame"},
+                {date: "2025-10-24", project: "wolfpack", msg: "Add comprehensive gamepad support for PS4 and 8BitDo controllers"},
+                {date: "2025-10-24", project: "wolfpack", msg: "Fix game freeze in kayak/boat mode and text overlap"},
+                {date: "2025-10-24", project: "wolfpack", msg: "Implement Northern Pike ambush predator AI behaviors"},
+                {date: "2025-10-25", project: "wolfpack", msg: "CRITICAL FIX: Baitfish trapped in horizontal line in nature mode"},
+                {date: "2025-10-25", project: "wolfpack", msg: "Fix fish depth calculation using correct coordinate system"},
+                {date: "2025-10-30", project: "wolfpack", msg: "Fix memory leaks causing max connections exceeded error"},
+                {date: "2025-10-30", project: "wolfpack", msg: "Fix invisible wall bug trapping baitfish at surface"},
+                {date: "2025-11-01", project: "wolfpack", msg: "Fix invisible wall bug - predator fish stuck at edges on large screens"},
+                {date: "2025-11-02", project: "wolfpack", msg: "CRITICAL FIX: Add reel mechanical advantage when actively reeling"},
+                {date: "2025-11-02", project: "wolfpack", msg: "Improve predator bait detection and add visual detection cones"},
+                {date: "2025-11-04", project: "wolfpack", msg: "Refactor rendering to Phaser sprites and implement major optimizations"},
+                {date: "2025-11-06", project: "wolfpack", msg: "🎉 TypeScript Conversion Complete! Phase 6 & Final Commit"},
+                {date: "2025-11-06", project: "wolfpack", msg: "Fix: Critical bug fixes for organism spawning and movement"},
+                {date: "2025-11-12", project: "wolfpack", msg: "Implement 3-tier game mode system with species distribution"},
+
+                // gellyscope
+                {date: "2025-10-20", project: "gellyscope", msg: "Vibe coded 1.0 Gellyscope"},
+                {date: "2025-10-22", project: "gellyscope", msg: "Fix app freeze and refactor CSS to external file"},
+                {date: "2025-10-22", project: "gellyscope", msg: "Integrate potrace for bitmap to vector tracing"},
+                {date: "2025-10-23", project: "gellyscope", msg: "Fix critical bug: tab clicks not loading content"},
+                {date: "2025-10-23", project: "gellyscope", msg: "Refactor UI into modular component-based architecture"},
+                {date: "2025-10-24", project: "gellyscope", msg: "Implement Photoshop-style UI redesign with dark theme"},
+                {date: "2025-10-24", project: "gellyscope", msg: "Fix G-code generation and vpype configuration"},
+                {date: "2025-11-16", project: "gellyscope", msg: "Add UI enhancements: page sizes, alignment controls, and download features"},
+
+                // gellyscape
+                {date: "2025-10-22", project: "gellyscape", msg: "Implement GeoPDF processing with layer extraction and export"},
+                {date: "2025-10-23", project: "gellyscape", msg: "Fix ToUnicode CMap decompression and hex string parsing for text extraction"},
+                {date: "2025-10-31", project: "gellyscape", msg: "Fix pdf-parse broken dependency - downgrade to v1.1.1"},
+                {date: "2025-10-31", project: "gellyscape", msg: "Add layer controls, map preview, and SVG export functionality"},
+                {date: "2025-11-14", project: "gellyscape", msg: "Implement smart layer categorization: Separate plottable vector data from overlay annotations"},
+                {date: "2025-11-23", project: "gellyscape", msg: "Add USGS format detection and 2025 Topobuilder support"},
+                {date: "2025-11-26", project: "gellyscape", msg: "Fix CTM matrix multiplication order for 100K map scaling"},
+
+                // drunk-simulator
+                {date: "2025-11-08", project: "drunk-simulator", msg: "Initial commit: Bar simulator prototype with inverted layout"},
+                {date: "2025-11-08", project: "drunk-simulator", msg: "Implement bartender vision cone system with visual feedback"},
+                {date: "2025-11-08", project: "drunk-simulator", msg: "Fix bartender stalling and patron stacking issues"},
+                {date: "2025-11-08", project: "drunk-simulator", msg: "Add confetti celebration when clicking start button"},
+                {date: "2025-11-09", project: "drunk-simulator", msg: "MAJOR PERFORMANCE FIX: Cell caching + RAF throttling + remove console.log"},
+                {date: "2025-11-09", project: "drunk-simulator", msg: "Fix critical performance issue by pausing Phaser game loop when editor opens"},
+                {date: "2025-11-09", project: "drunk-simulator", msg: "Implement free game with 3 levels and complete progression system"},
+                {date: "2025-11-09", project: "drunk-simulator", msg: "Release v1.1.74 🍹 Mai Tai"},
+
+                // vt-geodata
+                {date: "2025-11-06", project: "vt-geodata", msg: "Initial commit: Vermont geodata processing and visualization"},
+                {date: "2025-11-08", project: "vt-geodata", msg: "Fix bug: Features were duplicated across datasets"},
+                {date: "2025-11-08", project: "vt-geodata", msg: "Add Vermont boundary simplification tool with slider and export"},
+                {date: "2025-11-23", project: "vt-geodata", msg: "Phase 1: Standardize map UI across all visualizations"},
+                {date: "2025-11-24", project: "vt-geodata", msg: "MILESTONE: Phase 2 Core Architecture Validated ✅"},
+                {date: "2025-11-24", project: "vt-geodata", msg: "Update progress docs: 35/39 configs (90% - PRODUCTION READY!)"},
+                {date: "2025-11-28", project: "vt-geodata", msg: "Add progressive road viewer with smart county-based loading"},
+
+                // svg-grouper
+                {date: "2025-11-18", project: "svg-grouper", msg: "Initial commit"},
+                {date: "2025-11-18", project: "svg-grouper", msg: "Implement issues #1-5: Core Electron app with SVG viewer"},
+                {date: "2025-11-18", project: "svg-grouper", msg: "Fix race condition and infinite render loop in SVG parsing"},
+                {date: "2025-11-26", project: "svg-grouper", msg: "Add line fill hatching for pen plotter support"},
+                {date: "2025-11-27", project: "svg-grouper", msg: "Fix concentric fill pattern causing app to become unresponsive"},
+                {date: "2025-11-27", project: "svg-grouper", msg: "Add TSP path optimization and order visualization for fill hatching"},
+                {date: "2025-11-28", project: "svg-grouper", msg: "Prepare for v1.0 release"},
+                {date: "2025-11-29", project: "svg-grouper", msg: "Implement Apply Crop functionality"}
+            ];
+
+            // Calculate sentiment for each message
+            function calculateSentiment(msg) {
+                const words = msg.toLowerCase().split(/[\s\-_:,.()\[\]]+/);
+                let score = 0;
+                let matches = [];
+                words.forEach(word => {
+                    if (sentimentLexicon[word]) {
+                        score += sentimentLexicon[word];
+                        matches.push({word, score: sentimentLexicon[word]});
+                    }
+                });
+                // Check for emoji
+                if (msg.includes("🎉") || msg.includes("✅") || msg.includes("🍹")) score += 3;
+                return {score, matches};
+            }
+
+            // Process data
+            const sentimentData = commitMessages.map(d => ({
+                ...d,
+                dateObj: parseDate(d.date),
+                sentiment: calculateSentiment(d.msg)
+            }));
+
+            const width = 1100, height = 400;
+            const margin = {top: 30, right: 30, bottom: 50, left: 60};
+
+            const svg = d3.select("#sentiment")
+                .append("svg")
+                .attr("width", width)
+                .attr("height", height);
+
+            const x = d3.scaleTime()
+                .domain([startDate, endDate])
+                .range([margin.left, width - margin.right]);
+
+            const maxAbs = d3.max(sentimentData, d => Math.abs(d.sentiment.score));
+            const y = d3.scaleLinear()
+                .domain([-maxAbs - 1, maxAbs + 1])
+                .range([height - margin.bottom, margin.top]);
+
+            // Zero line
+            svg.append("line")
+                .attr("x1", margin.left)
+                .attr("x2", width - margin.right)
+                .attr("y1", y(0))
+                .attr("y2", y(0))
+                .attr("stroke", "#30363d")
+                .attr("stroke-width", 2);
+
+            // Positive/negative background
+            svg.append("rect")
+                .attr("x", margin.left)
+                .attr("y", margin.top)
+                .attr("width", width - margin.left - margin.right)
+                .attr("height", y(0) - margin.top)
+                .attr("fill", "#22c55e")
+                .attr("opacity", 0.05);
+
+            svg.append("rect")
+                .attr("x", margin.left)
+                .attr("y", y(0))
+                .attr("width", width - margin.left - margin.right)
+                .attr("height", height - margin.bottom - y(0))
+                .attr("fill", "#ef4444")
+                .attr("opacity", 0.05);
+
+            // Labels
+            svg.append("text")
+                .attr("x", margin.left + 10)
+                .attr("y", margin.top + 20)
+                .attr("fill", "#22c55e")
+                .attr("font-size", "12px")
+                .text("✓ Features, Improvements, Milestones");
+
+            svg.append("text")
+                .attr("x", margin.left + 10)
+                .attr("y", height - margin.bottom - 10)
+                .attr("fill", "#ef4444")
+                .attr("font-size", "12px")
+                .text("✗ Bugs, Crashes, Critical Fixes");
+
+            // Draw stems and circles
+            sentimentData.forEach(d => {
+                const cx = x(d.dateObj) + (Math.random() - 0.5) * 10; // jitter
+                const cy = y(d.sentiment.score);
+                const color = d.sentiment.score >= 0 ? "#22c55e" : "#ef4444";
+
+                // Stem from zero line
+                svg.append("line")
+                    .attr("x1", cx)
+                    .attr("x2", cx)
+                    .attr("y1", y(0))
+                    .attr("y2", cy)
+                    .attr("stroke", color)
+                    .attr("stroke-width", 1.5)
+                    .attr("opacity", 0.5);
+
+                // Circle
+                svg.append("circle")
+                    .attr("cx", cx)
+                    .attr("cy", cy)
+                    .attr("r", 6)
+                    .attr("fill", colors[d.project])
+                    .attr("stroke", color)
+                    .attr("stroke-width", 2)
+                    .on("mouseover", function(event) {
+                        tooltip.style("opacity", 1)
+                            .html(`<strong>${d.project}</strong><br>${d.date}<br>Score: ${d.sentiment.score}<br><em>"${d.msg.substring(0, 60)}..."</em>`);
+                    })
+                    .on("mousemove", function(event) {
+                        tooltip.style("left", (event.pageX + 10) + "px").style("top", (event.pageY - 20) + "px");
+                    })
+                    .on("mouseout", function() {
+                        tooltip.style("opacity", 0);
+                    });
+            });
+
+            // X axis
+            svg.append("g")
+                .attr("class", "axis")
+                .attr("transform", `translate(0,${height - margin.bottom})`)
+                .call(d3.axisBottom(x).ticks(d3.timeWeek.every(1)).tickFormat(d3.timeFormat("%b %d")));
+
+            // Y axis
+            svg.append("g")
+                .attr("class", "axis")
+                .attr("transform", `translate(${margin.left},0)`)
+                .call(d3.axisLeft(y).ticks(5));
+
+            svg.append("text")
+                .attr("transform", "rotate(-90)")
+                .attr("x", -height/2)
+                .attr("y", 15)
+                .attr("fill", "#8b949e")
+                .attr("text-anchor", "middle")
+                .attr("font-size", "11px")
+                .text("Sentiment Score");
+
+            // Legend
+            const legend = d3.select("#sentiment-legend");
+            projects.forEach(p => {
+                legend.append("div").attr("class", "legend-item")
+                    .html(`<div class="legend-color" style="background:${colors[p]}"></div>${p}`);
+            });
+        })();
+
+        // ============ 7. PER-PROJECT SENTIMENT BARS ============
+        (function() {
+            const sentimentLexicon = {
+                "complete": 4, "🎉": 5, "milestone": 4, "breakthrough": 5, "works": 3,
+                "implement": 3, "feature": 3, "enhance": 3, "improve": 3, "add": 2,
+                "success": 4, "release": 3, "ready": 2, "validated": 3, "production": 2,
+                "refactor": 1, "clean": 2, "optimize": 2, "update": 1, "merge": 1,
+                "support": 2, "integration": 1, "comprehensive": 2, "major": 2,
+                "fix": -1, "bug": -2, "error": -2, "crash": -3, "broken": -3,
+                "issue": -1, "stuck": -2, "frozen": -2, "fail": -2, "missing": -1,
+                "critical": -4, "urgent": -3, "severe": -4, "fatal": -5,
+                "regression": -3, "blocker": -4, "hack": -2, "workaround": -1
+            };
+
+            // Aggregated stats per project (from full commit data)
+            const projectStats = {
+                "wolfpack": {positive: 185, negative: 142, fixes: 89, features: 67, total: 621},
+                "gellyscope": {positive: 52, negative: 31, fixes: 22, features: 28, total: 138},
+                "gellyscape": {positive: 38, negative: 24, fixes: 18, features: 19, total: 102},
+                "drunk-simulator": {positive: 48, negative: 22, fixes: 14, features: 31, total: 108},
+                "vt-geodata": {positive: 55, negative: 18, fixes: 11, features: 42, total: 114},
+                "svg-grouper": {positive: 22, negative: 9, fixes: 8, features: 14, total: 41}
+            };
+
+            const width = 1100, height = 300;
+            const margin = {top: 30, right: 150, bottom: 40, left: 120};
+
+            const svg = d3.select("#sentiment-bars")
+                .append("svg")
+                .attr("width", width)
+                .attr("height", height);
+
+            const y = d3.scaleBand()
+                .domain(projects)
+                .range([margin.top, height - margin.bottom])
+                .padding(0.3);
+
+            const maxVal = d3.max(projects, p => Math.max(projectStats[p].positive, projectStats[p].negative));
+            const x = d3.scaleLinear()
+                .domain([0, maxVal])
+                .range([0, (width - margin.left - margin.right) / 2 - 20]);
+
+            const centerX = margin.left + (width - margin.left - margin.right) / 2;
+
+            projects.forEach(project => {
+                const stats = projectStats[project];
+                const yPos = y(project);
+
+                // Positive bar (right)
+                svg.append("rect")
+                    .attr("x", centerX + 5)
+                    .attr("y", yPos)
+                    .attr("width", x(stats.positive))
+                    .attr("height", y.bandwidth())
+                    .attr("fill", "#22c55e")
+                    .attr("rx", 3);
+
+                // Negative bar (left)
+                svg.append("rect")
+                    .attr("x", centerX - 5 - x(stats.negative))
+                    .attr("y", yPos)
+                    .attr("width", x(stats.negative))
+                    .attr("height", y.bandwidth())
+                    .attr("fill", "#ef4444")
+                    .attr("rx", 3);
+
+                // Project color indicator
+                svg.append("rect")
+                    .attr("x", margin.left - 15)
+                    .attr("y", yPos + y.bandwidth() / 2 - 5)
+                    .attr("width", 10)
+                    .attr("height", 10)
+                    .attr("fill", colors[project])
+                    .attr("rx", 2);
+
+                // Labels
+                svg.append("text")
+                    .attr("x", centerX + x(stats.positive) + 10)
+                    .attr("y", yPos + y.bandwidth() / 2)
+                    .attr("dy", "0.35em")
+                    .attr("fill", "#22c55e")
+                    .attr("font-size", "11px")
+                    .text(`${stats.positive} (+${stats.features} features)`);
+
+                svg.append("text")
+                    .attr("x", centerX - x(stats.negative) - 10)
+                    .attr("y", yPos + y.bandwidth() / 2)
+                    .attr("dy", "0.35em")
+                    .attr("text-anchor", "end")
+                    .attr("fill", "#ef4444")
+                    .attr("font-size", "11px")
+                    .text(`${stats.negative} (${stats.fixes} fixes)`);
+            });
+
+            // Y axis labels
+            svg.selectAll(".row-label")
+                .data(projects)
+                .join("text")
+                .attr("class", "heatmap-row-label")
+                .attr("x", margin.left - 20)
+                .attr("y", d => y(d) + y.bandwidth() / 2)
+                .attr("dy", "0.35em")
+                .attr("text-anchor", "end")
+                .text(d => d);
+
+            // Center line
+            svg.append("line")
+                .attr("x1", centerX)
+                .attr("x2", centerX)
+                .attr("y1", margin.top - 10)
+                .attr("y2", height - margin.bottom)
+                .attr("stroke", "#30363d")
+                .attr("stroke-width", 2);
+
+            // Headers
+            svg.append("text")
+                .attr("x", centerX - 50)
+                .attr("y", margin.top - 15)
+                .attr("fill", "#ef4444")
+                .attr("font-size", "12px")
+                .attr("text-anchor", "end")
+                .text("← Bug Fixes / Issues");
+
+            svg.append("text")
+                .attr("x", centerX + 50)
+                .attr("y", margin.top - 15)
+                .attr("fill", "#22c55e")
+                .attr("font-size", "12px")
+                .text("Features / Improvements →");
+        })();
+    </script>
+</body>
+</html>
