@@ -184,36 +184,207 @@
             justify-content: center;
         }
 
-        .detail-panel {
+        .hover-preview {
             background: #21262d;
+            border: 1px solid #30363d;
             border-radius: 6px;
             padding: 15px;
-            margin-top: 20px;
-            display: none;
+            margin-top: 15px;
+            height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
-        .detail-panel.visible {
-            display: block;
+        .hover-preview.empty {
+            color: #484f58;
+            text-align: center;
+            font-style: italic;
+        }
+        .hover-preview .preview-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        .hover-preview .preview-type {
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .hover-preview .preview-type.commit { background: #388bfd; color: #fff; }
+        .hover-preview .preview-type.pr { background: #a855f7; color: #fff; }
+        .hover-preview .preview-project {
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 10px;
+            font-weight: 600;
+            color: #0d1117;
+        }
+        .hover-preview .preview-date {
+            color: #8b949e;
+            font-size: 11px;
+            margin-left: auto;
+        }
+        .hover-preview .preview-msg {
+            color: #c9d1d9;
+            font-size: 13px;
+            line-height: 1.4;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .hover-preview .preview-sentiment {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+            align-items: center;
+        }
+        .hover-preview .preview-score {
+            font-weight: 600;
+            font-size: 12px;
+        }
+        .hover-preview .preview-score.positive { color: #22c55e; }
+        .hover-preview .preview-score.negative { color: #ef4444; }
+        .hover-preview .preview-score.neutral { color: #8b949e; }
+        .hover-preview .preview-hint {
+            color: #484f58;
+            font-size: 11px;
+            margin-left: auto;
+        }
+
+        .detail-panel {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 20px;
+            margin-top: 20px;
         }
         .detail-panel h3 {
-            margin: 0 0 10px 0;
+            margin: 0 0 15px 0;
             color: #58a6ff;
-            font-size: 14px;
+            font-size: 16px;
+            border-bottom: 1px solid #30363d;
+            padding-bottom: 10px;
         }
         .detail-list {
-            max-height: 300px;
+            max-height: 500px;
             overflow-y: auto;
         }
         .detail-item {
-            padding: 8px;
-            border-bottom: 1px solid #30363d;
+            padding: 12px;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            margin-bottom: 8px;
             font-size: 12px;
+            background: #21262d;
+            transition: all 0.2s;
+            cursor: pointer;
         }
-        .detail-item:last-child {
-            border-bottom: none;
+        .detail-item:hover {
+            border-color: #58a6ff;
+        }
+        .detail-item.highlighted {
+            border-color: #f0f6fc;
+            background: #2d333b;
+            box-shadow: 0 0 10px rgba(88, 166, 255, 0.3);
+        }
+        .detail-item .item-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        .detail-item .type-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .detail-item .type-badge.commit { background: #388bfd; color: #fff; }
+        .detail-item .type-badge.pr { background: #a855f7; color: #fff; }
+        .detail-item .project-badge {
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 10px;
+            font-weight: 600;
+            color: #0d1117;
         }
         .detail-item .date {
             color: #8b949e;
             font-size: 11px;
+            margin-left: auto;
+        }
+        .detail-item .msg {
+            color: #c9d1d9;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        .detail-item .sentiment-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+        }
+        .detail-item .sentiment-score {
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 3px;
+        }
+        .detail-item .sentiment-score.positive { background: rgba(34, 197, 94, 0.2); color: #22c55e; }
+        .detail-item .sentiment-score.negative { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+        .detail-item .sentiment-score.neutral { background: rgba(139, 148, 158, 0.2); color: #8b949e; }
+        .detail-item .keywords {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+        .detail-item .keyword {
+            padding: 1px 6px;
+            border-radius: 3px;
+            font-size: 10px;
+            font-family: monospace;
+        }
+        .detail-item .keyword.positive { background: rgba(34, 197, 94, 0.15); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.3); }
+        .detail-item .keyword.negative { background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); }
+        .project-section {
+            margin-bottom: 20px;
+        }
+        .project-section-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            background: #0d1117;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+        .project-section-header:hover {
+            background: #161b22;
+        }
+        .project-section-header .project-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+        }
+        .project-section-header .project-name {
+            font-weight: 600;
+            color: #f0f6fc;
+        }
+        .project-section-header .project-count {
+            color: #8b949e;
+            font-size: 12px;
+            margin-left: auto;
+        }
+        .project-items {
+            padding-left: 12px;
+        }
+        .project-items.collapsed {
+            display: none;
         }
     </style>
 </head>
@@ -285,10 +456,16 @@
                 <span>Negative</span>
             </div>
         </div>
+        <div class="hover-preview empty" id="hover-preview">
+            Hover over a chart point to see details. Click to scroll to the item below.
+        </div>
     </div>
 
     <div class="detail-panel" id="detail-panel">
-        <h3 id="detail-title">Selected Items</h3>
+        <h3 id="detail-title">Commits & Pull Requests</h3>
+        <p style="color: #8b949e; font-size: 12px; margin: 0 0 15px 0;">
+            Click on chart points to scroll to items. Click project headers to collapse/expand.
+        </p>
         <div class="detail-list" id="detail-list"></div>
     </div>
 
@@ -328,6 +505,30 @@
             });
             if (msg.includes("🎉") || msg.includes("✅") || msg.includes("🍹") || msg.includes("🏆")) score += 3;
             return score;
+        }
+
+        // Get matched keywords with their scores
+        function getMatchedKeywords(msg) {
+            const words = msg.toLowerCase().split(/[\s\-_:,.()\[\]]+/);
+            const matches = [];
+            const seen = new Set();
+            words.forEach(word => {
+                if (sentimentLexicon[word] && !seen.has(word)) {
+                    seen.add(word);
+                    matches.push({ word, score: sentimentLexicon[word] });
+                }
+            });
+            // Check for emojis
+            if (msg.includes("🎉")) matches.push({ word: "🎉", score: 3 });
+            if (msg.includes("✅")) matches.push({ word: "✅", score: 3 });
+            if (msg.includes("🍹")) matches.push({ word: "🍹", score: 3 });
+            if (msg.includes("🏆")) matches.push({ word: "🏆", score: 3 });
+            return matches;
+        }
+
+        // Generate unique ID for each data item
+        function getItemId(d) {
+            return `item-${hashCode(d.date + d.project + d.msg)}`;
         }
 
         // Combined commit and PR data
@@ -744,23 +945,24 @@
             allPoints
                 .style("cursor", "pointer")
                 .on("mouseover", function(event, d) {
-                    const sentimentClass = d.sentiment >= 0 ? "positive" : "negative";
-                    const typeClass = d.type === "pr" ? "pr" : "commit";
-                    tooltip.style("opacity", 1)
-                        .html(`
-                            <span class="type-badge ${typeClass}">${d.type.toUpperCase()}</span>
-                            <strong>${d.project}</strong> - ${d.date}
-                            <div class="msg">${d.msg}</div>
-                            <div class="score ${sentimentClass}">Sentiment: ${d.sentiment > 0 ? '+' : ''}${d.sentiment}</div>
-                        `);
+                    // Update fixed hover preview
+                    updateHoverPreview(d);
+                    // Highlight corresponding list item (no scroll)
+                    highlightListItem(d, true, false);
                 })
-                .on("mousemove", function(event) {
-                    tooltip.style("left", (event.pageX + 15) + "px")
-                           .style("top", (event.pageY - 10) + "px");
+                .on("mouseout", function(event, d) {
+                    // Clear hover preview
+                    clearHoverPreview();
+                    // Remove highlight from list item
+                    highlightListItem(d, false, false);
                 })
-                .on("mouseout", function() {
-                    tooltip.style("opacity", 0);
+                .on("click", function(event, d) {
+                    // Scroll to item on click
+                    scrollToListItem(d);
                 });
+
+            // Update the detail list below the chart
+            updateDetailList(filteredData);
         }
 
         // Simple hash for consistent jitter
@@ -771,6 +973,190 @@
                 hash |= 0;
             }
             return Math.abs(hash);
+        }
+
+        // Track collapsed projects
+        const collapsedProjects = new Set();
+
+        // Render detail list below chart
+        function updateDetailList(filteredData) {
+            const detailList = d3.select("#detail-list");
+            detailList.html("");
+
+            // Group by project
+            const byProject = d3.group(filteredData, d => d.project);
+
+            // Sort projects by their order in the projects array
+            const sortedProjects = projects.filter(p => byProject.has(p));
+
+            sortedProjects.forEach(project => {
+                const items = byProject.get(project);
+                // Sort by date descending
+                items.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+                const section = detailList.append("div")
+                    .attr("class", "project-section")
+                    .attr("data-project", project);
+
+                const header = section.append("div")
+                    .attr("class", "project-section-header")
+                    .on("click", function() {
+                        if (collapsedProjects.has(project)) {
+                            collapsedProjects.delete(project);
+                        } else {
+                            collapsedProjects.add(project);
+                        }
+                        itemsContainer.classed("collapsed", collapsedProjects.has(project));
+                    });
+
+                header.append("div")
+                    .attr("class", "project-color")
+                    .style("background-color", colors[project]);
+
+                header.append("span")
+                    .attr("class", "project-name")
+                    .text(project);
+
+                const commitCount = items.filter(d => d.type === "commit").length;
+                const prCount = items.filter(d => d.type === "pr").length;
+                header.append("span")
+                    .attr("class", "project-count")
+                    .text(`${commitCount} commits, ${prCount} PRs`);
+
+                const itemsContainer = section.append("div")
+                    .attr("class", "project-items")
+                    .classed("collapsed", collapsedProjects.has(project));
+
+                items.forEach(d => {
+                    const itemId = getItemId(d);
+                    const keywords = getMatchedKeywords(d.msg);
+                    const sentimentClass = d.sentiment > 0 ? "positive" : (d.sentiment < 0 ? "negative" : "neutral");
+
+                    const item = itemsContainer.append("div")
+                        .attr("class", "detail-item")
+                        .attr("id", itemId)
+                        .attr("data-item-id", itemId)
+                        .on("mouseenter", function() {
+                            highlightChartPoint(d, true);
+                        })
+                        .on("mouseleave", function() {
+                            highlightChartPoint(d, false);
+                        });
+
+                    // Header row
+                    const itemHeader = item.append("div")
+                        .attr("class", "item-header");
+
+                    itemHeader.append("span")
+                        .attr("class", `type-badge ${d.type}`)
+                        .text(d.type);
+
+                    itemHeader.append("span")
+                        .attr("class", "project-badge")
+                        .style("background-color", colors[d.project])
+                        .text(d.project);
+
+                    itemHeader.append("span")
+                        .attr("class", "date")
+                        .text(d.date);
+
+                    // Message
+                    item.append("div")
+                        .attr("class", "msg")
+                        .text(d.msg);
+
+                    // Sentiment info row
+                    const sentimentInfo = item.append("div")
+                        .attr("class", "sentiment-info");
+
+                    sentimentInfo.append("span")
+                        .attr("class", `sentiment-score ${sentimentClass}`)
+                        .text(`Score: ${d.sentiment > 0 ? '+' : ''}${d.sentiment}`);
+
+                    if (keywords.length > 0) {
+                        const keywordsContainer = sentimentInfo.append("div")
+                            .attr("class", "keywords");
+
+                        keywords.forEach(k => {
+                            const keywordClass = k.score > 0 ? "positive" : "negative";
+                            keywordsContainer.append("span")
+                                .attr("class", `keyword ${keywordClass}`)
+                                .text(`${k.word} (${k.score > 0 ? '+' : ''}${k.score})`);
+                        });
+                    } else {
+                        sentimentInfo.append("span")
+                            .style("color", "#8b949e")
+                            .style("font-size", "11px")
+                            .text("No keyword matches");
+                    }
+                });
+            });
+        }
+
+        // Update hover preview panel
+        function updateHoverPreview(d) {
+            const preview = d3.select("#hover-preview");
+            const keywords = getMatchedKeywords(d.msg);
+            const sentimentClass = d.sentiment > 0 ? "positive" : (d.sentiment < 0 ? "negative" : "neutral");
+
+            preview.classed("empty", false);
+            preview.html(`
+                <div class="preview-header">
+                    <span class="preview-type ${d.type}">${d.type}</span>
+                    <span class="preview-project" style="background-color: ${colors[d.project]}">${d.project}</span>
+                    <span class="preview-date">${d.date}</span>
+                </div>
+                <div class="preview-msg">${d.msg}</div>
+                <div class="preview-sentiment">
+                    <span class="preview-score ${sentimentClass}">Score: ${d.sentiment > 0 ? '+' : ''}${d.sentiment}</span>
+                    ${keywords.length > 0 ? keywords.map(k => `<span style="color: ${k.score > 0 ? '#22c55e' : '#ef4444'}; font-size: 11px;">${k.word} (${k.score > 0 ? '+' : ''}${k.score})</span>`).join(' ') : '<span style="color: #484f58; font-size: 11px;">No keyword matches</span>'}
+                    <span class="preview-hint">Click to scroll to item</span>
+                </div>
+            `);
+        }
+
+        // Clear hover preview
+        function clearHoverPreview() {
+            const preview = d3.select("#hover-preview");
+            preview.classed("empty", true);
+            preview.html("Hover over a chart point to see details. Click to scroll to the item below.");
+        }
+
+        // Scroll to list item
+        function scrollToListItem(d) {
+            const itemId = getItemId(d);
+            const element = document.getElementById(itemId);
+            if (element) {
+                element.scrollIntoView({ behavior: "smooth", block: "center" });
+                // Flash highlight
+                d3.select(`#${itemId}`).classed("highlighted", true);
+                setTimeout(() => {
+                    d3.select(`#${itemId}`).classed("highlighted", false);
+                }, 2000);
+            }
+        }
+
+        // Highlight a chart point
+        function highlightChartPoint(d, highlight) {
+            dataLayer.selectAll(".point")
+                .filter(pd => pd.date === d.date && pd.project === d.project && pd.msg === d.msg)
+                .select("circle, polygon")
+                .attr("stroke-width", highlight ? 4 : 2)
+                .attr("stroke", highlight ? "#f0f6fc" : (pd => pd.sentiment >= 0 ? "#22c55e" : "#ef4444"));
+        }
+
+        // Highlight a list item (optional scroll)
+        function highlightListItem(d, highlight, shouldScroll = false) {
+            const itemId = getItemId(d);
+            const item = d3.select(`#${itemId}`);
+            item.classed("highlighted", highlight);
+
+            if (highlight && shouldScroll) {
+                const element = document.getElementById(itemId);
+                if (element) {
+                    element.scrollIntoView({ behavior: "smooth", block: "center" });
+                }
+            }
         }
 
         // Initial render

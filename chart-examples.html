@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Commit Timeline Visualizations</title>
     <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
     <style>
         * {
             box-sizing: border-box;
@@ -96,9 +97,319 @@
             font-size: 12px;
             color: #8b949e;
         }
+
+        /* Slideshow Mode */
+        .slideshow-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background: #388bfd;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            z-index: 1000;
+            transition: background 0.2s;
+        }
+        .slideshow-btn:hover {
+            background: #58a6ff;
+        }
+
+        body.slideshow-mode {
+            padding: 0;
+            max-width: none;
+            overflow: hidden;
+        }
+        body.slideshow-mode > *:not(.slide):not(.slideshow-overlay):not(.tooltip) {
+            display: none !important;
+        }
+
+        .slideshow-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #0d1117;
+            z-index: 999;
+        }
+        body.slideshow-mode .slideshow-overlay {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            padding: 40px;
+        }
+        .slide.active {
+            display: flex;
+        }
+        .slide h2 {
+            margin: 0 0 10px 0;
+            color: #58a6ff;
+            font-size: 28px;
+        }
+        .slide p {
+            margin: 0 0 30px 0;
+            color: #8b949e;
+            font-size: 16px;
+            max-width: 900px;
+            text-align: center;
+        }
+        .slide .slide-chart {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .slide .legend {
+            margin-top: 20px;
+        }
+
+        .slide-controls {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            z-index: 1001;
+        }
+        .slide-nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #21262d;
+            border: 1px solid #30363d;
+            color: #c9d1d9;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .slide-nav-btn:hover {
+            background: #30363d;
+            border-color: #58a6ff;
+        }
+        .slide-nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+        .slide-indicator {
+            color: #8b949e;
+            font-size: 14px;
+        }
+        .slide-exit-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 8px 16px;
+            background: #21262d;
+            border: 1px solid #30363d;
+            color: #c9d1d9;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            z-index: 1001;
+        }
+        .slide-exit-btn:hover {
+            background: #30363d;
+            border-color: #58a6ff;
+        }
+        .slide-hint {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #484f58;
+            font-size: 12px;
+            z-index: 1001;
+        }
     </style>
 </head>
 <body>
+    <button class="slideshow-btn" onclick="enterSlideshow()">Slideshow Mode</button>
+
+    <div class="slideshow-overlay" id="slideshow-overlay">
+        <button class="slide-exit-btn" onclick="exitSlideshow()">Exit (ESC)</button>
+        <div class="slide-hint">Use ← → arrow keys to navigate</div>
+        <div class="slide-controls">
+            <button class="slide-nav-btn" id="prev-btn" onclick="prevSlide()">←</button>
+            <span class="slide-indicator"><span id="current-slide">1</span> / <span id="total-slides">10</span></span>
+            <button class="slide-nav-btn" id="next-btn" onclick="nextSlide()">→</button>
+        </div>
+
+        <!-- Slide 0: Title -->
+        <div class="slide" id="slide-0">
+            <h2 style="font-size: 42px; margin-bottom: 20px;">Your Claude Code Journey</h2>
+            <p style="font-size: 24px; color: #58a6ff; margin-bottom: 40px;">Oct - Nov 2025</p>
+            <div class="slide-chart" style="padding: 40px 60px;">
+                <div style="display: flex; gap: 60px; margin-bottom: 30px;">
+                    <div class="stat" style="text-align: center;">
+                        <div class="stat-value" style="font-size: 48px;">1,128</div>
+                        <div class="stat-label" style="font-size: 14px;">Total Commits</div>
+                    </div>
+                    <div class="stat" style="text-align: center;">
+                        <div class="stat-value" style="font-size: 48px;">6</div>
+                        <div class="stat-label" style="font-size: 14px;">Projects</div>
+                    </div>
+                    <div class="stat" style="text-align: center;">
+                        <div class="stat-value" style="font-size: 48px;">26</div>
+                        <div class="stat-label" style="font-size: 14px;">Active Days</div>
+                    </div>
+                    <div class="stat" style="text-align: center;">
+                        <div class="stat-value" style="font-size: 48px;">43</div>
+                        <div class="stat-label" style="font-size: 14px;">Avg Commits/Day</div>
+                    </div>
+                </div>
+                <div class="legend" id="slide-legend-0" style="gap: 20px;"></div>
+            </div>
+        </div>
+
+        <!-- Slide 1: Streamgraph -->
+        <div class="slide" id="slide-1">
+            <h2>Stacked Area Chart (Streamgraph)</h2>
+            <p>Shows how your focus shifted between projects over time. Width = commit intensity.</p>
+            <div class="slide-chart">
+                <div id="slide-streamgraph"></div>
+                <div class="legend" id="slide-streamgraph-legend"></div>
+            </div>
+        </div>
+
+        <!-- Slide 2: Heatmap -->
+        <div class="slide" id="slide-2">
+            <h2>GitHub-style Heatmap</h2>
+            <p>Each row is a project. Color intensity = commits that day.</p>
+            <div class="slide-chart">
+                <div id="slide-heatmap"></div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Gantt -->
+        <div class="slide" id="slide-3">
+            <h2>Gantt Timeline with Bubbles</h2>
+            <p>Horizontal bars show active periods. Bubble size = daily commit count.</p>
+            <div class="slide-chart">
+                <div id="slide-gantt"></div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Ridge Plot -->
+        <div class="slide" id="slide-4">
+            <h2>Ridge Plot (Joy Plot)</h2>
+            <p>Each project shows a "mountain range" of activity. Peaks = high-commit days.</p>
+            <div class="slide-chart">
+                <div id="slide-ridgeplot"></div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Radial -->
+        <div class="slide" id="slide-5">
+            <h2>Radial Timeline</h2>
+            <p>Time flows clockwise. Dot size = commits. Color = project.</p>
+            <div class="slide-chart">
+                <div id="slide-radial"></div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Sentiment -->
+        <div class="slide" id="slide-6">
+            <h2>Commit Sentiment Analysis</h2>
+            <p>Analyzes commit messages for emotional indicators. Green = positive (features), Red = negative (bugs).</p>
+            <div class="slide-chart">
+                <div id="slide-sentiment"></div>
+                <div class="legend" id="slide-sentiment-legend"></div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Sentiment Bars -->
+        <div class="slide" id="slide-7">
+            <h2>Per-Project Sentiment Breakdown</h2>
+            <p>Shows the emotional journey of each project. Bars show cumulative positive vs negative sentiment.</p>
+            <div class="slide-chart">
+                <div id="slide-sentiment-bars"></div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Interactive Sentiment Explorer -->
+        <div class="slide" id="slide-8">
+            <h2>Interactive Commit & PR Explorer</h2>
+            <p>Filter by project and type. Circles = commits, Diamonds = PRs. Color intensity shows sentiment.</p>
+            <div class="slide-chart" style="padding: 20px; max-width: 1200px;">
+                <div id="slide-interactive-controls" style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px;"></div>
+                <div id="slide-interactive-chart"></div>
+                <div style="display: flex; justify-content: center; gap: 20px; margin-top: 15px;">
+                    <div class="legend-item"><div class="legend-shape"><svg width="12" height="12"><circle cx="6" cy="6" r="5" fill="#388bfd"/></svg></div><span>Commit</span></div>
+                    <div class="legend-item"><div class="legend-shape"><svg width="14" height="14"><polygon points="7,1 13,7 7,13 1,7" fill="#a855f7"/></svg></div><span>PR</span></div>
+                    <div class="legend-item"><div class="legend-color" style="background: #22c55e"></div><span>Positive</span></div>
+                    <div class="legend-item"><div class="legend-color" style="background: #ef4444"></div><span>Negative</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Celebration Ending -->
+        <div class="slide" id="slide-9">
+            <div style="text-align: center;">
+                <h2 style="font-size: 52px; margin-bottom: 30px; background: linear-gradient(135deg, #f97316, #22c55e, #3b82f6, #ec4899, #a855f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">1,128 Commits Later...</h2>
+                <p style="font-size: 28px; color: #58a6ff; margin-bottom: 20px;">6 Projects Built with Claude Code</p>
+                <div style="display: flex; justify-content: center; gap: 40px; margin: 40px 0;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 64px; margin-bottom: 10px;">🎮</div>
+                        <div style="color: #f97316; font-weight: 600;">wolfpack</div>
+                        <div style="color: #8b949e; font-size: 14px;">Fishing Game</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 64px; margin-bottom: 10px;">🔬</div>
+                        <div style="color: #22c55e; font-weight: 600;">gellyscope</div>
+                        <div style="color: #8b949e; font-size: 14px;">Image Processing</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 64px; margin-bottom: 10px;">🗺️</div>
+                        <div style="color: #3b82f6; font-weight: 600;">gellyscape</div>
+                        <div style="color: #8b949e; font-size: 14px;">GeoPDF Parser</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 64px; margin-bottom: 10px;">🍺</div>
+                        <div style="color: #ec4899; font-weight: 600;">drunk-simulator</div>
+                        <div style="color: #8b949e; font-size: 14px;">Bar Sim Game</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 64px; margin-bottom: 10px;">📍</div>
+                        <div style="color: #a855f7; font-weight: 600;">vt-geodata</div>
+                        <div style="color: #8b949e; font-size: 14px;">Vermont Maps</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 64px; margin-bottom: 10px;">✂️</div>
+                        <div style="color: #eab308; font-weight: 600;">svg-grouper</div>
+                        <div style="color: #8b949e; font-size: 14px;">SVG Editor</div>
+                    </div>
+                </div>
+                <p style="font-size: 20px; color: #8b949e; margin-top: 40px;">Oct - Nov 2025</p>
+                <button id="replay-confetti" style="margin-top: 30px; padding: 12px 24px; background: linear-gradient(135deg, #388bfd, #a855f7); border: none; border-radius: 8px; color: white; font-size: 16px; cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                    🎉 Replay Celebration
+                </button>
+            </div>
+        </div>
+    </div>
+
     <h1>Your Claude Code Journey: Oct-Nov 2025</h1>
 
     <div class="summary">
@@ -1010,6 +1321,634 @@
                 .attr("font-size", "12px")
                 .text("Features / Improvements →");
         })();
+
+        // ============ SLIDESHOW MODE ============
+        let currentSlide = 0;
+        const totalSlides = 10;
+        let slideshowInitialized = false;
+
+        function enterSlideshow() {
+            document.body.classList.add('slideshow-mode');
+            if (!slideshowInitialized) {
+                initSlideCharts();
+                slideshowInitialized = true;
+            }
+            currentSlide = 0;
+            showSlide(currentSlide);
+            document.addEventListener('keydown', handleKeyNav);
+        }
+
+        function exitSlideshow() {
+            document.body.classList.remove('slideshow-mode');
+            document.removeEventListener('keydown', handleKeyNav);
+        }
+
+        function handleKeyNav(e) {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                prevSlide();
+            } else if (e.key === 'Escape') {
+                exitSlideshow();
+            }
+        }
+
+        function showSlide(index) {
+            document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+            document.getElementById(`slide-${index}`).classList.add('active');
+            document.getElementById('current-slide').textContent = index + 1;
+            document.getElementById('prev-btn').disabled = index === 0;
+            document.getElementById('next-btn').disabled = index === totalSlides - 1;
+
+            // Trigger confetti on final slide
+            if (index === totalSlides - 1) {
+                launchCelebration();
+            }
+        }
+
+        // Confetti celebration
+        function launchCelebration() {
+            const duration = 4000;
+            const animationEnd = Date.now() + duration;
+            const projectColors = ['#f97316', '#22c55e', '#3b82f6', '#ec4899', '#a855f7', '#eab308'];
+
+            (function frame() {
+                confetti({
+                    particleCount: 3,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 },
+                    colors: projectColors
+                });
+                confetti({
+                    particleCount: 3,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 },
+                    colors: projectColors
+                });
+
+                if (Date.now() < animationEnd) {
+                    requestAnimationFrame(frame);
+                }
+            }());
+
+            // Big burst in the middle
+            setTimeout(() => {
+                confetti({
+                    particleCount: 100,
+                    spread: 100,
+                    origin: { y: 0.6 },
+                    colors: projectColors
+                });
+            }, 500);
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                showSlide(currentSlide);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                showSlide(currentSlide);
+            }
+        }
+
+        function initSlideCharts() {
+            // Title slide legend
+            const titleLegend = d3.select("#slide-legend-0");
+            projects.forEach(p => {
+                titleLegend.append("div").attr("class", "legend-item")
+                    .html(`<div class="legend-color" style="background:${colors[p]}"></div>${p}`);
+            });
+
+            // Slide 1: Streamgraph
+            (function() {
+                const width = 1100, height = 350;
+                const margin = {top: 20, right: 30, bottom: 40, left: 50};
+
+                const svg = d3.select("#slide-streamgraph")
+                    .append("svg")
+                    .attr("width", width)
+                    .attr("height", height);
+
+                const allDates = d3.timeDays(startDate, endDate);
+                const dailyData = allDates.map(date => {
+                    const entry = {date: date};
+                    projects.forEach(p => entry[p] = 0);
+                    rawData.filter(d => d.dateObj.getTime() === date.getTime())
+                        .forEach(d => entry[d.project] = d.commits);
+                    return entry;
+                });
+
+                const stack = d3.stack().keys(projects).offset(d3.stackOffsetWiggle);
+                const series = stack(dailyData);
+
+                const x = d3.scaleTime().domain([startDate, endDate]).range([margin.left, width - margin.right]);
+                const y = d3.scaleLinear()
+                    .domain([d3.min(series, s => d3.min(s, d => d[0])), d3.max(series, s => d3.max(s, d => d[1]))])
+                    .range([height - margin.bottom, margin.top]);
+
+                const area = d3.area()
+                    .x(d => x(d.data.date))
+                    .y0(d => y(d[0]))
+                    .y1(d => y(d[1]))
+                    .curve(d3.curveBasis);
+
+                svg.selectAll("path").data(series).join("path")
+                    .attr("fill", d => colors[d.key])
+                    .attr("d", area)
+                    .attr("opacity", 0.85);
+
+                svg.append("g").attr("class", "axis").attr("transform", `translate(0,${height - margin.bottom})`)
+                    .call(d3.axisBottom(x).ticks(d3.timeWeek.every(1)).tickFormat(d3.timeFormat("%b %d")));
+
+                const legend = d3.select("#slide-streamgraph-legend");
+                projects.forEach(p => {
+                    legend.append("div").attr("class", "legend-item")
+                        .html(`<div class="legend-color" style="background:${colors[p]}"></div>${p}`);
+                });
+            })();
+
+            // Slide 2: Heatmap
+            (function() {
+                const width = 1100, height = 220;
+                const margin = {top: 20, right: 30, bottom: 40, left: 120};
+
+                const svg = d3.select("#slide-heatmap").append("svg").attr("width", width).attr("height", height);
+                const allDates = d3.timeDays(startDate, endDate);
+
+                const x = d3.scaleBand().domain(allDates).range([margin.left, width - margin.right]).padding(0.1);
+                const y = d3.scaleBand().domain(projects).range([margin.top, height - margin.bottom]).padding(0.15);
+
+                const lookup = {};
+                rawData.forEach(d => lookup[`${d.date}-${d.project}`] = d.commits);
+                const maxCommits = d3.max(rawData, d => d.commits);
+
+                projects.forEach(project => {
+                    allDates.forEach(date => {
+                        const dateStr = d3.timeFormat("%Y-%m-%d")(date);
+                        const commits = lookup[`${dateStr}-${project}`] || 0;
+                        const intensity = commits / maxCommits;
+                        svg.append("rect")
+                            .attr("x", x(date)).attr("y", y(project))
+                            .attr("width", x.bandwidth()).attr("height", y.bandwidth())
+                            .attr("rx", 2)
+                            .attr("fill", commits === 0 ? "#21262d" : colors[project])
+                            .attr("opacity", commits === 0 ? 1 : 0.3 + intensity * 0.7);
+                    });
+                });
+
+                svg.selectAll(".row-label").data(projects).join("text")
+                    .attr("class", "heatmap-row-label")
+                    .attr("x", margin.left - 10).attr("y", d => y(d) + y.bandwidth() / 2)
+                    .attr("dy", "0.35em").attr("text-anchor", "end").text(d => d);
+            })();
+
+            // Slide 3: Gantt
+            (function() {
+                const width = 1100, height = 280;
+                const margin = {top: 20, right: 30, bottom: 40, left: 120};
+
+                const svg = d3.select("#slide-gantt").append("svg").attr("width", width).attr("height", height);
+
+                const projectRanges = {};
+                projects.forEach(p => {
+                    const projectData = rawData.filter(d => d.project === p);
+                    if (projectData.length > 0) {
+                        projectRanges[p] = {
+                            start: d3.min(projectData, d => d.dateObj),
+                            end: d3.max(projectData, d => d.dateObj)
+                        };
+                    }
+                });
+
+                const x = d3.scaleTime().domain([startDate, endDate]).range([margin.left, width - margin.right]);
+                const y = d3.scaleBand().domain(projects).range([margin.top, height - margin.bottom]).padding(0.3);
+
+                projects.forEach(project => {
+                    if (projectRanges[project]) {
+                        svg.append("rect")
+                            .attr("x", x(projectRanges[project].start))
+                            .attr("y", y(project))
+                            .attr("width", x(projectRanges[project].end) - x(projectRanges[project].start) + 10)
+                            .attr("height", y.bandwidth())
+                            .attr("fill", colors[project]).attr("opacity", 0.3).attr("rx", 4);
+                    }
+                });
+
+                const maxCommits = d3.max(rawData, d => d.commits);
+                const r = d3.scaleSqrt().domain([0, maxCommits]).range([3, 18]);
+
+                svg.selectAll("circle").data(rawData).join("circle")
+                    .attr("cx", d => x(d.dateObj))
+                    .attr("cy", d => y(d.project) + y.bandwidth() / 2)
+                    .attr("r", d => r(d.commits))
+                    .attr("fill", d => colors[d.project]).attr("opacity", 0.9);
+
+                svg.selectAll(".row-label").data(projects).join("text")
+                    .attr("class", "heatmap-row-label")
+                    .attr("x", margin.left - 10).attr("y", d => y(d) + y.bandwidth() / 2)
+                    .attr("dy", "0.35em").attr("text-anchor", "end").text(d => d);
+
+                svg.append("g").attr("class", "axis").attr("transform", `translate(0,${height - margin.bottom})`)
+                    .call(d3.axisBottom(x).ticks(d3.timeWeek.every(1)).tickFormat(d3.timeFormat("%b %d")));
+            })();
+
+            // Slide 4: Ridge Plot
+            (function() {
+                const width = 1100, height = 350;
+                const margin = {top: 30, right: 30, bottom: 40, left: 120};
+
+                const svg = d3.select("#slide-ridgeplot").append("svg").attr("width", width).attr("height", height);
+
+                const allDates = d3.timeDays(startDate, endDate);
+                const maxCommits = d3.max(rawData, d => d.commits);
+                const x = d3.scaleTime().domain([startDate, endDate]).range([margin.left, width - margin.right]);
+                const rowHeight = (height - margin.top - margin.bottom) / projects.length;
+
+                projects.forEach((project, i) => {
+                    const yBase = margin.top + (i + 1) * rowHeight;
+                    const lookup = {};
+                    rawData.filter(d => d.project === project).forEach(d => lookup[d.date] = d.commits);
+
+                    const areaData = allDates.map(date => ({
+                        date: date,
+                        commits: lookup[d3.timeFormat("%Y-%m-%d")(date)] || 0
+                    }));
+
+                    const yScale = d3.scaleLinear().domain([0, maxCommits]).range([0, rowHeight * 2]);
+                    const area = d3.area()
+                        .x(d => x(d.date))
+                        .y0(yBase)
+                        .y1(d => yBase - yScale(d.commits))
+                        .curve(d3.curveBasis);
+
+                    svg.append("path").datum(areaData)
+                        .attr("fill", colors[project]).attr("opacity", 0.8)
+                        .attr("stroke", colors[project]).attr("stroke-width", 1.5).attr("d", area);
+
+                    svg.append("text")
+                        .attr("x", margin.left - 10).attr("y", yBase - rowHeight * 0.3)
+                        .attr("text-anchor", "end").attr("class", "heatmap-row-label").text(project);
+                });
+
+                svg.append("g").attr("class", "axis").attr("transform", `translate(0,${height - margin.bottom + 10})`)
+                    .call(d3.axisBottom(x).ticks(d3.timeWeek.every(1)).tickFormat(d3.timeFormat("%b %d")));
+            })();
+
+            // Slide 5: Radial
+            (function() {
+                const width = 500, height = 500;
+                const radius = Math.min(width, height) / 2 - 50;
+
+                const svg = d3.select("#slide-radial").append("svg")
+                    .attr("width", width).attr("height", height)
+                    .append("g").attr("transform", `translate(${width/2},${height/2})`);
+
+                const maxCommits = d3.max(rawData, d => d.commits);
+                const angle = d3.scaleTime().domain([startDate, endDate]).range([0, 2 * Math.PI]);
+                const projectRadius = d3.scaleBand().domain(projects).range([radius * 0.3, radius]).padding(0.15);
+                const r = d3.scaleSqrt().domain([0, maxCommits]).range([2, 15]);
+
+                projects.forEach(project => {
+                    svg.append("circle")
+                        .attr("r", projectRadius(project) + projectRadius.bandwidth() / 2)
+                        .attr("fill", "none").attr("stroke", "#30363d").attr("stroke-width", 0.5);
+                });
+
+                rawData.forEach(d => {
+                    const a = angle(d.dateObj) - Math.PI / 2;
+                    const rPos = projectRadius(d.project) + projectRadius.bandwidth() / 2;
+                    svg.append("circle")
+                        .attr("cx", Math.cos(a) * rPos).attr("cy", Math.sin(a) * rPos)
+                        .attr("r", r(d.commits)).attr("fill", colors[d.project]).attr("opacity", 0.85);
+                });
+
+                svg.append("text").attr("text-anchor", "middle").attr("dy", "-0.5em")
+                    .attr("fill", "#f0f6fc").attr("font-size", "14px").attr("font-weight", "bold").text("Oct-Nov 2025");
+                svg.append("text").attr("text-anchor", "middle").attr("dy", "1em")
+                    .attr("fill", "#8b949e").attr("font-size", "11px").text("1,128 commits");
+            })();
+
+            // Slide 6: Sentiment
+            (function() {
+                const sentimentLexicon = {
+                    "complete": 4, "🎉": 5, "milestone": 4, "breakthrough": 5, "works": 3,
+                    "implement": 3, "feature": 3, "enhance": 3, "improve": 3, "add": 2,
+                    "success": 4, "release": 3, "ready": 2, "validated": 3, "production": 2,
+                    "refactor": 1, "clean": 2, "optimize": 2, "update": 1, "merge": 1,
+                    "support": 2, "integration": 1, "comprehensive": 2, "major": 2,
+                    "fix": -1, "bug": -2, "error": -2, "crash": -3, "broken": -3,
+                    "issue": -1, "stuck": -2, "frozen": -2, "fail": -2, "missing": -1,
+                    "critical": -4, "urgent": -3, "severe": -4, "fatal": -5,
+                    "regression": -3, "blocker": -4, "hack": -2, "workaround": -1
+                };
+
+                const commitMessages = [
+                    {date: "2025-10-23", project: "wolfpack", msg: "Implement fish fighting mechanics"},
+                    {date: "2025-10-25", project: "wolfpack", msg: "CRITICAL FIX: Baitfish trapped"},
+                    {date: "2025-10-30", project: "wolfpack", msg: "Fix memory leaks"},
+                    {date: "2025-11-02", project: "wolfpack", msg: "CRITICAL FIX: Add reel mechanical advantage"},
+                    {date: "2025-11-06", project: "wolfpack", msg: "🎉 TypeScript Conversion Complete!"},
+                    {date: "2025-10-22", project: "gellyscope", msg: "Integrate potrace for bitmap tracing"},
+                    {date: "2025-10-23", project: "gellyscope", msg: "Fix critical bug: tab clicks"},
+                    {date: "2025-10-22", project: "gellyscape", msg: "Implement GeoPDF processing"},
+                    {date: "2025-10-31", project: "gellyscape", msg: "Fix pdf-parse broken dependency"},
+                    {date: "2025-11-08", project: "drunk-simulator", msg: "Implement bartender vision cone"},
+                    {date: "2025-11-09", project: "drunk-simulator", msg: "MAJOR PERFORMANCE FIX"},
+                    {date: "2025-11-09", project: "drunk-simulator", msg: "Release v1.1.74 🍹 Mai Tai"},
+                    {date: "2025-11-24", project: "vt-geodata", msg: "MILESTONE: Phase 2 Validated ✅"},
+                    {date: "2025-11-18", project: "svg-grouper", msg: "Fix race condition"},
+                    {date: "2025-11-27", project: "svg-grouper", msg: "Fix concentric fill pattern"}
+                ];
+
+                function calculateSentiment(msg) {
+                    const words = msg.toLowerCase().split(/[\s\-_:,.()\[\]]+/);
+                    let score = 0;
+                    words.forEach(word => { if (sentimentLexicon[word]) score += sentimentLexicon[word]; });
+                    if (msg.includes("🎉") || msg.includes("✅") || msg.includes("🍹")) score += 3;
+                    return score;
+                }
+
+                const sentimentData = commitMessages.map(d => ({
+                    ...d, dateObj: parseDate(d.date), sentiment: calculateSentiment(d.msg)
+                }));
+
+                const width = 1100, height = 350;
+                const margin = {top: 30, right: 30, bottom: 50, left: 60};
+
+                const svg = d3.select("#slide-sentiment").append("svg").attr("width", width).attr("height", height);
+
+                const x = d3.scaleTime().domain([startDate, endDate]).range([margin.left, width - margin.right]);
+                const maxAbs = d3.max(sentimentData, d => Math.abs(d.sentiment));
+                const y = d3.scaleLinear().domain([-maxAbs - 1, maxAbs + 1]).range([height - margin.bottom, margin.top]);
+
+                svg.append("line").attr("x1", margin.left).attr("x2", width - margin.right)
+                    .attr("y1", y(0)).attr("y2", y(0)).attr("stroke", "#30363d").attr("stroke-width", 2);
+
+                svg.append("rect").attr("x", margin.left).attr("y", margin.top)
+                    .attr("width", width - margin.left - margin.right).attr("height", y(0) - margin.top)
+                    .attr("fill", "#22c55e").attr("opacity", 0.05);
+
+                svg.append("rect").attr("x", margin.left).attr("y", y(0))
+                    .attr("width", width - margin.left - margin.right).attr("height", height - margin.bottom - y(0))
+                    .attr("fill", "#ef4444").attr("opacity", 0.05);
+
+                sentimentData.forEach(d => {
+                    const cx = x(d.dateObj) + (Math.random() - 0.5) * 10;
+                    const cy = y(d.sentiment);
+                    const color = d.sentiment >= 0 ? "#22c55e" : "#ef4444";
+
+                    svg.append("line").attr("x1", cx).attr("x2", cx).attr("y1", y(0)).attr("y2", cy)
+                        .attr("stroke", color).attr("stroke-width", 1.5).attr("opacity", 0.5);
+
+                    svg.append("circle").attr("cx", cx).attr("cy", cy).attr("r", 6)
+                        .attr("fill", colors[d.project]).attr("stroke", color).attr("stroke-width", 2);
+                });
+
+                svg.append("g").attr("class", "axis").attr("transform", `translate(0,${height - margin.bottom})`)
+                    .call(d3.axisBottom(x).ticks(d3.timeWeek.every(1)).tickFormat(d3.timeFormat("%b %d")));
+                svg.append("g").attr("class", "axis").attr("transform", `translate(${margin.left},0)`)
+                    .call(d3.axisLeft(y).ticks(5));
+
+                const legend = d3.select("#slide-sentiment-legend");
+                projects.forEach(p => {
+                    legend.append("div").attr("class", "legend-item")
+                        .html(`<div class="legend-color" style="background:${colors[p]}"></div>${p}`);
+                });
+            })();
+
+            // Slide 7: Sentiment Bars
+            (function() {
+                const projectStats = {
+                    "wolfpack": {positive: 185, negative: 142, fixes: 89, features: 67},
+                    "gellyscope": {positive: 52, negative: 31, fixes: 22, features: 28},
+                    "gellyscape": {positive: 38, negative: 24, fixes: 18, features: 19},
+                    "drunk-simulator": {positive: 48, negative: 22, fixes: 14, features: 31},
+                    "vt-geodata": {positive: 55, negative: 18, fixes: 11, features: 42},
+                    "svg-grouper": {positive: 22, negative: 9, fixes: 8, features: 14}
+                };
+
+                const width = 1100, height = 300;
+                const margin = {top: 30, right: 150, bottom: 40, left: 120};
+
+                const svg = d3.select("#slide-sentiment-bars").append("svg").attr("width", width).attr("height", height);
+
+                const y = d3.scaleBand().domain(projects).range([margin.top, height - margin.bottom]).padding(0.3);
+                const maxVal = d3.max(projects, p => Math.max(projectStats[p].positive, projectStats[p].negative));
+                const x = d3.scaleLinear().domain([0, maxVal]).range([0, (width - margin.left - margin.right) / 2 - 20]);
+                const centerX = margin.left + (width - margin.left - margin.right) / 2;
+
+                projects.forEach(project => {
+                    const stats = projectStats[project];
+                    const yPos = y(project);
+
+                    svg.append("rect").attr("x", centerX + 5).attr("y", yPos)
+                        .attr("width", x(stats.positive)).attr("height", y.bandwidth())
+                        .attr("fill", "#22c55e").attr("rx", 3);
+
+                    svg.append("rect").attr("x", centerX - 5 - x(stats.negative)).attr("y", yPos)
+                        .attr("width", x(stats.negative)).attr("height", y.bandwidth())
+                        .attr("fill", "#ef4444").attr("rx", 3);
+
+                    svg.append("rect").attr("x", margin.left - 15).attr("y", yPos + y.bandwidth() / 2 - 5)
+                        .attr("width", 10).attr("height", 10).attr("fill", colors[project]).attr("rx", 2);
+
+                    svg.append("text").attr("x", centerX + x(stats.positive) + 10)
+                        .attr("y", yPos + y.bandwidth() / 2).attr("dy", "0.35em")
+                        .attr("fill", "#22c55e").attr("font-size", "11px")
+                        .text(`${stats.positive} (+${stats.features} features)`);
+
+                    svg.append("text").attr("x", centerX - x(stats.negative) - 10)
+                        .attr("y", yPos + y.bandwidth() / 2).attr("dy", "0.35em").attr("text-anchor", "end")
+                        .attr("fill", "#ef4444").attr("font-size", "11px")
+                        .text(`${stats.negative} (${stats.fixes} fixes)`);
+                });
+
+                svg.selectAll(".row-label").data(projects).join("text")
+                    .attr("class", "heatmap-row-label")
+                    .attr("x", margin.left - 20).attr("y", d => y(d) + y.bandwidth() / 2)
+                    .attr("dy", "0.35em").attr("text-anchor", "end").text(d => d);
+
+                svg.append("line").attr("x1", centerX).attr("x2", centerX)
+                    .attr("y1", margin.top - 10).attr("y2", height - margin.bottom)
+                    .attr("stroke", "#30363d").attr("stroke-width", 2);
+
+                svg.append("text").attr("x", centerX - 50).attr("y", margin.top - 15)
+                    .attr("fill", "#ef4444").attr("font-size", "12px").attr("text-anchor", "end")
+                    .text("← Bug Fixes / Issues");
+
+                svg.append("text").attr("x", centerX + 50).attr("y", margin.top - 15)
+                    .attr("fill", "#22c55e").attr("font-size", "12px")
+                    .text("Features / Improvements →");
+            })();
+
+            // Slide 8: Interactive Sentiment Explorer
+            (function() {
+                const sentimentLexicon = {
+                    "complete": 4, "milestone": 4, "breakthrough": 5, "works": 3,
+                    "implement": 3, "feature": 3, "enhance": 3, "improve": 3, "add": 2,
+                    "success": 4, "release": 3, "ready": 2, "validated": 3, "production": 2,
+                    "refactor": 1, "clean": 2, "optimize": 2, "update": 1, "merge": 1,
+                    "support": 2, "integration": 1, "comprehensive": 2, "major": 2,
+                    "fix": -1, "bug": -2, "error": -2, "crash": -3, "broken": -3,
+                    "issue": -1, "stuck": -2, "frozen": -2, "fail": -2, "missing": -1,
+                    "critical": -4, "urgent": -3, "severe": -4, "fatal": -5,
+                    "regression": -3, "blocker": -4, "hack": -2, "workaround": -1,
+                    "typescript": 2, "foundation": 2, "infrastructure": 2, "enhanced": 2
+                };
+
+                function calcSentiment(msg) {
+                    const words = msg.toLowerCase().split(/[\s\-_:,.()\[\]]+/);
+                    let score = 0;
+                    words.forEach(word => { if (sentimentLexicon[word]) score += sentimentLexicon[word]; });
+                    if (msg.includes("🎉") || msg.includes("✅") || msg.includes("🍹") || msg.includes("🏆")) score += 3;
+                    return score;
+                }
+
+                // Sample of commits and PRs
+                const interactiveData = [
+                    {date: "2025-10-23", project: "wolfpack", type: "commit", msg: "Implement fish fighting mechanics"},
+                    {date: "2025-10-24", project: "wolfpack", type: "pr", msg: "PR #1: Integrate baitfish hunting system"},
+                    {date: "2025-10-25", project: "wolfpack", type: "commit", msg: "CRITICAL FIX: Baitfish trapped"},
+                    {date: "2025-10-30", project: "wolfpack", type: "commit", msg: "Fix memory leaks"},
+                    {date: "2025-10-30", project: "wolfpack", type: "pr", msg: "PR #37: Resolve API concurrency - CRITICAL"},
+                    {date: "2025-11-02", project: "wolfpack", type: "commit", msg: "CRITICAL FIX: Add reel mechanical advantage"},
+                    {date: "2025-11-06", project: "wolfpack", type: "commit", msg: "🎉 TypeScript Conversion Complete!"},
+                    {date: "2025-11-06", project: "wolfpack", type: "pr", msg: "PR #77: TypeScript Conversion Complete"},
+                    {date: "2025-10-22", project: "gellyscope", type: "commit", msg: "Integrate potrace for bitmap tracing"},
+                    {date: "2025-10-22", project: "gellyscope", type: "pr", msg: "PR #3: Trace Tab / Facetrace"},
+                    {date: "2025-10-23", project: "gellyscope", type: "commit", msg: "Fix critical bug: tab clicks"},
+                    {date: "2025-10-24", project: "gellyscope", type: "pr", msg: "PR #11: Enhance App UI Design"},
+                    {date: "2025-10-22", project: "gellyscape", type: "commit", msg: "Implement GeoPDF processing"},
+                    {date: "2025-10-22", project: "gellyscape", type: "pr", msg: "PR #1: First successful full map parse"},
+                    {date: "2025-10-31", project: "gellyscape", type: "commit", msg: "Fix pdf-parse broken dependency"},
+                    {date: "2025-11-16", project: "gellyscape", type: "pr", msg: "PR #4: Enhanced layer management"},
+                    {date: "2025-11-08", project: "drunk-simulator", type: "commit", msg: "Implement bartender vision cone"},
+                    {date: "2025-11-09", project: "drunk-simulator", type: "commit", msg: "MAJOR PERFORMANCE FIX"},
+                    {date: "2025-11-09", project: "drunk-simulator", type: "commit", msg: "Release v1.1.74 🍹 Mai Tai"},
+                    {date: "2025-11-09", project: "drunk-simulator", type: "pr", msg: "PR #1: Shiraz 2.0 - Level System"},
+                    {date: "2025-11-06", project: "vt-geodata", type: "commit", msg: "Initial commit: Vermont geodata"},
+                    {date: "2025-11-24", project: "vt-geodata", type: "commit", msg: "MILESTONE: Phase 2 Validated ✅"},
+                    {date: "2025-11-28", project: "vt-geodata", type: "commit", msg: "Add progressive road viewer"},
+                    {date: "2025-11-18", project: "svg-grouper", type: "commit", msg: "Implement core Electron app"},
+                    {date: "2025-11-27", project: "svg-grouper", type: "commit", msg: "Fix concentric fill pattern"},
+                    {date: "2025-11-28", project: "svg-grouper", type: "commit", msg: "Prepare for v1.0 release"}
+                ];
+
+                interactiveData.forEach(d => {
+                    d.dateObj = parseDate(d.date);
+                    d.sentiment = calcSentiment(d.msg);
+                });
+
+                let slideActiveProjects = new Set(projects);
+                let slideShowCommits = true;
+                let slideShowPRs = true;
+
+                // Create filter buttons
+                const controls = d3.select("#slide-interactive-controls");
+                projects.forEach(p => {
+                    controls.append("button")
+                        .style("padding", "4px 10px")
+                        .style("border", `2px solid ${colors[p]}`)
+                        .style("border-radius", "4px")
+                        .style("background", colors[p])
+                        .style("color", "#0d1117")
+                        .style("cursor", "pointer")
+                        .style("font-size", "11px")
+                        .style("font-weight", "500")
+                        .attr("data-project", p)
+                        .text(p)
+                        .on("click", function() {
+                            if (slideActiveProjects.has(p)) {
+                                slideActiveProjects.delete(p);
+                                d3.select(this).style("background", "transparent").style("color", "#c9d1d9");
+                            } else {
+                                slideActiveProjects.add(p);
+                                d3.select(this).style("background", colors[p]).style("color", "#0d1117");
+                            }
+                            updateSlideInteractiveChart();
+                        });
+                });
+
+                const width = 1100, height = 320;
+                const margin = {top: 30, right: 30, bottom: 40, left: 50};
+
+                const svg = d3.select("#slide-interactive-chart").append("svg").attr("width", width).attr("height", height);
+
+                const x = d3.scaleTime().domain([startDate, endDate]).range([margin.left, width - margin.right]);
+                const maxAbs = d3.max(interactiveData, d => Math.abs(d.sentiment)) || 5;
+                const y = d3.scaleLinear().domain([-maxAbs - 1, maxAbs + 1]).range([height - margin.bottom, margin.top]);
+
+                // Background regions
+                svg.append("rect").attr("x", margin.left).attr("y", margin.top)
+                    .attr("width", width - margin.left - margin.right).attr("height", y(0) - margin.top)
+                    .attr("fill", "#22c55e").attr("opacity", 0.03);
+                svg.append("rect").attr("x", margin.left).attr("y", y(0))
+                    .attr("width", width - margin.left - margin.right).attr("height", height - margin.bottom - y(0))
+                    .attr("fill", "#ef4444").attr("opacity", 0.03);
+
+                svg.append("line").attr("x1", margin.left).attr("x2", width - margin.right)
+                    .attr("y1", y(0)).attr("y2", y(0)).attr("stroke", "#30363d").attr("stroke-width", 2);
+
+                svg.append("g").attr("class", "axis").attr("transform", `translate(0,${height - margin.bottom})`)
+                    .call(d3.axisBottom(x).ticks(d3.timeWeek.every(1)).tickFormat(d3.timeFormat("%b %d")));
+                svg.append("g").attr("class", "axis").attr("transform", `translate(${margin.left},0)`)
+                    .call(d3.axisLeft(y).ticks(5));
+
+                const dataLayer = svg.append("g").attr("class", "data-layer");
+
+                function hashCode(str) {
+                    let hash = 0;
+                    for (let i = 0; i < str.length; i++) {
+                        hash = ((hash << 5) - hash) + str.charCodeAt(i);
+                        hash |= 0;
+                    }
+                    return Math.abs(hash);
+                }
+
+                function updateSlideInteractiveChart() {
+                    const filtered = interactiveData.filter(d => {
+                        if (!slideActiveProjects.has(d.project)) return false;
+                        if (d.type === "commit" && !slideShowCommits) return false;
+                        if (d.type === "pr" && !slideShowPRs) return false;
+                        return true;
+                    });
+
+                    dataLayer.selectAll("*").remove();
+
+                    filtered.forEach(d => {
+                        const cx = x(d.dateObj) + (hashCode(d.msg) % 20 - 10);
+                        const cy = y(d.sentiment);
+                        const sentColor = d.sentiment >= 0 ? "#22c55e" : "#ef4444";
+
+                        dataLayer.append("line")
+                            .attr("x1", cx).attr("x2", cx).attr("y1", y(0)).attr("y2", cy)
+                            .attr("stroke", sentColor).attr("stroke-width", 1.5).attr("opacity", 0.4);
+
+                        if (d.type === "commit") {
+                            dataLayer.append("circle")
+                                .attr("cx", cx).attr("cy", cy).attr("r", 6)
+                                .attr("fill", colors[d.project]).attr("stroke", sentColor).attr("stroke-width", 2);
+                        } else {
+                            dataLayer.append("polygon")
+                                .attr("points", `${cx},${cy-8} ${cx+8},${cy} ${cx},${cy+8} ${cx-8},${cy}`)
+                                .attr("fill", colors[d.project]).attr("stroke", sentColor).attr("stroke-width", 2);
+                        }
+                    });
+                }
+
+                updateSlideInteractiveChart();
+            })();
+
+            // Replay confetti button handler
+            document.getElementById('replay-confetti').addEventListener('click', launchCelebration);
+        }
     </script>
 </body>
 </html>
