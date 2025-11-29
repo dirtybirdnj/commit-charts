@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Commit & PR Sentiment Explorer</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0d1117;
+            color: #c9d1d9;
+            padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        h1 { color: #58a6ff; border-bottom: 1px solid #30363d; padding-bottom: 10px; }
+        h2 { color: #8b949e; margin-top: 30px; margin-bottom: 10px; }
+
+        .controls {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+        }
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .control-label {
+            font-size: 12px;
+            color: #8b949e;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .project-filters {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .project-btn {
+            padding: 6px 12px;
+            border: 2px solid;
+            border-radius: 4px;
+            background: transparent;
+            color: #c9d1d9;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .project-btn:hover {
+            transform: translateY(-1px);
+        }
+        .project-btn.active {
+            color: #0d1117;
+        }
+        .project-btn.inactive {
+            opacity: 0.3;
+        }
+
+        .type-filters {
+            display: flex;
+            gap: 6px;
+        }
+        .type-btn {
+            padding: 5px 10px;
+            border: 1px solid #30363d;
+            border-radius: 4px;
+            background: #21262d;
+            color: #c9d1d9;
+            cursor: pointer;
+            font-size: 11px;
+            transition: all 0.2s;
+        }
+        .type-btn.active {
+            background: #388bfd;
+            border-color: #388bfd;
+        }
+        .type-btn:hover {
+            border-color: #8b949e;
+        }
+
+        .chart-container {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .stats-bar {
+            display: flex;
+            gap: 30px;
+            padding: 10px 0;
+            border-bottom: 1px solid #30363d;
+            margin-bottom: 15px;
+        }
+        .stat {
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #f0f6fc;
+        }
+        .stat-value.positive { color: #22c55e; }
+        .stat-value.negative { color: #ef4444; }
+        .stat-label {
+            font-size: 11px;
+            color: #8b949e;
+            text-transform: uppercase;
+        }
+
+        .tooltip {
+            position: absolute;
+            background: #1f2937;
+            border: 1px solid #374151;
+            border-radius: 6px;
+            padding: 10px 14px;
+            font-size: 12px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+            max-width: 400px;
+            z-index: 1000;
+        }
+        .tooltip .type-badge {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 10px;
+            font-weight: 600;
+            margin-right: 6px;
+        }
+        .tooltip .type-badge.commit { background: #388bfd; }
+        .tooltip .type-badge.pr { background: #a855f7; }
+        .tooltip .msg {
+            margin-top: 6px;
+            color: #8b949e;
+            font-style: italic;
+        }
+        .tooltip .score {
+            margin-top: 4px;
+        }
+        .tooltip .score.positive { color: #22c55e; }
+        .tooltip .score.negative { color: #ef4444; }
+
+        .axis text { fill: #8b949e; font-size: 11px; }
+        .axis line, .axis path { stroke: #30363d; }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #30363d;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+        }
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+        }
+        .legend-shape {
+            width: 14px;
+            height: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .detail-panel {
+            background: #21262d;
+            border-radius: 6px;
+            padding: 15px;
+            margin-top: 20px;
+            display: none;
+        }
+        .detail-panel.visible {
+            display: block;
+        }
+        .detail-panel h3 {
+            margin: 0 0 10px 0;
+            color: #58a6ff;
+            font-size: 14px;
+        }
+        .detail-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .detail-item {
+            padding: 8px;
+            border-bottom: 1px solid #30363d;
+            font-size: 12px;
+        }
+        .detail-item:last-child {
+            border-bottom: none;
+        }
+        .detail-item .date {
+            color: #8b949e;
+            font-size: 11px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Interactive Commit & PR Sentiment Explorer</h1>
+    <p>Click project buttons to filter. Circles = commits, Diamonds = PRs. Hover for details.</p>
+
+    <div class="controls">
+        <div class="control-group">
+            <span class="control-label">Projects:</span>
+            <div class="project-filters" id="project-filters"></div>
+        </div>
+        <div class="control-group">
+            <span class="control-label">Show:</span>
+            <div class="type-filters">
+                <button class="type-btn active" data-type="commits">Commits</button>
+                <button class="type-btn active" data-type="prs">PRs</button>
+            </div>
+        </div>
+        <div class="control-group">
+            <button class="type-btn" id="select-all">Select All</button>
+            <button class="type-btn" id="select-none">Clear All</button>
+        </div>
+    </div>
+
+    <div class="chart-container">
+        <div class="stats-bar" id="stats-bar">
+            <div class="stat">
+                <div class="stat-value" id="total-items">0</div>
+                <div class="stat-label">Total Items</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value" id="commits-count">0</div>
+                <div class="stat-label">Commits</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value" id="prs-count">0</div>
+                <div class="stat-label">PRs</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value positive" id="positive-count">0</div>
+                <div class="stat-label">Positive</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value negative" id="negative-count">0</div>
+                <div class="stat-label">Negative</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value" id="avg-sentiment">0</div>
+                <div class="stat-label">Avg Sentiment</div>
+            </div>
+        </div>
+        <div id="main-chart"></div>
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-shape"><svg width="12" height="12"><circle cx="6" cy="6" r="5" fill="#388bfd"/></svg></div>
+                <span>Commit</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-shape"><svg width="14" height="14"><polygon points="7,1 13,7 7,13 1,7" fill="#a855f7"/></svg></div>
+                <span>Pull Request</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #22c55e"></div>
+                <span>Positive</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #ef4444"></div>
+                <span>Negative</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="detail-panel" id="detail-panel">
+        <h3 id="detail-title">Selected Items</h3>
+        <div class="detail-list" id="detail-list"></div>
+    </div>
+
+    <div class="tooltip" id="tooltip"></div>
+
+    <script>
+        // ============ DATA ============
+        const projects = ["wolfpack", "gellyscope", "gellyscape", "drunk-simulator", "vt-geodata", "svg-grouper"];
+        const colors = {
+            "wolfpack": "#f97316",
+            "gellyscope": "#22c55e",
+            "gellyscape": "#3b82f6",
+            "drunk-simulator": "#ec4899",
+            "vt-geodata": "#a855f7",
+            "svg-grouper": "#eab308"
+        };
+
+        // Developer-specific sentiment lexicon
+        const sentimentLexicon = {
+            "complete": 4, "milestone": 4, "breakthrough": 5, "works": 3,
+            "implement": 3, "feature": 3, "enhance": 3, "improve": 3, "add": 2,
+            "success": 4, "release": 3, "ready": 2, "validated": 3, "production": 2,
+            "refactor": 1, "clean": 2, "optimize": 2, "update": 1, "merge": 1,
+            "support": 2, "integration": 1, "comprehensive": 2, "major": 2,
+            "fix": -1, "bug": -2, "error": -2, "crash": -3, "broken": -3,
+            "issue": -1, "stuck": -2, "frozen": -2, "fail": -2, "missing": -1,
+            "critical": -4, "urgent": -3, "severe": -4, "fatal": -5,
+            "regression": -3, "blocker": -4, "hack": -2, "workaround": -1,
+            "typescript": 2, "foundation": 2, "infrastructure": 2, "enhanced": 2
+        };
+
+        function calculateSentiment(msg) {
+            const words = msg.toLowerCase().split(/[\s\-_:,.()\[\]]+/);
+            let score = 0;
+            words.forEach(word => {
+                if (sentimentLexicon[word]) score += sentimentLexicon[word];
+            });
+            if (msg.includes("🎉") || msg.includes("✅") || msg.includes("🍹") || msg.includes("🏆")) score += 3;
+            return score;
+        }
+
+        // Combined commit and PR data
+        const allData = [
+            // ========== WOLFPACK COMMITS ==========
+            {date: "2025-10-23", project: "wolfpack", type: "commit", msg: "claude scaffolding lake trout game"},
+            {date: "2025-10-23", project: "wolfpack", type: "commit", msg: "Implement fish fighting mechanics with line tension system"},
+            {date: "2025-10-23", project: "wolfpack", type: "commit", msg: "Fix canvas growth bug - stop creating objects every frame"},
+            {date: "2025-10-23", project: "wolfpack", type: "commit", msg: "Add comprehensive gamepad support for PS4 and 8BitDo controllers"},
+            {date: "2025-10-24", project: "wolfpack", type: "commit", msg: "Fix game freeze in kayak/boat mode and text overlap"},
+            {date: "2025-10-24", project: "wolfpack", type: "commit", msg: "Implement Northern Pike ambush predator AI behaviors"},
+            {date: "2025-10-24", project: "wolfpack", type: "commit", msg: "Add lake bottom collision detection for all entities"},
+            {date: "2025-10-24", project: "wolfpack", type: "commit", msg: "Implement multi-species baitfish system with real-world data"},
+            {date: "2025-10-25", project: "wolfpack", type: "commit", msg: "CRITICAL FIX: Baitfish trapped in horizontal line in nature mode"},
+            {date: "2025-10-25", project: "wolfpack", type: "commit", msg: "Fix fish depth calculation using correct coordinate system"},
+            {date: "2025-10-25", project: "wolfpack", type: "commit", msg: "Implement three flocking rules for baitfish movement"},
+            {date: "2025-10-29", project: "wolfpack", type: "commit", msg: "Scale haptic feedback intensity by line sensitivity"},
+            {date: "2025-10-29", project: "wolfpack", type: "commit", msg: "Add haptic feedback for fish bumping the lure"},
+            {date: "2025-10-30", project: "wolfpack", type: "commit", msg: "Fix memory leaks causing max connections exceeded error"},
+            {date: "2025-10-30", project: "wolfpack", type: "commit", msg: "Fix invisible wall bug trapping baitfish at surface"},
+            {date: "2025-10-30", project: "wolfpack", type: "commit", msg: "Add ESLint static analysis with auto-fixes"},
+            {date: "2025-10-30", project: "wolfpack", type: "commit", msg: "Add Jest unit testing framework"},
+            {date: "2025-10-31", project: "wolfpack", type: "commit", msg: "Implement realistic drag system and hookset mechanics"},
+            {date: "2025-11-01", project: "wolfpack", type: "commit", msg: "Fix invisible wall bug - predator fish stuck at edges"},
+            {date: "2025-11-01", project: "wolfpack", type: "commit", msg: "Add unified Fish class with Boids schooling behavior"},
+            {date: "2025-11-02", project: "wolfpack", type: "commit", msg: "CRITICAL FIX: Add reel mechanical advantage when actively reeling"},
+            {date: "2025-11-02", project: "wolfpack", type: "commit", msg: "Improve predator bait detection and add visual detection cones"},
+            {date: "2025-11-02", project: "wolfpack", type: "commit", msg: "Add line strain meter and ecosystem ebb/flow dynamics"},
+            {date: "2025-11-03", project: "wolfpack", type: "commit", msg: "Fix coordinate system bugs and improve ecosystem stability"},
+            {date: "2025-11-04", project: "wolfpack", type: "commit", msg: "Refactor rendering to Phaser sprites and implement major optimizations"},
+            {date: "2025-11-05", project: "wolfpack", type: "commit", msg: "Create GameHUD scene with in-game rendered UI meters"},
+            {date: "2025-11-05", project: "wolfpack", type: "commit", msg: "Refactor: Implement unified organism architecture"},
+            {date: "2025-11-06", project: "wolfpack", type: "commit", msg: "🎉 TypeScript Conversion Complete! Phase 6 & Final Commit"},
+            {date: "2025-11-06", project: "wolfpack", type: "commit", msg: "Fix: Critical bug fixes for organism spawning and movement"},
+            {date: "2025-11-06", project: "wolfpack", type: "commit", msg: "Feature: Add wolf pack schooling profiles for predators"},
+            {date: "2025-11-07", project: "wolfpack", type: "commit", msg: "🏆 Feat: Lateral line detection, predator vision, and ecosystem balance"},
+            {date: "2025-11-12", project: "wolfpack", type: "commit", msg: "Implement 3-tier game mode system with species distribution"},
+
+            // ========== WOLFPACK PRs ==========
+            {date: "2025-10-24", project: "wolfpack", type: "pr", msg: "PR #1: Integrate baitfish hunting system with main game features"},
+            {date: "2025-10-24", project: "wolfpack", type: "pr", msg: "PR #3: Controllers work in Chrome and Firefox"},
+            {date: "2025-10-24", project: "wolfpack", type: "pr", msg: "PR #7: Enhance Fish Hooking Gameplay Mechanics"},
+            {date: "2025-10-24", project: "wolfpack", type: "pr", msg: "PR #11: Implement New Kayak / Boat Game Modes"},
+            {date: "2025-10-25", project: "wolfpack", type: "pr", msg: "PR #12: Add More Fish Species to Game - Pike, Smallmouth Bass, Perch"},
+            {date: "2025-10-25", project: "wolfpack", type: "pr", msg: "PR #17: Implement Baitfish Flocking Behavior Rules (Boids)"},
+            {date: "2025-10-29", project: "wolfpack", type: "pr", msg: "PR #25: Add haptic feedback for fish bumps"},
+            {date: "2025-10-29", project: "wolfpack", type: "pr", msg: "PR #26: Fix build process, semantic versioning, refactor of fish class system"},
+            {date: "2025-10-30", project: "wolfpack", type: "pr", msg: "PR #28: Package app with Electron for Steam and itch.io"},
+            {date: "2025-10-30", project: "wolfpack", type: "pr", msg: "PR #37: Resolve API concurrency limit issues - CRITICAL BUG"},
+            {date: "2025-10-30", project: "wolfpack", type: "pr", msg: "PR #39: Increase test coverage"},
+            {date: "2025-10-31", project: "wolfpack", type: "pr", msg: "PR #49: Implement realistic drag system and hookset mechanics"},
+            {date: "2025-11-02", project: "wolfpack", type: "pr", msg: "PR #54: Baitfish schooling to Phaser Groups - Foundation"},
+            {date: "2025-11-02", project: "wolfpack", type: "pr", msg: "PR #59: Make drag system realistic - slipping is primary mechanic"},
+            {date: "2025-11-05", project: "wolfpack", type: "pr", msg: "PR #61: Fix HUD container structure, add mouse controls, and fix spawning bugs"},
+            {date: "2025-11-06", project: "wolfpack", type: "pr", msg: "PR #76: Fix: Critical organism spawning and movement bugs"},
+            {date: "2025-11-06", project: "wolfpack", type: "pr", msg: "PR #77: TypeScript Conversion Complete - 28/28 Files Converted"},
+
+            // ========== GELLYSCOPE COMMITS ==========
+            {date: "2025-10-20", project: "gellyscope", type: "commit", msg: "Vibe coded 1.0 Gellyscope"},
+            {date: "2025-10-21", project: "gellyscope", type: "commit", msg: "work on viewport scaling"},
+            {date: "2025-10-22", project: "gellyscope", type: "commit", msg: "Fix app freeze and refactor CSS to external file"},
+            {date: "2025-10-22", project: "gellyscope", type: "commit", msg: "Integrate potrace for bitmap to vector tracing"},
+            {date: "2025-10-22", project: "gellyscope", type: "commit", msg: "Add complete processing pipeline with image filters and Potrace controls"},
+            {date: "2025-10-22", project: "gellyscope", type: "commit", msg: "Implement G-code generation using vpype and vpype-gcode"},
+            {date: "2025-10-23", project: "gellyscope", type: "commit", msg: "Fix critical bug: tab clicks not loading content"},
+            {date: "2025-10-23", project: "gellyscope", type: "commit", msg: "Refactor UI into modular component-based architecture"},
+            {date: "2025-10-23", project: "gellyscope", type: "commit", msg: "Add comprehensive testing infrastructure with Jest"},
+            {date: "2025-10-23", project: "gellyscope", type: "commit", msg: "Add workspace rulers and move settings to Hardware tab"},
+            {date: "2025-10-24", project: "gellyscope", type: "commit", msg: "Implement Photoshop-style UI redesign with dark theme"},
+            {date: "2025-10-24", project: "gellyscope", type: "commit", msg: "Fix G-code generation and vpype configuration"},
+            {date: "2025-10-24", project: "gellyscope", type: "commit", msg: "Add work area positioning system with 9-position grid selector"},
+            {date: "2025-11-16", project: "gellyscope", type: "commit", msg: "Add UI enhancements: page sizes, alignment controls, and download features"},
+
+            // ========== GELLYSCOPE PRs ==========
+            {date: "2025-10-22", project: "gellyscope", type: "pr", msg: "PR #1: Fix electron startup errors"},
+            {date: "2025-10-22", project: "gellyscope", type: "pr", msg: "PR #3: Trace Tab / Facetrace Functionality (JIMP + Potrace)"},
+            {date: "2025-10-22", project: "gellyscope", type: "pr", msg: "PR #4: Eject Tab (gcode export)"},
+            {date: "2025-10-23", project: "gellyscope", type: "pr", msg: "PR #5: Add render tab to visualize gcode"},
+            {date: "2025-10-23", project: "gellyscope", type: "pr", msg: "PR #7: Add home screen with workspace file overview"},
+            {date: "2025-10-23", project: "gellyscope", type: "pr", msg: "PR #9: Refactor UI components for better token performance"},
+            {date: "2025-10-24", project: "gellyscope", type: "pr", msg: "PR #10: Add scaling to output, more work on gcode preview"},
+            {date: "2025-10-24", project: "gellyscope", type: "pr", msg: "PR #11: Enhance App User Interface Design"},
+            {date: "2025-11-16", project: "gellyscope", type: "pr", msg: "PR #13: Add UI enhancements: page sizes, alignment controls"},
+
+            // ========== GELLYSCAPE COMMITS ==========
+            {date: "2025-10-22", project: "gellyscape", type: "commit", msg: "Implement GeoPDF processing with layer extraction and export"},
+            {date: "2025-10-22", project: "gellyscape", type: "commit", msg: "Implement PDF content stream parser for direct vector extraction"},
+            {date: "2025-10-22", project: "gellyscape", type: "commit", msg: "Fix horizontal compression by preserving PDF aspect ratio"},
+            {date: "2025-10-23", project: "gellyscape", type: "commit", msg: "Fix ToUnicode CMap decompression and hex string parsing"},
+            {date: "2025-10-23", project: "gellyscape", type: "commit", msg: "Organize POI markers into dedicated layer and fix text colors"},
+            {date: "2025-10-31", project: "gellyscape", type: "commit", msg: "Fix pdf-parse broken dependency - downgrade to v1.1.1"},
+            {date: "2025-10-31", project: "gellyscape", type: "commit", msg: "Add layer controls, map preview, and SVG export functionality"},
+            {date: "2025-10-31", project: "gellyscape", type: "commit", msg: "Add tabbed UI with independent layer control sections"},
+            {date: "2025-11-14", project: "gellyscape", type: "commit", msg: "Implement smart layer categorization: Separate plottable vector data"},
+            {date: "2025-11-14", project: "gellyscape", type: "commit", msg: "Add descriptive layer naming based on color patterns"},
+            {date: "2025-11-16", project: "gellyscape", type: "commit", msg: "Add interactive crop UI and vpype integration"},
+            {date: "2025-11-23", project: "gellyscape", type: "commit", msg: "Add USGS format detection and 2025 Topobuilder support"},
+            {date: "2025-11-25", project: "gellyscape", type: "commit", msg: "Fix missing geometry: include paths without OCG layer assignment"},
+            {date: "2025-11-26", project: "gellyscape", type: "commit", msg: "Fix CTM matrix multiplication order for 100K map scaling"},
+            {date: "2025-11-28", project: "gellyscape", type: "commit", msg: "Add Text tab, loading gear animation, and color swatch interactivity"},
+
+            // ========== GELLYSCAPE PRs ==========
+            {date: "2025-10-22", project: "gellyscape", type: "pr", msg: "PR #1: First successful full map parse"},
+            {date: "2025-10-23", project: "gellyscape", type: "pr", msg: "PR #2: Parsing map to a reasonable prototype"},
+            {date: "2025-10-31", project: "gellyscape", type: "pr", msg: "PR #3: Add interactive layer controls and SVG export functionality"},
+            {date: "2025-11-16", project: "gellyscape", type: "pr", msg: "PR #4: Enhanced layer management with smart categorization"},
+            {date: "2025-11-27", project: "gellyscape", type: "pr", msg: "PR #5: Add interactive crop UI and vpype integration"},
+
+            // ========== DRUNK-SIMULATOR COMMITS ==========
+            {date: "2025-11-08", project: "drunk-simulator", type: "commit", msg: "Initial commit: Bar simulator prototype with inverted layout"},
+            {date: "2025-11-08", project: "drunk-simulator", type: "commit", msg: "Implement bartender vision cone system with visual feedback"},
+            {date: "2025-11-08", project: "drunk-simulator", type: "commit", msg: "Fix bartender stalling and patron stacking issues"},
+            {date: "2025-11-08", project: "drunk-simulator", type: "commit", msg: "Add confetti celebration when clicking start button"},
+            {date: "2025-11-08", project: "drunk-simulator", type: "commit", msg: "Add smoking behavior and patio mechanics for patrons"},
+            {date: "2025-11-08", project: "drunk-simulator", type: "commit", msg: "Add drunk vision effect to title screen"},
+            {date: "2025-11-08", project: "drunk-simulator", type: "commit", msg: "Add creator credits to title screen"},
+            {date: "2025-11-09", project: "drunk-simulator", type: "commit", msg: "MAJOR PERFORMANCE FIX: Cell caching + RAF throttling"},
+            {date: "2025-11-09", project: "drunk-simulator", type: "commit", msg: "Fix critical performance issue by pausing Phaser game loop"},
+            {date: "2025-11-09", project: "drunk-simulator", type: "commit", msg: "Implement free game with 3 levels and complete progression system"},
+            {date: "2025-11-09", project: "drunk-simulator", type: "commit", msg: "Release v1.1.74 🍹 Mai Tai"},
+            {date: "2025-11-09", project: "drunk-simulator", type: "commit", msg: "Add multi-platform deployment support (Electron + Capacitor)"},
+            {date: "2025-11-09", project: "drunk-simulator", type: "commit", msg: "Add in-game map editor for free mobile version"},
+            {date: "2025-11-09", project: "drunk-simulator", type: "commit", msg: "Implement level unlocking system and clean up boot menu"},
+
+            // ========== DRUNK-SIMULATOR PRs ==========
+            {date: "2025-11-09", project: "drunk-simulator", type: "pr", msg: "PR #1 (OPEN): Shiraz 2.0 - Level System, Security, Bathrooms"},
+
+            // ========== VT-GEODATA COMMITS ==========
+            {date: "2025-11-06", project: "vt-geodata", type: "commit", msg: "Initial commit: Vermont geodata processing and visualization"},
+            {date: "2025-11-06", project: "vt-geodata", type: "commit", msg: "Add multiple Vermont geodata visualizations and comparison maps"},
+            {date: "2025-11-08", project: "vt-geodata", type: "commit", msg: "Fix bug: Features were duplicated across datasets"},
+            {date: "2025-11-08", project: "vt-geodata", type: "commit", msg: "Add Vermont boundary simplification tool with slider and export"},
+            {date: "2025-11-08", project: "vt-geodata", type: "commit", msg: "Add Playwright screenshot automation for HTML visualizations"},
+            {date: "2025-11-08", project: "vt-geodata", type: "commit", msg: "Add categorized Lake Champlain water datasets"},
+            {date: "2025-11-08", project: "vt-geodata", type: "commit", msg: "Add interactive category reassignment with change tracking"},
+            {date: "2025-11-18", project: "vt-geodata", type: "commit", msg: "Add HTML maps for neighboring states (NY, NH, MA)"},
+            {date: "2025-11-19", project: "vt-geodata", type: "commit", msg: "Add complete VT and NY Census water data sources"},
+            {date: "2025-11-23", project: "vt-geodata", type: "commit", msg: "Phase 1: Standardize map UI across all visualizations"},
+            {date: "2025-11-23", project: "vt-geodata", type: "commit", msg: "Phase 2: Build unified map viewer initial implementation"},
+            {date: "2025-11-23", project: "vt-geodata", type: "commit", msg: "Add dual water source system for VT towns"},
+            {date: "2025-11-24", project: "vt-geodata", type: "commit", msg: "MILESTONE: Phase 2 Core Architecture Validated ✅"},
+            {date: "2025-11-24", project: "vt-geodata", type: "commit", msg: "Update progress docs: 35/39 configs (90% - PRODUCTION READY!)"},
+            {date: "2025-11-28", project: "vt-geodata", type: "commit", msg: "Add per-county road networks (60,017 segments across 14 counties)"},
+            {date: "2025-11-28", project: "vt-geodata", type: "commit", msg: "Add progressive road viewer with smart county-based loading"},
+
+            // ========== SVG-GROUPER COMMITS ==========
+            {date: "2025-11-18", project: "svg-grouper", type: "commit", msg: "Initial commit"},
+            {date: "2025-11-18", project: "svg-grouper", type: "commit", msg: "Implement issues #1-5: Core Electron app with SVG viewer"},
+            {date: "2025-11-18", project: "svg-grouper", type: "commit", msg: "Fix race condition and infinite render loop in SVG parsing"},
+            {date: "2025-11-18", project: "svg-grouper", type: "commit", msg: "Add progressive loading for large SVG files"},
+            {date: "2025-11-24", project: "svg-grouper", type: "commit", msg: "Refactor UI layout and crop overlay system"},
+            {date: "2025-11-25", project: "svg-grouper", type: "commit", msg: "Add Flatten feature to simplify layer structure"},
+            {date: "2025-11-26", project: "svg-grouper", type: "commit", msg: "Add line fill hatching for pen plotter support"},
+            {date: "2025-11-26", project: "svg-grouper", type: "commit", msg: "Add tabbed interface with Sort, Fill, and Export tabs"},
+            {date: "2025-11-27", project: "svg-grouper", type: "commit", msg: "Fix concentric fill pattern causing app to become unresponsive"},
+            {date: "2025-11-27", project: "svg-grouper", type: "commit", msg: "Add TSP path optimization and order visualization for fill hatching"},
+            {date: "2025-11-27", project: "svg-grouper", type: "commit", msg: "Add honeycomb fill pattern"},
+            {date: "2025-11-28", project: "svg-grouper", type: "commit", msg: "Prepare for v1.0 release"},
+            {date: "2025-11-28", project: "svg-grouper", type: "commit", msg: "Add stroke editor, playback controls, and fill improvements"},
+            {date: "2025-11-28", project: "svg-grouper", type: "commit", msg: "Add Electron menu, page setup, and export enhancements"},
+            {date: "2025-11-29", project: "svg-grouper", type: "commit", msg: "Implement Apply Crop functionality"},
+            {date: "2025-11-29", project: "svg-grouper", type: "commit", msg: "Add path simplification using simplify-js"}
+        ];
+
+        // Process data
+        const parseDate = d3.timeParse("%Y-%m-%d");
+        allData.forEach(d => {
+            d.dateObj = parseDate(d.date);
+            d.sentiment = calculateSentiment(d.msg);
+        });
+
+        const startDate = parseDate("2025-10-01");
+        const endDate = parseDate("2025-11-30");
+
+        // ============ STATE ============
+        let activeProjects = new Set(projects);
+        let showCommits = true;
+        let showPRs = true;
+
+        // ============ UI SETUP ============
+        const tooltip = d3.select("#tooltip");
+
+        // Create project filter buttons
+        const filterContainer = d3.select("#project-filters");
+        projects.forEach(p => {
+            filterContainer.append("button")
+                .attr("class", "project-btn active")
+                .attr("data-project", p)
+                .style("border-color", colors[p])
+                .style("background-color", colors[p])
+                .text(p)
+                .on("click", function() {
+                    toggleProject(p);
+                });
+        });
+
+        // Type filter buttons
+        d3.selectAll(".type-filters .type-btn").on("click", function() {
+            const type = d3.select(this).attr("data-type");
+            if (type === "commits") {
+                showCommits = !showCommits;
+                d3.select(this).classed("active", showCommits);
+            } else if (type === "prs") {
+                showPRs = !showPRs;
+                d3.select(this).classed("active", showPRs);
+            }
+            updateChart();
+        });
+
+        // Select all / none
+        d3.select("#select-all").on("click", () => {
+            activeProjects = new Set(projects);
+            updateProjectButtons();
+            updateChart();
+        });
+        d3.select("#select-none").on("click", () => {
+            activeProjects.clear();
+            updateProjectButtons();
+            updateChart();
+        });
+
+        function toggleProject(p) {
+            if (activeProjects.has(p)) {
+                activeProjects.delete(p);
+            } else {
+                activeProjects.add(p);
+            }
+            updateProjectButtons();
+            updateChart();
+        }
+
+        function updateProjectButtons() {
+            d3.selectAll(".project-btn").each(function() {
+                const btn = d3.select(this);
+                const p = btn.attr("data-project");
+                const isActive = activeProjects.has(p);
+                btn.classed("active", isActive)
+                   .classed("inactive", !isActive)
+                   .style("background-color", isActive ? colors[p] : "transparent");
+            });
+        }
+
+        // ============ CHART ============
+        const width = 1340, height = 500;
+        const margin = {top: 40, right: 30, bottom: 50, left: 60};
+
+        const svg = d3.select("#main-chart")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height);
+
+        // Background regions
+        const chartArea = svg.append("g").attr("class", "chart-area");
+
+        // Scales (fixed to full date range)
+        const x = d3.scaleTime()
+            .domain([startDate, endDate])
+            .range([margin.left, width - margin.right]);
+
+        const maxAbs = d3.max(allData, d => Math.abs(d.sentiment)) || 5;
+        const y = d3.scaleLinear()
+            .domain([-maxAbs - 1, maxAbs + 1])
+            .range([height - margin.bottom, margin.top]);
+
+        // Draw static elements
+        // Positive background
+        chartArea.append("rect")
+            .attr("x", margin.left)
+            .attr("y", margin.top)
+            .attr("width", width - margin.left - margin.right)
+            .attr("height", y(0) - margin.top)
+            .attr("fill", "#22c55e")
+            .attr("opacity", 0.03);
+
+        // Negative background
+        chartArea.append("rect")
+            .attr("x", margin.left)
+            .attr("y", y(0))
+            .attr("width", width - margin.left - margin.right)
+            .attr("height", height - margin.bottom - y(0))
+            .attr("fill", "#ef4444")
+            .attr("opacity", 0.03);
+
+        // Zero line
+        chartArea.append("line")
+            .attr("x1", margin.left)
+            .attr("x2", width - margin.right)
+            .attr("y1", y(0))
+            .attr("y2", y(0))
+            .attr("stroke", "#30363d")
+            .attr("stroke-width", 2);
+
+        // Labels
+        chartArea.append("text")
+            .attr("x", margin.left + 10)
+            .attr("y", margin.top + 15)
+            .attr("fill", "#22c55e")
+            .attr("font-size", "11px")
+            .text("✓ Features, Improvements, Milestones");
+
+        chartArea.append("text")
+            .attr("x", margin.left + 10)
+            .attr("y", height - margin.bottom - 8)
+            .attr("fill", "#ef4444")
+            .attr("font-size", "11px")
+            .text("✗ Bugs, Crashes, Critical Fixes");
+
+        // X axis
+        svg.append("g")
+            .attr("class", "axis x-axis")
+            .attr("transform", `translate(0,${height - margin.bottom})`)
+            .call(d3.axisBottom(x).ticks(d3.timeWeek.every(1)).tickFormat(d3.timeFormat("%b %d")));
+
+        // Y axis
+        svg.append("g")
+            .attr("class", "axis y-axis")
+            .attr("transform", `translate(${margin.left},0)`)
+            .call(d3.axisLeft(y).ticks(7));
+
+        svg.append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("x", -height/2)
+            .attr("y", 15)
+            .attr("fill", "#8b949e")
+            .attr("text-anchor", "middle")
+            .attr("font-size", "11px")
+            .text("Sentiment Score");
+
+        // Data layer
+        const dataLayer = svg.append("g").attr("class", "data-layer");
+
+        function updateChart() {
+            // Filter data
+            const filteredData = allData.filter(d => {
+                if (!activeProjects.has(d.project)) return false;
+                if (d.type === "commit" && !showCommits) return false;
+                if (d.type === "pr" && !showPRs) return false;
+                return true;
+            });
+
+            // Update stats
+            const commits = filteredData.filter(d => d.type === "commit");
+            const prs = filteredData.filter(d => d.type === "pr");
+            const positive = filteredData.filter(d => d.sentiment > 0);
+            const negative = filteredData.filter(d => d.sentiment < 0);
+            const avgSentiment = filteredData.length > 0
+                ? (d3.sum(filteredData, d => d.sentiment) / filteredData.length).toFixed(1)
+                : 0;
+
+            d3.select("#total-items").text(filteredData.length);
+            d3.select("#commits-count").text(commits.length);
+            d3.select("#prs-count").text(prs.length);
+            d3.select("#positive-count").text(positive.length);
+            d3.select("#negative-count").text(negative.length);
+            d3.select("#avg-sentiment").text(avgSentiment);
+
+            // Draw stems
+            const stems = dataLayer.selectAll(".stem")
+                .data(filteredData, d => d.date + d.project + d.msg);
+
+            stems.exit().remove();
+
+            stems.enter()
+                .append("line")
+                .attr("class", "stem")
+                .merge(stems)
+                .attr("x1", d => x(d.dateObj) + (hashCode(d.msg) % 20 - 10))
+                .attr("x2", d => x(d.dateObj) + (hashCode(d.msg) % 20 - 10))
+                .attr("y1", y(0))
+                .attr("y2", d => y(d.sentiment))
+                .attr("stroke", d => d.sentiment >= 0 ? "#22c55e" : "#ef4444")
+                .attr("stroke-width", 1.5)
+                .attr("opacity", 0.4);
+
+            // Draw points
+            const points = dataLayer.selectAll(".point")
+                .data(filteredData, d => d.date + d.project + d.msg);
+
+            points.exit().remove();
+
+            const pointsEnter = points.enter()
+                .append("g")
+                .attr("class", "point");
+
+            // Commits = circles
+            pointsEnter.filter(d => d.type === "commit")
+                .append("circle")
+                .attr("r", 6);
+
+            // PRs = diamonds
+            pointsEnter.filter(d => d.type === "pr")
+                .append("polygon")
+                .attr("points", "0,-8 8,0 0,8 -8,0");
+
+            const allPoints = pointsEnter.merge(points);
+
+            allPoints
+                .attr("transform", d => {
+                    const cx = x(d.dateObj) + (hashCode(d.msg) % 20 - 10);
+                    const cy = y(d.sentiment);
+                    return `translate(${cx},${cy})`;
+                });
+
+            allPoints.select("circle")
+                .attr("fill", d => colors[d.project])
+                .attr("stroke", d => d.sentiment >= 0 ? "#22c55e" : "#ef4444")
+                .attr("stroke-width", 2);
+
+            allPoints.select("polygon")
+                .attr("fill", d => colors[d.project])
+                .attr("stroke", d => d.sentiment >= 0 ? "#22c55e" : "#ef4444")
+                .attr("stroke-width", 2);
+
+            allPoints
+                .style("cursor", "pointer")
+                .on("mouseover", function(event, d) {
+                    const sentimentClass = d.sentiment >= 0 ? "positive" : "negative";
+                    const typeClass = d.type === "pr" ? "pr" : "commit";
+                    tooltip.style("opacity", 1)
+                        .html(`
+                            <span class="type-badge ${typeClass}">${d.type.toUpperCase()}</span>
+                            <strong>${d.project}</strong> - ${d.date}
+                            <div class="msg">${d.msg}</div>
+                            <div class="score ${sentimentClass}">Sentiment: ${d.sentiment > 0 ? '+' : ''}${d.sentiment}</div>
+                        `);
+                })
+                .on("mousemove", function(event) {
+                    tooltip.style("left", (event.pageX + 15) + "px")
+                           .style("top", (event.pageY - 10) + "px");
+                })
+                .on("mouseout", function() {
+                    tooltip.style("opacity", 0);
+                });
+        }
+
+        // Simple hash for consistent jitter
+        function hashCode(str) {
+            let hash = 0;
+            for (let i = 0; i < str.length; i++) {
+                hash = ((hash << 5) - hash) + str.charCodeAt(i);
+                hash |= 0;
+            }
+            return Math.abs(hash);
+        }
+
+        // Initial render
+        updateChart();
+    </script>
+</body>
+</html>
