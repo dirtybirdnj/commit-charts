@@ -113,35 +113,28 @@
 </head>
 <body>
     <h1>Commit Charts</h1>
-    <p class="subtitle">Visualizing a Claude Code journey: Oct - Nov 2025</p>
+    <p class="subtitle" id="subtitle">Visualizing a Claude Code journey</p>
 
-    <div class="stats">
+    <div class="stats" id="stats">
         <div class="stat">
-            <div class="stat-value">1,128</div>
+            <div class="stat-value" id="total-commits">-</div>
             <div class="stat-label">Total Commits</div>
         </div>
         <div class="stat">
-            <div class="stat-value">6</div>
+            <div class="stat-value" id="total-projects">-</div>
             <div class="stat-label">Projects</div>
         </div>
         <div class="stat">
-            <div class="stat-value">26</div>
+            <div class="stat-value" id="active-days">-</div>
             <div class="stat-label">Active Days</div>
         </div>
         <div class="stat">
-            <div class="stat-value">96</div>
+            <div class="stat-value" id="total-prs">-</div>
             <div class="stat-label">Pull Requests</div>
         </div>
     </div>
 
-    <div class="projects">
-        <span class="project-tag" style="background: #f97316;">wolfpack</span>
-        <span class="project-tag" style="background: #22c55e;">gellyscope</span>
-        <span class="project-tag" style="background: #3b82f6;">gellyscape</span>
-        <span class="project-tag" style="background: #ec4899;">drunk-simulator</span>
-        <span class="project-tag" style="background: #a855f7;">vt-geodata</span>
-        <span class="project-tag" style="background: #eab308;">svg-grouper</span>
-    </div>
+    <div class="projects" id="projects"></div>
 
     <div class="cards">
         <a href="chart-examples.html" class="card">
@@ -158,6 +151,55 @@
     <footer>
         Built with <a href="https://claude.ai">Claude Code</a> &middot;
         <a href="https://github.com/dirtybirdnj/commit-charts">View on GitHub</a>
+        <div id="last-updated" style="margin-top: 8px; font-size: 11px;"></div>
     </footer>
+
+    <script>
+        async function loadData() {
+            try {
+                const [metaRes, statsRes] = await Promise.all([
+                    fetch('data/meta.json'),
+                    fetch('data/stats.json')
+                ]);
+                const meta = await metaRes.json();
+                const stats = await statsRes.json();
+
+                // Calculate active days from stats
+                const uniqueDays = new Set(stats.map(s => s.date)).size;
+
+                // Update stats
+                document.getElementById('total-commits').textContent = meta.totals.commits.toLocaleString();
+                document.getElementById('total-projects').textContent = meta.totals.projects;
+                document.getElementById('active-days').textContent = uniqueDays;
+                document.getElementById('total-prs').textContent = meta.totals.prs;
+
+                // Format date range for subtitle
+                const start = new Date(meta.dateRange.start);
+                const end = new Date(meta.dateRange.end);
+                const formatMonth = d => d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+                document.getElementById('subtitle').textContent =
+                    `Visualizing a Claude Code journey: ${formatMonth(start)} - ${formatMonth(end)}`;
+
+                // Generate project tags
+                const projectsContainer = document.getElementById('projects');
+                meta.projects.forEach(project => {
+                    const tag = document.createElement('span');
+                    tag.className = 'project-tag';
+                    tag.style.background = meta.colors[project];
+                    tag.textContent = project;
+                    projectsContainer.appendChild(tag);
+                });
+
+                // Show last updated
+                const updated = new Date(meta.lastUpdated);
+                document.getElementById('last-updated').textContent =
+                    `Data last updated: ${updated.toLocaleDateString()} ${updated.toLocaleTimeString()}`;
+
+            } catch (error) {
+                console.error('Failed to load data:', error);
+            }
+        }
+        loadData();
+    </script>
 </body>
 </html>

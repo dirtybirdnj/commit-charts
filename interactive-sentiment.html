@@ -471,17 +471,46 @@
 
     <div class="tooltip" id="tooltip"></div>
 
+    <div id="loading" style="text-align: center; padding: 40px; color: #8b949e;">
+        Loading data...
+    </div>
+
     <script>
-        // ============ DATA ============
-        const projects = ["wolfpack", "gellyscope", "gellyscape", "drunk-simulator", "vt-geodata", "svg-grouper"];
-        const colors = {
-            "wolfpack": "#f97316",
-            "gellyscope": "#22c55e",
-            "gellyscape": "#3b82f6",
-            "drunk-simulator": "#ec4899",
-            "vt-geodata": "#a855f7",
-            "svg-grouper": "#eab308"
-        };
+        // ============ DATA (loaded from JSON) ============
+        let projects, colors, allData, startDate, endDate, meta;
+        const parseDate = d3.timeParse("%Y-%m-%d");
+
+        async function loadData() {
+            try {
+                const [commitsRes, metaRes] = await Promise.all([
+                    fetch('data/commits.json'),
+                    fetch('data/meta.json')
+                ]);
+                const commits = await commitsRes.json();
+                meta = await metaRes.json();
+                projects = meta.projects;
+                colors = meta.colors;
+
+                // URL params for custom date range
+                const urlParams = new URLSearchParams(window.location.search);
+                startDate = parseDate(urlParams.get('start') || meta.dateRange.start);
+                endDate = parseDate(urlParams.get('end') || meta.dateRange.end);
+
+                // Process commits with sentiment
+                allData = commits.map(d => ({
+                    ...d,
+                    dateObj: parseDate(d.date),
+                    sentiment: calculateSentiment(d.msg)
+                }));
+
+                document.getElementById('loading').style.display = 'none';
+                return true;
+            } catch (error) {
+                console.error('Failed to load data:', error);
+                document.getElementById('loading').innerHTML = 'Failed to load data. <a href="#" onclick="location.reload()">Retry</a>';
+                return false;
+            }
+        }
 
         // Developer-specific sentiment lexicon
         const sentimentLexicon = {
@@ -531,177 +560,9 @@
             return `item-${hashCode(d.date + d.project + d.msg)}`;
         }
 
-        // Combined commit and PR data
-        const allData = [
-            // ========== WOLFPACK COMMITS ==========
-            {date: "2025-10-23", project: "wolfpack", type: "commit", msg: "claude scaffolding lake trout game"},
-            {date: "2025-10-23", project: "wolfpack", type: "commit", msg: "Implement fish fighting mechanics with line tension system"},
-            {date: "2025-10-23", project: "wolfpack", type: "commit", msg: "Fix canvas growth bug - stop creating objects every frame"},
-            {date: "2025-10-23", project: "wolfpack", type: "commit", msg: "Add comprehensive gamepad support for PS4 and 8BitDo controllers"},
-            {date: "2025-10-24", project: "wolfpack", type: "commit", msg: "Fix game freeze in kayak/boat mode and text overlap"},
-            {date: "2025-10-24", project: "wolfpack", type: "commit", msg: "Implement Northern Pike ambush predator AI behaviors"},
-            {date: "2025-10-24", project: "wolfpack", type: "commit", msg: "Add lake bottom collision detection for all entities"},
-            {date: "2025-10-24", project: "wolfpack", type: "commit", msg: "Implement multi-species baitfish system with real-world data"},
-            {date: "2025-10-25", project: "wolfpack", type: "commit", msg: "CRITICAL FIX: Baitfish trapped in horizontal line in nature mode"},
-            {date: "2025-10-25", project: "wolfpack", type: "commit", msg: "Fix fish depth calculation using correct coordinate system"},
-            {date: "2025-10-25", project: "wolfpack", type: "commit", msg: "Implement three flocking rules for baitfish movement"},
-            {date: "2025-10-29", project: "wolfpack", type: "commit", msg: "Scale haptic feedback intensity by line sensitivity"},
-            {date: "2025-10-29", project: "wolfpack", type: "commit", msg: "Add haptic feedback for fish bumping the lure"},
-            {date: "2025-10-30", project: "wolfpack", type: "commit", msg: "Fix memory leaks causing max connections exceeded error"},
-            {date: "2025-10-30", project: "wolfpack", type: "commit", msg: "Fix invisible wall bug trapping baitfish at surface"},
-            {date: "2025-10-30", project: "wolfpack", type: "commit", msg: "Add ESLint static analysis with auto-fixes"},
-            {date: "2025-10-30", project: "wolfpack", type: "commit", msg: "Add Jest unit testing framework"},
-            {date: "2025-10-31", project: "wolfpack", type: "commit", msg: "Implement realistic drag system and hookset mechanics"},
-            {date: "2025-11-01", project: "wolfpack", type: "commit", msg: "Fix invisible wall bug - predator fish stuck at edges"},
-            {date: "2025-11-01", project: "wolfpack", type: "commit", msg: "Add unified Fish class with Boids schooling behavior"},
-            {date: "2025-11-02", project: "wolfpack", type: "commit", msg: "CRITICAL FIX: Add reel mechanical advantage when actively reeling"},
-            {date: "2025-11-02", project: "wolfpack", type: "commit", msg: "Improve predator bait detection and add visual detection cones"},
-            {date: "2025-11-02", project: "wolfpack", type: "commit", msg: "Add line strain meter and ecosystem ebb/flow dynamics"},
-            {date: "2025-11-03", project: "wolfpack", type: "commit", msg: "Fix coordinate system bugs and improve ecosystem stability"},
-            {date: "2025-11-04", project: "wolfpack", type: "commit", msg: "Refactor rendering to Phaser sprites and implement major optimizations"},
-            {date: "2025-11-05", project: "wolfpack", type: "commit", msg: "Create GameHUD scene with in-game rendered UI meters"},
-            {date: "2025-11-05", project: "wolfpack", type: "commit", msg: "Refactor: Implement unified organism architecture"},
-            {date: "2025-11-06", project: "wolfpack", type: "commit", msg: "🎉 TypeScript Conversion Complete! Phase 6 & Final Commit"},
-            {date: "2025-11-06", project: "wolfpack", type: "commit", msg: "Fix: Critical bug fixes for organism spawning and movement"},
-            {date: "2025-11-06", project: "wolfpack", type: "commit", msg: "Feature: Add wolf pack schooling profiles for predators"},
-            {date: "2025-11-07", project: "wolfpack", type: "commit", msg: "🏆 Feat: Lateral line detection, predator vision, and ecosystem balance"},
-            {date: "2025-11-12", project: "wolfpack", type: "commit", msg: "Implement 3-tier game mode system with species distribution"},
-
-            // ========== WOLFPACK PRs ==========
-            {date: "2025-10-24", project: "wolfpack", type: "pr", msg: "PR #1: Integrate baitfish hunting system with main game features"},
-            {date: "2025-10-24", project: "wolfpack", type: "pr", msg: "PR #3: Controllers work in Chrome and Firefox"},
-            {date: "2025-10-24", project: "wolfpack", type: "pr", msg: "PR #7: Enhance Fish Hooking Gameplay Mechanics"},
-            {date: "2025-10-24", project: "wolfpack", type: "pr", msg: "PR #11: Implement New Kayak / Boat Game Modes"},
-            {date: "2025-10-25", project: "wolfpack", type: "pr", msg: "PR #12: Add More Fish Species to Game - Pike, Smallmouth Bass, Perch"},
-            {date: "2025-10-25", project: "wolfpack", type: "pr", msg: "PR #17: Implement Baitfish Flocking Behavior Rules (Boids)"},
-            {date: "2025-10-29", project: "wolfpack", type: "pr", msg: "PR #25: Add haptic feedback for fish bumps"},
-            {date: "2025-10-29", project: "wolfpack", type: "pr", msg: "PR #26: Fix build process, semantic versioning, refactor of fish class system"},
-            {date: "2025-10-30", project: "wolfpack", type: "pr", msg: "PR #28: Package app with Electron for Steam and itch.io"},
-            {date: "2025-10-30", project: "wolfpack", type: "pr", msg: "PR #37: Resolve API concurrency limit issues - CRITICAL BUG"},
-            {date: "2025-10-30", project: "wolfpack", type: "pr", msg: "PR #39: Increase test coverage"},
-            {date: "2025-10-31", project: "wolfpack", type: "pr", msg: "PR #49: Implement realistic drag system and hookset mechanics"},
-            {date: "2025-11-02", project: "wolfpack", type: "pr", msg: "PR #54: Baitfish schooling to Phaser Groups - Foundation"},
-            {date: "2025-11-02", project: "wolfpack", type: "pr", msg: "PR #59: Make drag system realistic - slipping is primary mechanic"},
-            {date: "2025-11-05", project: "wolfpack", type: "pr", msg: "PR #61: Fix HUD container structure, add mouse controls, and fix spawning bugs"},
-            {date: "2025-11-06", project: "wolfpack", type: "pr", msg: "PR #76: Fix: Critical organism spawning and movement bugs"},
-            {date: "2025-11-06", project: "wolfpack", type: "pr", msg: "PR #77: TypeScript Conversion Complete - 28/28 Files Converted"},
-
-            // ========== GELLYSCOPE COMMITS ==========
-            {date: "2025-10-20", project: "gellyscope", type: "commit", msg: "Vibe coded 1.0 Gellyscope"},
-            {date: "2025-10-21", project: "gellyscope", type: "commit", msg: "work on viewport scaling"},
-            {date: "2025-10-22", project: "gellyscope", type: "commit", msg: "Fix app freeze and refactor CSS to external file"},
-            {date: "2025-10-22", project: "gellyscope", type: "commit", msg: "Integrate potrace for bitmap to vector tracing"},
-            {date: "2025-10-22", project: "gellyscope", type: "commit", msg: "Add complete processing pipeline with image filters and Potrace controls"},
-            {date: "2025-10-22", project: "gellyscope", type: "commit", msg: "Implement G-code generation using vpype and vpype-gcode"},
-            {date: "2025-10-23", project: "gellyscope", type: "commit", msg: "Fix critical bug: tab clicks not loading content"},
-            {date: "2025-10-23", project: "gellyscope", type: "commit", msg: "Refactor UI into modular component-based architecture"},
-            {date: "2025-10-23", project: "gellyscope", type: "commit", msg: "Add comprehensive testing infrastructure with Jest"},
-            {date: "2025-10-23", project: "gellyscope", type: "commit", msg: "Add workspace rulers and move settings to Hardware tab"},
-            {date: "2025-10-24", project: "gellyscope", type: "commit", msg: "Implement Photoshop-style UI redesign with dark theme"},
-            {date: "2025-10-24", project: "gellyscope", type: "commit", msg: "Fix G-code generation and vpype configuration"},
-            {date: "2025-10-24", project: "gellyscope", type: "commit", msg: "Add work area positioning system with 9-position grid selector"},
-            {date: "2025-11-16", project: "gellyscope", type: "commit", msg: "Add UI enhancements: page sizes, alignment controls, and download features"},
-
-            // ========== GELLYSCOPE PRs ==========
-            {date: "2025-10-22", project: "gellyscope", type: "pr", msg: "PR #1: Fix electron startup errors"},
-            {date: "2025-10-22", project: "gellyscope", type: "pr", msg: "PR #3: Trace Tab / Facetrace Functionality (JIMP + Potrace)"},
-            {date: "2025-10-22", project: "gellyscope", type: "pr", msg: "PR #4: Eject Tab (gcode export)"},
-            {date: "2025-10-23", project: "gellyscope", type: "pr", msg: "PR #5: Add render tab to visualize gcode"},
-            {date: "2025-10-23", project: "gellyscope", type: "pr", msg: "PR #7: Add home screen with workspace file overview"},
-            {date: "2025-10-23", project: "gellyscope", type: "pr", msg: "PR #9: Refactor UI components for better token performance"},
-            {date: "2025-10-24", project: "gellyscope", type: "pr", msg: "PR #10: Add scaling to output, more work on gcode preview"},
-            {date: "2025-10-24", project: "gellyscope", type: "pr", msg: "PR #11: Enhance App User Interface Design"},
-            {date: "2025-11-16", project: "gellyscope", type: "pr", msg: "PR #13: Add UI enhancements: page sizes, alignment controls"},
-
-            // ========== GELLYSCAPE COMMITS ==========
-            {date: "2025-10-22", project: "gellyscape", type: "commit", msg: "Implement GeoPDF processing with layer extraction and export"},
-            {date: "2025-10-22", project: "gellyscape", type: "commit", msg: "Implement PDF content stream parser for direct vector extraction"},
-            {date: "2025-10-22", project: "gellyscape", type: "commit", msg: "Fix horizontal compression by preserving PDF aspect ratio"},
-            {date: "2025-10-23", project: "gellyscape", type: "commit", msg: "Fix ToUnicode CMap decompression and hex string parsing"},
-            {date: "2025-10-23", project: "gellyscape", type: "commit", msg: "Organize POI markers into dedicated layer and fix text colors"},
-            {date: "2025-10-31", project: "gellyscape", type: "commit", msg: "Fix pdf-parse broken dependency - downgrade to v1.1.1"},
-            {date: "2025-10-31", project: "gellyscape", type: "commit", msg: "Add layer controls, map preview, and SVG export functionality"},
-            {date: "2025-10-31", project: "gellyscape", type: "commit", msg: "Add tabbed UI with independent layer control sections"},
-            {date: "2025-11-14", project: "gellyscape", type: "commit", msg: "Implement smart layer categorization: Separate plottable vector data"},
-            {date: "2025-11-14", project: "gellyscape", type: "commit", msg: "Add descriptive layer naming based on color patterns"},
-            {date: "2025-11-16", project: "gellyscape", type: "commit", msg: "Add interactive crop UI and vpype integration"},
-            {date: "2025-11-23", project: "gellyscape", type: "commit", msg: "Add USGS format detection and 2025 Topobuilder support"},
-            {date: "2025-11-25", project: "gellyscape", type: "commit", msg: "Fix missing geometry: include paths without OCG layer assignment"},
-            {date: "2025-11-26", project: "gellyscape", type: "commit", msg: "Fix CTM matrix multiplication order for 100K map scaling"},
-            {date: "2025-11-28", project: "gellyscape", type: "commit", msg: "Add Text tab, loading gear animation, and color swatch interactivity"},
-
-            // ========== GELLYSCAPE PRs ==========
-            {date: "2025-10-22", project: "gellyscape", type: "pr", msg: "PR #1: First successful full map parse"},
-            {date: "2025-10-23", project: "gellyscape", type: "pr", msg: "PR #2: Parsing map to a reasonable prototype"},
-            {date: "2025-10-31", project: "gellyscape", type: "pr", msg: "PR #3: Add interactive layer controls and SVG export functionality"},
-            {date: "2025-11-16", project: "gellyscape", type: "pr", msg: "PR #4: Enhanced layer management with smart categorization"},
-            {date: "2025-11-27", project: "gellyscape", type: "pr", msg: "PR #5: Add interactive crop UI and vpype integration"},
-
-            // ========== DRUNK-SIMULATOR COMMITS ==========
-            {date: "2025-11-08", project: "drunk-simulator", type: "commit", msg: "Initial commit: Bar simulator prototype with inverted layout"},
-            {date: "2025-11-08", project: "drunk-simulator", type: "commit", msg: "Implement bartender vision cone system with visual feedback"},
-            {date: "2025-11-08", project: "drunk-simulator", type: "commit", msg: "Fix bartender stalling and patron stacking issues"},
-            {date: "2025-11-08", project: "drunk-simulator", type: "commit", msg: "Add confetti celebration when clicking start button"},
-            {date: "2025-11-08", project: "drunk-simulator", type: "commit", msg: "Add smoking behavior and patio mechanics for patrons"},
-            {date: "2025-11-08", project: "drunk-simulator", type: "commit", msg: "Add drunk vision effect to title screen"},
-            {date: "2025-11-08", project: "drunk-simulator", type: "commit", msg: "Add creator credits to title screen"},
-            {date: "2025-11-09", project: "drunk-simulator", type: "commit", msg: "MAJOR PERFORMANCE FIX: Cell caching + RAF throttling"},
-            {date: "2025-11-09", project: "drunk-simulator", type: "commit", msg: "Fix critical performance issue by pausing Phaser game loop"},
-            {date: "2025-11-09", project: "drunk-simulator", type: "commit", msg: "Implement free game with 3 levels and complete progression system"},
-            {date: "2025-11-09", project: "drunk-simulator", type: "commit", msg: "Release v1.1.74 🍹 Mai Tai"},
-            {date: "2025-11-09", project: "drunk-simulator", type: "commit", msg: "Add multi-platform deployment support (Electron + Capacitor)"},
-            {date: "2025-11-09", project: "drunk-simulator", type: "commit", msg: "Add in-game map editor for free mobile version"},
-            {date: "2025-11-09", project: "drunk-simulator", type: "commit", msg: "Implement level unlocking system and clean up boot menu"},
-
-            // ========== DRUNK-SIMULATOR PRs ==========
-            {date: "2025-11-09", project: "drunk-simulator", type: "pr", msg: "PR #1 (OPEN): Shiraz 2.0 - Level System, Security, Bathrooms"},
-
-            // ========== VT-GEODATA COMMITS ==========
-            {date: "2025-11-06", project: "vt-geodata", type: "commit", msg: "Initial commit: Vermont geodata processing and visualization"},
-            {date: "2025-11-06", project: "vt-geodata", type: "commit", msg: "Add multiple Vermont geodata visualizations and comparison maps"},
-            {date: "2025-11-08", project: "vt-geodata", type: "commit", msg: "Fix bug: Features were duplicated across datasets"},
-            {date: "2025-11-08", project: "vt-geodata", type: "commit", msg: "Add Vermont boundary simplification tool with slider and export"},
-            {date: "2025-11-08", project: "vt-geodata", type: "commit", msg: "Add Playwright screenshot automation for HTML visualizations"},
-            {date: "2025-11-08", project: "vt-geodata", type: "commit", msg: "Add categorized Lake Champlain water datasets"},
-            {date: "2025-11-08", project: "vt-geodata", type: "commit", msg: "Add interactive category reassignment with change tracking"},
-            {date: "2025-11-18", project: "vt-geodata", type: "commit", msg: "Add HTML maps for neighboring states (NY, NH, MA)"},
-            {date: "2025-11-19", project: "vt-geodata", type: "commit", msg: "Add complete VT and NY Census water data sources"},
-            {date: "2025-11-23", project: "vt-geodata", type: "commit", msg: "Phase 1: Standardize map UI across all visualizations"},
-            {date: "2025-11-23", project: "vt-geodata", type: "commit", msg: "Phase 2: Build unified map viewer initial implementation"},
-            {date: "2025-11-23", project: "vt-geodata", type: "commit", msg: "Add dual water source system for VT towns"},
-            {date: "2025-11-24", project: "vt-geodata", type: "commit", msg: "MILESTONE: Phase 2 Core Architecture Validated ✅"},
-            {date: "2025-11-24", project: "vt-geodata", type: "commit", msg: "Update progress docs: 35/39 configs (90% - PRODUCTION READY!)"},
-            {date: "2025-11-28", project: "vt-geodata", type: "commit", msg: "Add per-county road networks (60,017 segments across 14 counties)"},
-            {date: "2025-11-28", project: "vt-geodata", type: "commit", msg: "Add progressive road viewer with smart county-based loading"},
-
-            // ========== SVG-GROUPER COMMITS ==========
-            {date: "2025-11-18", project: "svg-grouper", type: "commit", msg: "Initial commit"},
-            {date: "2025-11-18", project: "svg-grouper", type: "commit", msg: "Implement issues #1-5: Core Electron app with SVG viewer"},
-            {date: "2025-11-18", project: "svg-grouper", type: "commit", msg: "Fix race condition and infinite render loop in SVG parsing"},
-            {date: "2025-11-18", project: "svg-grouper", type: "commit", msg: "Add progressive loading for large SVG files"},
-            {date: "2025-11-24", project: "svg-grouper", type: "commit", msg: "Refactor UI layout and crop overlay system"},
-            {date: "2025-11-25", project: "svg-grouper", type: "commit", msg: "Add Flatten feature to simplify layer structure"},
-            {date: "2025-11-26", project: "svg-grouper", type: "commit", msg: "Add line fill hatching for pen plotter support"},
-            {date: "2025-11-26", project: "svg-grouper", type: "commit", msg: "Add tabbed interface with Sort, Fill, and Export tabs"},
-            {date: "2025-11-27", project: "svg-grouper", type: "commit", msg: "Fix concentric fill pattern causing app to become unresponsive"},
-            {date: "2025-11-27", project: "svg-grouper", type: "commit", msg: "Add TSP path optimization and order visualization for fill hatching"},
-            {date: "2025-11-27", project: "svg-grouper", type: "commit", msg: "Add honeycomb fill pattern"},
-            {date: "2025-11-28", project: "svg-grouper", type: "commit", msg: "Prepare for v1.0 release"},
-            {date: "2025-11-28", project: "svg-grouper", type: "commit", msg: "Add stroke editor, playback controls, and fill improvements"},
-            {date: "2025-11-28", project: "svg-grouper", type: "commit", msg: "Add Electron menu, page setup, and export enhancements"},
-            {date: "2025-11-29", project: "svg-grouper", type: "commit", msg: "Implement Apply Crop functionality"},
-            {date: "2025-11-29", project: "svg-grouper", type: "commit", msg: "Add path simplification using simplify-js"}
-        ];
-
-        // Process data
-        const parseDate = d3.timeParse("%Y-%m-%d");
-        allData.forEach(d => {
-            d.dateObj = parseDate(d.date);
-            d.sentiment = calculateSentiment(d.msg);
-        });
-
-        const startDate = parseDate("2025-10-01");
-        const endDate = parseDate("2025-11-30");
+        // Main initialization
+        async function init() {
+            if (!await loadData()) return;
 
         // ============ STATE ============
         let activeProjects = new Set(projects);
@@ -1161,6 +1022,10 @@
 
         // Initial render
         updateChart();
+        }
+
+        // Start the application
+        init();
     </script>
 </body>
 </html>

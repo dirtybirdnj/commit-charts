@@ -478,75 +478,65 @@
 
     <div class="tooltip" id="tooltip"></div>
 
+    <div id="loading" style="text-align: center; padding: 40px; color: #8b949e;">
+        Loading data...
+    </div>
+
     <script>
-        // Raw commit data
-        const rawData = [
-            {date: "2025-10-20", commits: 3, project: "gellyscope"},
-            {date: "2025-10-21", commits: 4, project: "gellyscope"},
-            {date: "2025-10-22", commits: 60, project: "gellyscope"},
-            {date: "2025-10-22", commits: 40, project: "gellyscape"},
-            {date: "2025-10-23", commits: 35, project: "wolfpack"},
-            {date: "2025-10-23", commits: 44, project: "gellyscope"},
-            {date: "2025-10-23", commits: 19, project: "gellyscape"},
-            {date: "2025-10-24", commits: 101, project: "wolfpack"},
-            {date: "2025-10-24", commits: 25, project: "gellyscope"},
-            {date: "2025-10-25", commits: 70, project: "wolfpack"},
-            {date: "2025-10-26", commits: 14, project: "wolfpack"},
-            {date: "2025-10-29", commits: 89, project: "wolfpack"},
-            {date: "2025-10-30", commits: 140, project: "wolfpack"},
-            {date: "2025-10-31", commits: 14, project: "wolfpack"},
-            {date: "2025-10-31", commits: 15, project: "gellyscape"},
-            {date: "2025-11-01", commits: 37, project: "wolfpack"},
-            {date: "2025-11-02", commits: 53, project: "wolfpack"},
-            {date: "2025-11-03", commits: 2, project: "wolfpack"},
-            {date: "2025-11-04", commits: 2, project: "wolfpack"},
-            {date: "2025-11-05", commits: 7, project: "wolfpack"},
-            {date: "2025-11-06", commits: 40, project: "wolfpack"},
-            {date: "2025-11-06", commits: 9, project: "vt-geodata"},
-            {date: "2025-11-07", commits: 3, project: "wolfpack"},
-            {date: "2025-11-08", commits: 45, project: "drunk-simulator"},
-            {date: "2025-11-08", commits: 54, project: "vt-geodata"},
-            {date: "2025-11-09", commits: 63, project: "drunk-simulator"},
-            {date: "2025-11-12", commits: 14, project: "wolfpack"},
-            {date: "2025-11-14", commits: 12, project: "gellyscape"},
-            {date: "2025-11-16", commits: 2, project: "gellyscope"},
-            {date: "2025-11-16", commits: 2, project: "gellyscape"},
-            {date: "2025-11-18", commits: 3, project: "vt-geodata"},
-            {date: "2025-11-18", commits: 6, project: "svg-grouper"},
-            {date: "2025-11-19", commits: 1, project: "vt-geodata"},
-            {date: "2025-11-23", commits: 1, project: "gellyscape"},
-            {date: "2025-11-23", commits: 14, project: "vt-geodata"},
-            {date: "2025-11-24", commits: 2, project: "svg-grouper"},
-            {date: "2025-11-24", commits: 27, project: "vt-geodata"},
-            {date: "2025-11-25", commits: 3, project: "gellyscape"},
-            {date: "2025-11-25", commits: 1, project: "svg-grouper"},
-            {date: "2025-11-26", commits: 6, project: "gellyscape"},
-            {date: "2025-11-26", commits: 7, project: "svg-grouper"},
-            {date: "2025-11-27", commits: 1, project: "gellyscape"},
-            {date: "2025-11-27", commits: 7, project: "svg-grouper"},
-            {date: "2025-11-28", commits: 3, project: "gellyscape"},
-            {date: "2025-11-28", commits: 7, project: "svg-grouper"},
-            {date: "2025-11-28", commits: 6, project: "vt-geodata"},
-            {date: "2025-11-29", commits: 11, project: "svg-grouper"}
-        ];
-
-        const projects = ["wolfpack", "gellyscope", "gellyscape", "drunk-simulator", "vt-geodata", "svg-grouper"];
-        const colors = {
-            "wolfpack": "#f97316",
-            "gellyscope": "#22c55e",
-            "gellyscape": "#3b82f6",
-            "drunk-simulator": "#ec4899",
-            "vt-geodata": "#a855f7",
-            "svg-grouper": "#eab308"
-        };
-
+        // Global data variables (loaded from JSON)
+        let rawData, projects, colors, startDate, endDate, commitMessages, meta;
         const parseDate = d3.timeParse("%Y-%m-%d");
-        rawData.forEach(d => d.dateObj = parseDate(d.date));
 
-        const startDate = parseDate("2025-10-01");
-        const endDate = parseDate("2025-11-30");
+        // Load data from JSON files
+        async function loadData() {
+            try {
+                const [statsRes, commitsRes, metaRes] = await Promise.all([
+                    fetch('data/stats.json'),
+                    fetch('data/commits.json'),
+                    fetch('data/meta.json')
+                ]);
 
-        const tooltip = d3.select("#tooltip");
+                const stats = await statsRes.json();
+                const commits = await commitsRes.json();
+                meta = await metaRes.json();
+
+                // Set up global variables
+                rawData = stats;
+                rawData.forEach(d => d.dateObj = parseDate(d.date));
+
+                projects = meta.projects;
+                colors = meta.colors;
+
+                // Parse URL params for custom date range
+                const urlParams = new URLSearchParams(window.location.search);
+                const startParam = urlParams.get('start');
+                const endParam = urlParams.get('end');
+
+                startDate = parseDate(startParam || meta.dateRange.start);
+                endDate = parseDate(endParam || meta.dateRange.end);
+
+                // Filter commits to only include commit type for sentiment charts
+                commitMessages = commits.filter(d => d.type === 'commit').map(d => ({
+                    date: d.date,
+                    project: d.project,
+                    msg: d.msg
+                }));
+
+                document.getElementById('loading').style.display = 'none';
+                return true;
+            } catch (error) {
+                console.error('Failed to load data:', error);
+                document.getElementById('loading').innerHTML =
+                    'Failed to load data. <a href="#" onclick="location.reload()">Retry</a>';
+                return false;
+            }
+        }
+
+        // Main initialization - runs after data is loaded
+        async function init() {
+            if (!await loadData()) return;
+
+            const tooltip = d3.select("#tooltip");
 
         // ============ 1. STREAMGRAPH ============
         (function() {
@@ -975,75 +965,7 @@
                 "regression": -3, "blocker": -4, "hack": -2, "workaround": -1
             };
 
-            // Commit message data with dates and projects
-            const commitMessages = [
-                // wolfpack - major milestones and struggles
-                {date: "2025-10-23", project: "wolfpack", msg: "claude scaffolding lake trout game"},
-                {date: "2025-10-23", project: "wolfpack", msg: "Implement fish fighting mechanics with line tension system"},
-                {date: "2025-10-23", project: "wolfpack", msg: "Fix canvas growth bug - stop creating objects every frame"},
-                {date: "2025-10-24", project: "wolfpack", msg: "Add comprehensive gamepad support for PS4 and 8BitDo controllers"},
-                {date: "2025-10-24", project: "wolfpack", msg: "Fix game freeze in kayak/boat mode and text overlap"},
-                {date: "2025-10-24", project: "wolfpack", msg: "Implement Northern Pike ambush predator AI behaviors"},
-                {date: "2025-10-25", project: "wolfpack", msg: "CRITICAL FIX: Baitfish trapped in horizontal line in nature mode"},
-                {date: "2025-10-25", project: "wolfpack", msg: "Fix fish depth calculation using correct coordinate system"},
-                {date: "2025-10-30", project: "wolfpack", msg: "Fix memory leaks causing max connections exceeded error"},
-                {date: "2025-10-30", project: "wolfpack", msg: "Fix invisible wall bug trapping baitfish at surface"},
-                {date: "2025-11-01", project: "wolfpack", msg: "Fix invisible wall bug - predator fish stuck at edges on large screens"},
-                {date: "2025-11-02", project: "wolfpack", msg: "CRITICAL FIX: Add reel mechanical advantage when actively reeling"},
-                {date: "2025-11-02", project: "wolfpack", msg: "Improve predator bait detection and add visual detection cones"},
-                {date: "2025-11-04", project: "wolfpack", msg: "Refactor rendering to Phaser sprites and implement major optimizations"},
-                {date: "2025-11-06", project: "wolfpack", msg: "🎉 TypeScript Conversion Complete! Phase 6 & Final Commit"},
-                {date: "2025-11-06", project: "wolfpack", msg: "Fix: Critical bug fixes for organism spawning and movement"},
-                {date: "2025-11-12", project: "wolfpack", msg: "Implement 3-tier game mode system with species distribution"},
-
-                // gellyscope
-                {date: "2025-10-20", project: "gellyscope", msg: "Vibe coded 1.0 Gellyscope"},
-                {date: "2025-10-22", project: "gellyscope", msg: "Fix app freeze and refactor CSS to external file"},
-                {date: "2025-10-22", project: "gellyscope", msg: "Integrate potrace for bitmap to vector tracing"},
-                {date: "2025-10-23", project: "gellyscope", msg: "Fix critical bug: tab clicks not loading content"},
-                {date: "2025-10-23", project: "gellyscope", msg: "Refactor UI into modular component-based architecture"},
-                {date: "2025-10-24", project: "gellyscope", msg: "Implement Photoshop-style UI redesign with dark theme"},
-                {date: "2025-10-24", project: "gellyscope", msg: "Fix G-code generation and vpype configuration"},
-                {date: "2025-11-16", project: "gellyscope", msg: "Add UI enhancements: page sizes, alignment controls, and download features"},
-
-                // gellyscape
-                {date: "2025-10-22", project: "gellyscape", msg: "Implement GeoPDF processing with layer extraction and export"},
-                {date: "2025-10-23", project: "gellyscape", msg: "Fix ToUnicode CMap decompression and hex string parsing for text extraction"},
-                {date: "2025-10-31", project: "gellyscape", msg: "Fix pdf-parse broken dependency - downgrade to v1.1.1"},
-                {date: "2025-10-31", project: "gellyscape", msg: "Add layer controls, map preview, and SVG export functionality"},
-                {date: "2025-11-14", project: "gellyscape", msg: "Implement smart layer categorization: Separate plottable vector data from overlay annotations"},
-                {date: "2025-11-23", project: "gellyscape", msg: "Add USGS format detection and 2025 Topobuilder support"},
-                {date: "2025-11-26", project: "gellyscape", msg: "Fix CTM matrix multiplication order for 100K map scaling"},
-
-                // drunk-simulator
-                {date: "2025-11-08", project: "drunk-simulator", msg: "Initial commit: Bar simulator prototype with inverted layout"},
-                {date: "2025-11-08", project: "drunk-simulator", msg: "Implement bartender vision cone system with visual feedback"},
-                {date: "2025-11-08", project: "drunk-simulator", msg: "Fix bartender stalling and patron stacking issues"},
-                {date: "2025-11-08", project: "drunk-simulator", msg: "Add confetti celebration when clicking start button"},
-                {date: "2025-11-09", project: "drunk-simulator", msg: "MAJOR PERFORMANCE FIX: Cell caching + RAF throttling + remove console.log"},
-                {date: "2025-11-09", project: "drunk-simulator", msg: "Fix critical performance issue by pausing Phaser game loop when editor opens"},
-                {date: "2025-11-09", project: "drunk-simulator", msg: "Implement free game with 3 levels and complete progression system"},
-                {date: "2025-11-09", project: "drunk-simulator", msg: "Release v1.1.74 🍹 Mai Tai"},
-
-                // vt-geodata
-                {date: "2025-11-06", project: "vt-geodata", msg: "Initial commit: Vermont geodata processing and visualization"},
-                {date: "2025-11-08", project: "vt-geodata", msg: "Fix bug: Features were duplicated across datasets"},
-                {date: "2025-11-08", project: "vt-geodata", msg: "Add Vermont boundary simplification tool with slider and export"},
-                {date: "2025-11-23", project: "vt-geodata", msg: "Phase 1: Standardize map UI across all visualizations"},
-                {date: "2025-11-24", project: "vt-geodata", msg: "MILESTONE: Phase 2 Core Architecture Validated ✅"},
-                {date: "2025-11-24", project: "vt-geodata", msg: "Update progress docs: 35/39 configs (90% - PRODUCTION READY!)"},
-                {date: "2025-11-28", project: "vt-geodata", msg: "Add progressive road viewer with smart county-based loading"},
-
-                // svg-grouper
-                {date: "2025-11-18", project: "svg-grouper", msg: "Initial commit"},
-                {date: "2025-11-18", project: "svg-grouper", msg: "Implement issues #1-5: Core Electron app with SVG viewer"},
-                {date: "2025-11-18", project: "svg-grouper", msg: "Fix race condition and infinite render loop in SVG parsing"},
-                {date: "2025-11-26", project: "svg-grouper", msg: "Add line fill hatching for pen plotter support"},
-                {date: "2025-11-27", project: "svg-grouper", msg: "Fix concentric fill pattern causing app to become unresponsive"},
-                {date: "2025-11-27", project: "svg-grouper", msg: "Add TSP path optimization and order visualization for fill hatching"},
-                {date: "2025-11-28", project: "svg-grouper", msg: "Prepare for v1.0 release"},
-                {date: "2025-11-29", project: "svg-grouper", msg: "Implement Apply Crop functionality"}
-            ];
+            // commitMessages is loaded from data/commits.json (global variable)
 
             // Calculate sentiment for each message
             function calculateSentiment(msg) {
@@ -1649,23 +1571,8 @@
                     "regression": -3, "blocker": -4, "hack": -2, "workaround": -1
                 };
 
-                const commitMessages = [
-                    {date: "2025-10-23", project: "wolfpack", msg: "Implement fish fighting mechanics"},
-                    {date: "2025-10-25", project: "wolfpack", msg: "CRITICAL FIX: Baitfish trapped"},
-                    {date: "2025-10-30", project: "wolfpack", msg: "Fix memory leaks"},
-                    {date: "2025-11-02", project: "wolfpack", msg: "CRITICAL FIX: Add reel mechanical advantage"},
-                    {date: "2025-11-06", project: "wolfpack", msg: "🎉 TypeScript Conversion Complete!"},
-                    {date: "2025-10-22", project: "gellyscope", msg: "Integrate potrace for bitmap tracing"},
-                    {date: "2025-10-23", project: "gellyscope", msg: "Fix critical bug: tab clicks"},
-                    {date: "2025-10-22", project: "gellyscape", msg: "Implement GeoPDF processing"},
-                    {date: "2025-10-31", project: "gellyscape", msg: "Fix pdf-parse broken dependency"},
-                    {date: "2025-11-08", project: "drunk-simulator", msg: "Implement bartender vision cone"},
-                    {date: "2025-11-09", project: "drunk-simulator", msg: "MAJOR PERFORMANCE FIX"},
-                    {date: "2025-11-09", project: "drunk-simulator", msg: "Release v1.1.74 🍹 Mai Tai"},
-                    {date: "2025-11-24", project: "vt-geodata", msg: "MILESTONE: Phase 2 Validated ✅"},
-                    {date: "2025-11-18", project: "svg-grouper", msg: "Fix race condition"},
-                    {date: "2025-11-27", project: "svg-grouper", msg: "Fix concentric fill pattern"}
-                ];
+                // Use global commitMessages (sample for slideshow)
+                const slideCommitMessages = commitMessages.slice(0, 50);
 
                 function calculateSentiment(msg) {
                     const words = msg.toLowerCase().split(/[\s\-_:,.()\[\]]+/);
@@ -1675,7 +1582,7 @@
                     return score;
                 }
 
-                const sentimentData = commitMessages.map(d => ({
+                const sentimentData = slideCommitMessages.map(d => ({
                     ...d, dateObj: parseDate(d.date), sentiment: calculateSentiment(d.msg)
                 }));
 
@@ -1949,6 +1856,9 @@
             // Replay confetti button handler
             document.getElementById('replay-confetti').addEventListener('click', launchCelebration);
         }
+
+        // Start the application
+        init();
     </script>
 </body>
 </html>

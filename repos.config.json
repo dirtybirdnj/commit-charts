@@ -1,0 +1,15 @@
+{
+  "owner": "dirtybirdnj",
+  "repos": [
+    { "name": "wolfpack", "color": "#f97316" },
+    { "name": "gellyscope", "color": "#22c55e" },
+    { "name": "gellyscape", "color": "#3b82f6" },
+    { "name": "drunk-simulator", "color": "#ec4899" },
+    { "name": "vt-geodata", "color": "#a855f7" },
+    { "name": "svg-grouper", "color": "#eab308" }
+  ],
+  "dateRange": {
+    "mode": "auto",
+    "padding": 7
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "lastUpdated": "2025-12-02T17:00:58.713Z",
+  "dateRange": {
+    "start": "2025-10-14",
+    "end": "2025-12-09"
+  },
+  "projects": [
+    "wolfpack",
+    "gellyscope",
+    "gellyscape",
+    "drunk-simulator",
+    "vt-geodata",
+    "svg-grouper"
+  ],
+  "colors": {
+    "wolfpack": "#f97316",
+    "gellyscope": "#22c55e",
+    "gellyscape": "#3b82f6",
+    "drunk-simulator": "#ec4899",
+    "vt-geodata": "#a855f7",
+    "svg-grouper": "#eab308"
+  },
+  "totals": {
+    "commits": 1122,
+    "prs": 85,
+    "projects": 6
+  }
+}
