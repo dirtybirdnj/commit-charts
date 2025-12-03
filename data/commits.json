@@ -8370,6 +8370,13 @@
     "date": "2025-12-02",
     "project": "gellyscape",
     "type": "commit",
+    "msg": "Add layer/path highlighting and enhanced expanded view",
+    "sha": "072b219"
+  },
+  {
+    "date": "2025-12-02",
+    "project": "gellyscape",
+    "type": "commit",
     "msg": "Major performance optimizations for large PDFs",
     "sha": "c1eedd1"
   },
@@ -8379,6 +8386,104 @@
     "type": "commit",
     "msg": "Add pen plotter optimized SVG export with hex colors",
     "sha": "02e70c6"
+  },
+  {
+    "date": "2025-12-02",
+    "project": "vt-geodata",
+    "type": "commit",
+    "msg": "Add missing hydro layers to plotter SVGs",
+    "sha": "9fcc9f0"
+  },
+  {
+    "date": "2025-12-02",
+    "project": "vt-geodata",
+    "type": "commit",
+    "msg": "Add layer source info and shareable feature links to hover panel",
+    "sha": "fd3ba9f"
+  },
+  {
+    "date": "2025-12-02",
+    "project": "vt-geodata",
+    "type": "commit",
+    "msg": "Fix Quebec lakes extending into Lake Champlain, reduce road stroke widths",
+    "sha": "a827981"
+  },
+  {
+    "date": "2025-12-02",
+    "project": "vt-geodata",
+    "type": "commit",
+    "msg": "Add MA and NH hydro data for counties within map bounds",
+    "sha": "8e8e31c"
+  },
+  {
+    "date": "2025-12-02",
+    "project": "vt-geodata",
+    "type": "commit",
+    "msg": "Add grouped layer control with show/hide all and collapsible groups",
+    "sha": "53ca816"
+  },
+  {
+    "date": "2025-12-02",
+    "project": "vt-geodata",
+    "type": "commit",
+    "msg": "Update road colors to asphalt gray, add Quebec highways to plotter",
+    "sha": "4053b7a"
+  },
+  {
+    "date": "2025-12-02",
+    "project": "vt-geodata",
+    "type": "commit",
+    "msg": "Add Canadian highways and regional hydro layers",
+    "sha": "1c88388"
+  },
+  {
+    "date": "2025-12-02",
+    "project": "vt-geodata",
+    "type": "commit",
+    "msg": "Fix island rendering in SVG - proper hole support with fill-rule",
+    "sha": "b6e78f1"
+  },
+  {
+    "date": "2025-12-02",
+    "project": "vt-geodata",
+    "type": "commit",
+    "msg": "Add comprehensive Data Inventory section to index",
+    "sha": "39ebdb7"
+  },
+  {
+    "date": "2025-12-02",
+    "project": "vt-geodata",
+    "type": "commit",
+    "msg": "Add regional highways (NY, NH, MA) and unified hydro/transit overlays",
+    "sha": "a4484ca"
+  },
+  {
+    "date": "2025-12-02",
+    "project": "vt-geodata",
+    "type": "commit",
+    "msg": "Process all VT counties hydro data, fix commit ID display",
+    "sha": "baa9e47"
+  },
+  {
+    "date": "2025-12-02",
+    "project": "vt-geodata",
+    "type": "commit",
+    "msg": "Add VT highways to plotter SVGs and web viewer",
+    "sha": "29ec460"
+  },
+  {
+    "date": "2025-12-02",
+    "project": "vt-geodata",
+    "type": "commit",
+    "msg": "Add 3-tier hydro system for Chittenden and Washington counties",
+    "sha": "22c0073"
+  },
+  {
+    "date": "2025-12-02",
+    "project": "vt-geodata",
+    "type": "commit",
+    "msg": "Add commit ID badge to viewer, Chittenden water sample",
+    "sha": "8eda38e"
   },
   {
     "date": "2025-12-02",
