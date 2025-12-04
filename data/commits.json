@@ -8650,6 +8650,13 @@
     "date": "2025-12-02",
     "project": "svg-grouper",
     "type": "commit",
+    "msg": "Fix crop geometry corruption, sort by type, and export zoom overflow",
+    "sha": "b1578b8"
+  },
+  {
+    "date": "2025-12-02",
+    "project": "svg-grouper",
+    "type": "commit",
     "msg": "Add GIT_FIX.md for rewriting author history",
     "sha": "c90f486"
   },
@@ -8722,5 +8729,173 @@
     "type": "commit",
     "msg": "Improve Order tab performance, fix grouping, and evenodd fill fixes",
     "sha": "f9e1ce5"
+  },
+  {
+    "date": "2025-12-03",
+    "project": "vt-geodata",
+    "type": "commit",
+    "msg": "Add strata package branding and naming research",
+    "sha": "7fe59cc"
+  },
+  {
+    "date": "2025-12-03",
+    "project": "vt-geodata",
+    "type": "commit",
+    "msg": "Add clickable category headers to layer sandwich",
+    "sha": "b1dd955"
+  },
+  {
+    "date": "2025-12-03",
+    "project": "vt-geodata",
+    "type": "commit",
+    "msg": "Update docs: new hero images, Ortelius narrative page, layer sandwich diagram",
+    "sha": "2422dab"
+  },
+  {
+    "date": "2025-12-03",
+    "project": "vt-geodata",
+    "type": "commit",
+    "msg": "Add universal vector viewer, update layer links",
+    "sha": "d61f0ac"
+  },
+  {
+    "date": "2025-12-03",
+    "project": "vt-geodata",
+    "type": "commit",
+    "msg": "Add clickable links to JSON datasets in layer stack table",
+    "sha": "a28b1e5"
+  },
+  {
+    "date": "2025-12-03",
+    "project": "vt-geodata",
+    "type": "commit",
+    "msg": "Fix Quebec hydro/municipality alignment, add plain English docs",
+    "sha": "9e6af9a"
+  },
+  {
+    "date": "2025-12-03",
+    "project": "vt-geodata",
+    "type": "commit",
+    "msg": "Housekeeping: clean up outdated files and improve gitignore",
+    "sha": "bb87fc6"
+  },
+  {
+    "date": "2025-12-03",
+    "project": "vt-geodata",
+    "type": "commit",
+    "msg": "Add Ortelius narrative section describing layer architecture",
+    "sha": "2193349"
+  },
+  {
+    "date": "2025-12-03",
+    "project": "vt-geodata",
+    "type": "commit",
+    "msg": "Fix Quebec hydro torn geometry - regenerate rivers from CanVec 5M",
+    "sha": "fbf0a65"
+  },
+  {
+    "date": "2025-12-03",
+    "project": "vt-geodata",
+    "type": "commit",
+    "msg": "Add MA hydro layers, remove coarse simplification levels",
+    "sha": "43accca"
+  },
+  {
+    "date": "2025-12-03",
+    "project": "vt-geodata",
+    "type": "commit",
+    "msg": "Add NY hydro layers to SVG generator - water shows through cutouts",
+    "sha": "907f4b8"
+  },
+  {
+    "date": "2025-12-03",
+    "project": "vt-geodata",
+    "type": "commit",
+    "msg": "Add NH towns with water cutouts - hydro shows through properly",
+    "sha": "6012183"
+  },
+  {
+    "date": "2025-12-03",
+    "project": "vt-geodata",
+    "type": "commit",
+    "msg": "Fix bluepocalypse - remove regional hydro layers from SVG generator",
+    "sha": "d755a26"
+  },
+  {
+    "date": "2025-12-03",
+    "project": "vt-geodata",
+    "type": "commit",
+    "msg": "Add NY towns debug view config",
+    "sha": "f538107"
+  },
+  {
+    "date": "2025-12-03",
+    "project": "vt-geodata",
+    "type": "commit",
+    "msg": "Revert config changes, fix grouped layer control with pattern-based grouping",
+    "sha": "fc1f1e7"
+  },
+  {
+    "date": "2025-12-03",
+    "project": "vt-geodata",
+    "type": "commit",
+    "msg": "Fix grouped layer control to use config groups and default visibility",
+    "sha": "ad5f1e1"
+  },
+  {
+    "date": "2025-12-03",
+    "project": "vt-geodata",
+    "type": "commit",
+    "msg": "Sync web viewer layers with plotter SVGs, consolidate UI controls",
+    "sha": "e8d6343"
+  },
+  {
+    "date": "2025-12-03",
+    "project": "vt-geodata",
+    "type": "commit",
+    "msg": "Fix torn geometry in SVGs by clipping features to map bounds",
+    "sha": "3308fd2"
+  },
+  {
+    "date": "2025-12-03",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Improve Pattern Test UI with collapsible grid and fill controls",
+    "sha": "6861bdc"
+  },
+  {
+    "date": "2025-12-03",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Add Pattern Test Harness with settings panel and code refactoring",
+    "sha": "104ec47"
+  },
+  {
+    "date": "2025-12-03",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Add WILD_IDEAS.md - experimental vector art concepts",
+    "sha": "67b04e1"
+  },
+  {
+    "date": "2025-12-03",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Add pattern generation research documentation",
+    "sha": "0b1ae44"
+  },
+  {
+    "date": "2025-12-03",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Improve Merge tab with pan/zoom, connectivity validation, and compound path handling",
+    "sha": "e02124d"
+  },
+  {
+    "date": "2025-12-03",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Add Merge interface for polygon union operations",
+    "sha": "36a6b87"
   }
 ]
