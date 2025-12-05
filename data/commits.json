@@ -8897,5 +8897,19 @@
     "type": "commit",
     "msg": "Add Merge interface for polygon union operations",
     "sha": "36a6b87"
+  },
+  {
+    "date": "2025-12-04",
+    "project": "vt-geodata",
+    "type": "commit",
+    "msg": "Remove duplicate lake features overlapping major water bodies",
+    "sha": "1e62b5a"
+  },
+  {
+    "date": "2025-12-04",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Fix fill pattern polygon handling and hatch line generation",
+    "sha": "a0b48d1"
   }
 ]
