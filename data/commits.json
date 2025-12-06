@@ -8911,5 +8911,40 @@
     "type": "commit",
     "msg": "Fix fill pattern polygon handling and hatch line generation",
     "sha": "a0b48d1"
+  },
+  {
+    "date": "2025-12-05",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Add patternStats.json to track DNF patterns, hide concentric from UI",
+    "sha": "88e6bfb"
+  },
+  {
+    "date": "2025-12-05",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Add 15s timeout to pattern tests - mark DNF on timeout",
+    "sha": "9583da6"
+  },
+  {
+    "date": "2025-12-05",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Refactor PatternTest to use rat-king via IPC",
+    "sha": "061832a"
+  },
+  {
+    "date": "2025-12-05",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Integrate rat-king Rust engine for all fill pattern generation",
+    "sha": "7204124"
+  },
+  {
+    "date": "2025-12-05",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Add rat-king CLI integration and color tools",
+    "sha": "fc420a0"
   }
 ]
