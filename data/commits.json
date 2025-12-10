@@ -8946,5 +8946,19 @@
     "type": "commit",
     "msg": "Add rat-king CLI integration and color tools",
     "sha": "fc420a0"
+  },
+  {
+    "date": "2025-12-09",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Add rat-king refactor plan, fix selection box persistence bug",
+    "sha": "2b856cd"
+  },
+  {
+    "date": "2025-12-09",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Add shared UI components, fix duplicate SVG IDs, add validation script",
+    "sha": "5d14b29"
   }
 ]
