@@ -8960,5 +8960,61 @@
     "type": "commit",
     "msg": "Add shared UI components, fix duplicate SVG IDs, add validation script",
     "sha": "5d14b29"
+  },
+  {
+    "date": "2025-12-10",
+    "project": "gellyscope",
+    "type": "commit",
+    "msg": "Update session notes with codebase analysis and mask tab recommendations",
+    "sha": "864811e"
+  },
+  {
+    "date": "2025-12-10",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Unify layer lists with UnifiedLayerList, add rat-king banner previews",
+    "sha": "1e96c0e"
+  },
+  {
+    "date": "2025-12-10",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Add new rat-king fill patterns and clean up PatternTest UI",
+    "sha": "368e1b4"
+  },
+  {
+    "date": "2025-12-10",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Restore stdin mode - rat-king stdin bug fixed",
+    "sha": "2bd708f"
+  },
+  {
+    "date": "2025-12-10",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Switch to temp file approach - stdin mode broken in rat-king",
+    "sha": "4a735c8"
+  },
+  {
+    "date": "2025-12-10",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Fix rat-king CLI arguments to match current interface",
+    "sha": "213ca42"
+  },
+  {
+    "date": "2025-12-10",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Remove duplicate rat-king button, fix EPIPE error, clean up dead code",
+    "sha": "2fd34fa"
+  },
+  {
+    "date": "2025-12-10",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Remove JS fill pattern fallback, add shared components, update docs",
+    "sha": "6ddf1bc"
   }
 ]
