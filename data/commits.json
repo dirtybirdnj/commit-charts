@@ -9016,5 +9016,201 @@
     "type": "commit",
     "msg": "Remove JS fill pattern fallback, add shared components, update docs",
     "sha": "6ddf1bc"
+  },
+  {
+    "date": "2025-12-11",
+    "project": "gellyscope",
+    "type": "commit",
+    "msg": "Fix Sobel filter output to work correctly with Potrace",
+    "sha": "151263c"
+  },
+  {
+    "date": "2025-12-11",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Complete SortTab modularization, add ARCHITECTURE.md",
+    "sha": "8d3c485"
+  },
+  {
+    "date": "2025-12-11",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Update NEXT_SESSION.md with SortTab hooks and remaining phases",
+    "sha": "070103e"
+  },
+  {
+    "date": "2025-12-11",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Add extracted hooks for SortTab modularization",
+    "sha": "f37fa86"
+  },
+  {
+    "date": "2025-12-11",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Update NEXT_SESSION.md with Phase 3 component modularization",
+    "sha": "a65bf9e"
+  },
+  {
+    "date": "2025-12-11",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Modularize PatternTest.tsx into directory structure (1181 → 8 files)",
+    "sha": "40f8d43"
+  },
+  {
+    "date": "2025-12-11",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Modularize LayerTree.tsx into directory structure (691 → 5 files)",
+    "sha": "fd253ca"
+  },
+  {
+    "date": "2025-12-11",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Update NEXT_SESSION.md with Phase 2 completion",
+    "sha": "c1d3c9d"
+  },
+  {
+    "date": "2025-12-11",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Add code splitting for lazy-loaded tabs",
+    "sha": "402bcef"
+  },
+  {
+    "date": "2025-12-11",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Split AppContext into 6 focused domain contexts (631 → 8 files)",
+    "sha": "84df32c"
+  },
+  {
+    "date": "2025-12-11",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Document Phase 1 modularization progress in NEXT_SESSION.md",
+    "sha": "0ec8084"
+  },
+  {
+    "date": "2025-12-11",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Modularize pathAnalysis.ts into directory structure (389 → 5 files)",
+    "sha": "ec55b97"
+  },
+  {
+    "date": "2025-12-11",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Modularize cropSVG.ts into directory structure (689 → 7 files)",
+    "sha": "d72099a"
+  },
+  {
+    "date": "2025-12-11",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Modularize fillPatterns.ts into directory structure (609 → 5 files)",
+    "sha": "56069ea"
+  },
+  {
+    "date": "2025-12-11",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Modularize svgDimensions.ts into directory structure (578 → 7 files)",
+    "sha": "4f022d6"
+  },
+  {
+    "date": "2025-12-11",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Modularize colorDistance.ts into directory structure (563 → 6 files)",
+    "sha": "f18d258"
+  },
+  {
+    "date": "2025-12-11",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Modularize svgParser.ts into directory structure (328 → 4 files)",
+    "sha": "98db706"
+  },
+  {
+    "date": "2025-12-11",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Extract SidebarToolbar and StatusBar components from SortTab (2,636 → 2,511 lines)",
+    "sha": "2c908dc"
+  },
+  {
+    "date": "2025-12-11",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Extract pathAnalysis utilities from SortTab (2,899 → 2,636 lines)",
+    "sha": "7a6d8b6"
+  },
+  {
+    "date": "2025-12-11",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Modularize SortTab into directory structure (3,146 → 2,899 lines)",
+    "sha": "b7c1a6f"
+  },
+  {
+    "date": "2025-12-11",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Modularize FillTab into directory structure (2,831 → 2,363 lines)",
+    "sha": "f459134"
+  },
+  {
+    "date": "2025-12-11",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Extract useFlattenAll and useMenuCommands hooks from App.tsx",
+    "sha": "789b1d8"
+  },
+  {
+    "date": "2025-12-11",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Refactor geometry.ts into modular structure (1,403 → 8 files)",
+    "sha": "20dd3d2"
+  },
+  {
+    "date": "2025-12-11",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Add detailed extraction plans for modularization",
+    "sha": "b997fbd"
+  },
+  {
+    "date": "2025-12-11",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Add fill readiness UI to MergeTab and modularization plan",
+    "sha": "af85e9a"
+  },
+  {
+    "date": "2025-12-11",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Add merge-before-fill option and transform baking",
+    "sha": "1396db0"
+  },
+  {
+    "date": "2025-12-11",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "WIP: Banner temp file approach (needs stdout fix)",
+    "sha": "04462a2"
+  },
+  {
+    "date": "2025-12-11",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Add fill tab bug analysis and rat-king improvement suggestions",
+    "sha": "90c919a"
   }
 ]
