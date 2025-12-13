@@ -9028,6 +9028,48 @@
     "date": "2025-12-11",
     "project": "svg-grouper",
     "type": "commit",
+    "msg": "Update NEXT_SESSION.md with Phase 4 tab modularization summary",
+    "sha": "a85119a"
+  },
+  {
+    "date": "2025-12-11",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Modularize OrderTab into directory module (838 → 648 lines, -22.7%)",
+    "sha": "3d0caef"
+  },
+  {
+    "date": "2025-12-11",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Modularize MergeTab into directory structure",
+    "sha": "3c834f2"
+  },
+  {
+    "date": "2025-12-11",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Modularize ExportTab into directory structure",
+    "sha": "08bb33e"
+  },
+  {
+    "date": "2025-12-11",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Integrate FillTab hooks, reduce main component by 35%",
+    "sha": "9e897b9"
+  },
+  {
+    "date": "2025-12-11",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Extract FillTab hooks for modularization",
+    "sha": "2488342"
+  },
+  {
+    "date": "2025-12-11",
+    "project": "svg-grouper",
+    "type": "commit",
     "msg": "Complete SortTab modularization, add ARCHITECTURE.md",
     "sha": "8d3c485"
   },
@@ -9212,5 +9254,26 @@
     "type": "commit",
     "msg": "Add fill tab bug analysis and rat-king improvement suggestions",
     "sha": "90c919a"
+  },
+  {
+    "date": "2025-12-12",
+    "project": "gellyscope",
+    "type": "commit",
+    "msg": "Add LLM context documentation for local AI models",
+    "sha": "ea98e51"
+  },
+  {
+    "date": "2025-12-12",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Add LLM context documentation for local models",
+    "sha": "f6b71e9"
+  },
+  {
+    "date": "2025-12-12",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Remove obsolete docs, update enhancement suggestions with agent guidance",
+    "sha": "5c5f5cf"
   }
 ]
