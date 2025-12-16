@@ -6,23 +6,13 @@
   },
   {
     "date": "2025-10-22",
-    "project": "gellyscope",
-    "commits": 58
-  },
-  {
-    "date": "2025-10-22",
     "project": "gellyscape",
     "commits": 37
   },
   {
-    "date": "2025-10-23",
-    "project": "wolfpack",
-    "commits": 30
-  },
-  {
-    "date": "2025-10-23",
+    "date": "2025-10-22",
     "project": "gellyscope",
-    "commits": 45
+    "commits": 58
   },
   {
     "date": "2025-10-23",
@@ -30,39 +20,14 @@
     "commits": 22
   },
   {
-    "date": "2025-10-24",
-    "project": "wolfpack",
-    "commits": 103
+    "date": "2025-10-23",
+    "project": "gellyscope",
+    "commits": 45
   },
   {
     "date": "2025-10-24",
     "project": "gellyscope",
     "commits": 29
-  },
-  {
-    "date": "2025-10-25",
-    "project": "wolfpack",
-    "commits": 70
-  },
-  {
-    "date": "2025-10-26",
-    "project": "wolfpack",
-    "commits": 17
-  },
-  {
-    "date": "2025-10-29",
-    "project": "wolfpack",
-    "commits": 75
-  },
-  {
-    "date": "2025-10-30",
-    "project": "wolfpack",
-    "commits": 149
-  },
-  {
-    "date": "2025-10-31",
-    "project": "wolfpack",
-    "commits": 19
   },
   {
     "date": "2025-10-31",
@@ -71,58 +36,18 @@
   },
   {
     "date": "2025-11-01",
-    "project": "wolfpack",
-    "commits": 6
-  },
-  {
-    "date": "2025-11-01",
     "project": "gellyscape",
     "commits": 1
-  },
-  {
-    "date": "2025-11-02",
-    "project": "wolfpack",
-    "commits": 55
-  },
-  {
-    "date": "2025-11-03",
-    "project": "wolfpack",
-    "commits": 31
-  },
-  {
-    "date": "2025-11-04",
-    "project": "wolfpack",
-    "commits": 1
-  },
-  {
-    "date": "2025-11-05",
-    "project": "wolfpack",
-    "commits": 9
-  },
-  {
-    "date": "2025-11-06",
-    "project": "wolfpack",
-    "commits": 27
   },
   {
     "date": "2025-11-06",
     "project": "vt-geodata",
     "commits": 9
-  },
-  {
-    "date": "2025-11-08",
-    "project": "drunk-simulator",
-    "commits": 5
   },
   {
     "date": "2025-11-08",
     "project": "vt-geodata",
     "commits": 54
-  },
-  {
-    "date": "2025-11-09",
-    "project": "drunk-simulator",
-    "commits": 70
   },
   {
     "date": "2025-11-14",
@@ -131,13 +56,13 @@
   },
   {
     "date": "2025-11-16",
-    "project": "gellyscope",
-    "commits": 2
+    "project": "gellyscape",
+    "commits": 1
   },
   {
     "date": "2025-11-16",
-    "project": "gellyscape",
-    "commits": 1
+    "project": "gellyscope",
+    "commits": 2
   },
   {
     "date": "2025-11-17",
@@ -146,13 +71,13 @@
   },
   {
     "date": "2025-11-18",
-    "project": "vt-geodata",
-    "commits": 3
+    "project": "svg-grouper",
+    "commits": 6
   },
   {
     "date": "2025-11-18",
-    "project": "svg-grouper",
-    "commits": 6
+    "project": "vt-geodata",
+    "commits": 3
   },
   {
     "date": "2025-11-19",
@@ -171,13 +96,18 @@
   },
   {
     "date": "2025-11-24",
+    "project": "svg-grouper",
+    "commits": 1
+  },
+  {
+    "date": "2025-11-24",
     "project": "vt-geodata",
     "commits": 31
   },
   {
     "date": "2025-11-24",
-    "project": "svg-grouper",
-    "commits": 1
+    "project": "writetyper",
+    "commits": 2
   },
   {
     "date": "2025-11-25",
@@ -187,6 +117,11 @@
   {
     "date": "2025-11-25",
     "project": "svg-grouper",
+    "commits": 1
+  },
+  {
+    "date": "2025-11-25",
+    "project": "writetyper",
     "commits": 1
   },
   {
@@ -216,18 +151,18 @@
   },
   {
     "date": "2025-11-28",
-    "project": "vt-geodata",
-    "commits": 6
-  },
-  {
-    "date": "2025-11-28",
     "project": "svg-grouper",
     "commits": 12
   },
   {
+    "date": "2025-11-28",
+    "project": "vt-geodata",
+    "commits": 6
+  },
+  {
     "date": "2025-11-29",
-    "project": "gellyscope",
-    "commits": 1
+    "project": "commit-charts",
+    "commits": 3
   },
   {
     "date": "2025-11-29",
@@ -236,8 +171,18 @@
   },
   {
     "date": "2025-11-29",
+    "project": "gellyscope",
+    "commits": 1
+  },
+  {
+    "date": "2025-11-29",
     "project": "svg-grouper",
     "commits": 12
+  },
+  {
+    "date": "2025-11-30",
+    "project": "commit-charts",
+    "commits": 1
   },
   {
     "date": "2025-11-30",
@@ -261,8 +206,18 @@
   },
   {
     "date": "2025-12-02",
+    "project": "commit-charts",
+    "commits": 2
+  },
+  {
+    "date": "2025-12-02",
     "project": "gellyscape",
     "commits": 3
+  },
+  {
+    "date": "2025-12-02",
+    "project": "svg-grouper",
+    "commits": 12
   },
   {
     "date": "2025-12-02",
@@ -270,9 +225,24 @@
     "commits": 37
   },
   {
-    "date": "2025-12-02",
+    "date": "2025-12-03",
+    "project": "commit-charts",
+    "commits": 1
+  },
+  {
+    "date": "2025-12-03",
+    "project": "screensaver-pm",
+    "commits": 4
+  },
+  {
+    "date": "2025-12-03",
+    "project": "strata",
+    "commits": 2
+  },
+  {
+    "date": "2025-12-03",
     "project": "svg-grouper",
-    "commits": 12
+    "commits": 6
   },
   {
     "date": "2025-12-03",
@@ -281,8 +251,28 @@
   },
   {
     "date": "2025-12-03",
+    "project": "writetyper",
+    "commits": 1
+  },
+  {
+    "date": "2025-12-04",
+    "project": "commit-charts",
+    "commits": 1
+  },
+  {
+    "date": "2025-12-04",
+    "project": "rat-king",
+    "commits": 1
+  },
+  {
+    "date": "2025-12-04",
+    "project": "strata",
+    "commits": 26
+  },
+  {
+    "date": "2025-12-04",
     "project": "svg-grouper",
-    "commits": 6
+    "commits": 1
   },
   {
     "date": "2025-12-04",
@@ -290,14 +280,54 @@
     "commits": 1
   },
   {
-    "date": "2025-12-04",
-    "project": "svg-grouper",
+    "date": "2025-12-05",
+    "project": "commit-charts",
     "commits": 1
+  },
+  {
+    "date": "2025-12-05",
+    "project": "rat-king",
+    "commits": 9
   },
   {
     "date": "2025-12-05",
     "project": "svg-grouper",
     "commits": 5
+  },
+  {
+    "date": "2025-12-05",
+    "project": "writetyper",
+    "commits": 1
+  },
+  {
+    "date": "2025-12-06",
+    "project": "commit-charts",
+    "commits": 1
+  },
+  {
+    "date": "2025-12-07",
+    "project": "commit-charts",
+    "commits": 1
+  },
+  {
+    "date": "2025-12-08",
+    "project": "commit-charts",
+    "commits": 1
+  },
+  {
+    "date": "2025-12-09",
+    "project": "commit-charts",
+    "commits": 1
+  },
+  {
+    "date": "2025-12-09",
+    "project": "rat-king",
+    "commits": 10
+  },
+  {
+    "date": "2025-12-09",
+    "project": "strata",
+    "commits": 2
   },
   {
     "date": "2025-12-09",
@@ -306,8 +336,23 @@
   },
   {
     "date": "2025-12-10",
+    "project": "commit-charts",
+    "commits": 1
+  },
+  {
+    "date": "2025-12-10",
     "project": "gellyscope",
     "commits": 1
+  },
+  {
+    "date": "2025-12-10",
+    "project": "rat-king",
+    "commits": 7
+  },
+  {
+    "date": "2025-12-10",
+    "project": "strata",
+    "commits": 3
   },
   {
     "date": "2025-12-10",
@@ -316,8 +361,28 @@
   },
   {
     "date": "2025-12-11",
+    "project": "clood",
+    "commits": 4
+  },
+  {
+    "date": "2025-12-11",
+    "project": "commit-charts",
+    "commits": 1
+  },
+  {
+    "date": "2025-12-11",
     "project": "gellyscope",
     "commits": 1
+  },
+  {
+    "date": "2025-12-11",
+    "project": "rat-king",
+    "commits": 2
+  },
+  {
+    "date": "2025-12-11",
+    "project": "strata",
+    "commits": 7
   },
   {
     "date": "2025-12-11",
@@ -326,12 +391,87 @@
   },
   {
     "date": "2025-12-12",
+    "project": "clood",
+    "commits": 55
+  },
+  {
+    "date": "2025-12-12",
+    "project": "commit-charts",
+    "commits": 1
+  },
+  {
+    "date": "2025-12-12",
     "project": "gellyscope",
     "commits": 1
   },
   {
     "date": "2025-12-12",
+    "project": "rat-king",
+    "commits": 4
+  },
+  {
+    "date": "2025-12-12",
+    "project": "strata",
+    "commits": 2
+  },
+  {
+    "date": "2025-12-12",
     "project": "svg-grouper",
     "commits": 2
+  },
+  {
+    "date": "2025-12-12",
+    "project": "writetyper",
+    "commits": 1
+  },
+  {
+    "date": "2025-12-13",
+    "project": "clood",
+    "commits": 20
+  },
+  {
+    "date": "2025-12-13",
+    "project": "commit-charts",
+    "commits": 1
+  },
+  {
+    "date": "2025-12-14",
+    "project": "clood",
+    "commits": 1
+  },
+  {
+    "date": "2025-12-14",
+    "project": "commit-charts",
+    "commits": 1
+  },
+  {
+    "date": "2025-12-15",
+    "project": "commit-charts",
+    "commits": 1
+  },
+  {
+    "date": "2025-12-16",
+    "project": "chimborazo",
+    "commits": 1
+  },
+  {
+    "date": "2025-12-16",
+    "project": "clood",
+    "commits": 10
+  },
+  {
+    "date": "2025-12-16",
+    "project": "commit-charts",
+    "commits": 1
+  },
+  {
+    "date": "2025-12-16",
+    "project": "dogfood",
+    "commits": 2
+  },
+  {
+    "date": "2025-12-16",
+    "project": "rat-king",
+    "commits": 1
   }
 ]

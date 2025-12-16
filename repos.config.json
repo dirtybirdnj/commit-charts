@@ -1,12 +1,19 @@
 {
   "owner": "dirtybirdnj",
+  "startDate": "2025-01-01",
   "repos": [
-    { "name": "wolfpack", "color": "#f97316" },
-    { "name": "gellyscope", "color": "#22c55e" },
-    { "name": "gellyscape", "color": "#3b82f6" },
-    { "name": "drunk-simulator", "color": "#ec4899" },
-    { "name": "vt-geodata", "color": "#a855f7" },
-    { "name": "svg-grouper", "color": "#eab308" }
+    { "name": "chimborazo", "color": "#f97316" },
+    { "name": "clood", "color": "#22c55e" },
+    { "name": "commit-charts", "color": "#3b82f6" },
+    { "name": "dogfood", "color": "#ec4899" },
+    { "name": "gellyscape", "color": "#a855f7" },
+    { "name": "gellyscope", "color": "#eab308" },
+    { "name": "rat-king", "color": "#14b8a6" },
+    { "name": "screensaver-pm", "color": "#f43f5e" },
+    { "name": "strata", "color": "#8b5cf6" },
+    { "name": "svg-grouper", "color": "#06b6d4" },
+    { "name": "vt-geodata", "color": "#84cc16" },
+    { "name": "writetyper", "color": "#f59e0b" }
   ],
   "dateRange": {
     "mode": "auto",

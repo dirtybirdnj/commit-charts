@@ -1,28 +1,40 @@
 {
-  "lastUpdated": "2025-12-16T00:23:22.591Z",
+  "lastUpdated": "2025-12-16T19:00:00.000Z",
   "dateRange": {
     "start": "2025-10-14",
-    "end": "2025-12-19"
+    "end": "2025-12-23"
   },
   "projects": [
-    "wolfpack",
-    "gellyscope",
+    "chimborazo",
+    "clood",
+    "commit-charts",
+    "dogfood",
     "gellyscape",
-    "drunk-simulator",
+    "gellyscope",
+    "rat-king",
+    "screensaver-pm",
+    "strata",
+    "svg-grouper",
     "vt-geodata",
-    "svg-grouper"
+    "writetyper"
   ],
   "colors": {
-    "wolfpack": "#f97316",
-    "gellyscope": "#22c55e",
-    "gellyscape": "#3b82f6",
-    "drunk-simulator": "#ec4899",
-    "vt-geodata": "#a855f7",
-    "svg-grouper": "#eab308"
+    "chimborazo": "#f97316",
+    "clood": "#22c55e",
+    "commit-charts": "#3b82f6",
+    "dogfood": "#ec4899",
+    "gellyscape": "#a855f7",
+    "gellyscope": "#eab308",
+    "rat-king": "#14b8a6",
+    "screensaver-pm": "#f43f5e",
+    "strata": "#8b5cf6",
+    "svg-grouper": "#06b6d4",
+    "vt-geodata": "#84cc16",
+    "writetyper": "#f59e0b"
   },
   "totals": {
-    "commits": 1216,
-    "prs": 85,
-    "projects": 6
+    "commits": 748,
+    "prs": 0,
+    "projects": 12
   }
 }

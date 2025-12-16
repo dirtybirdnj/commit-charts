@@ -105,9 +105,16 @@ async function main() {
   }
 
   // Combine commits and PRs
-  const allData = [...allCommits, ...allPRs].sort((a, b) =>
+  let allData = [...allCommits, ...allPRs].sort((a, b) =>
     new Date(a.date) - new Date(b.date)
   );
+
+  // Apply date filter if configured
+  if (config.startDate) {
+    const startDate = config.startDate;
+    allData = allData.filter(d => d.date >= startDate);
+    console.log(`\nFiltered to commits from ${startDate} onwards`);
+  }
 
   // Calculate date range
   const dates = allData.map(d => new Date(d.date));
@@ -119,9 +126,9 @@ async function main() {
   minDate.setDate(minDate.getDate() - padding);
   maxDate.setDate(maxDate.getDate() + padding);
 
-  // Generate daily stats (commit counts per project per day)
+  // Generate daily stats (commit counts per project per day) - use filtered data
   const statsMap = new Map();
-  allCommits.forEach(commit => {
+  allData.filter(d => d.type === 'commit').forEach(commit => {
     const key = `${commit.date}-${commit.project}`;
     if (!statsMap.has(key)) {
       statsMap.set(key, { date: commit.date, project: commit.project, commits: 0 });
@@ -148,8 +155,8 @@ async function main() {
     projects: config.repos.map(r => r.name),
     colors,
     totals: {
-      commits: allCommits.length,
-      prs: allPRs.length,
+      commits: allData.filter(d => d.type === 'commit').length,
+      prs: allData.filter(d => d.type === 'pr').length,
       projects: config.repos.length
     }
   };
