@@ -5532,6 +5532,237 @@
   },
   {
     "date": "2025-12-17",
+    "project": "chimborazo",
+    "type": "commit",
+    "msg": "Add naming convention to top of CLAUDE.md",
+    "sha": "a1c5546"
+  },
+  {
+    "date": "2025-12-17",
+    "project": "clood",
+    "type": "commit",
+    "msg": "The Council convenes: Rat King Challenge designed",
+    "sha": "a69719e"
+  },
+  {
+    "date": "2025-12-17",
+    "project": "clood",
+    "type": "commit",
+    "msg": "clood catfight: Release the cats CLI command",
+    "sha": "0d15270"
+  },
+  {
+    "date": "2025-12-17",
+    "project": "clood",
+    "type": "commit",
+    "msg": "All-nighter handoff: laptop → ubuntu25",
+    "sha": "1a278b7"
+  },
+  {
+    "date": "2025-12-17",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Chapter 4: The Chairman's Blade - narrative and jelly beans",
+    "sha": "16f1034"
+  },
+  {
+    "date": "2025-12-17",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Battle 2 complete: Recipe Parser - Persian wins again!",
+    "sha": "70c008b"
+  },
+  {
+    "date": "2025-12-17",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Battle 1 complete: HTTP Fetcher catfight results",
+    "sha": "e50ed0f"
+  },
+  {
+    "date": "2025-12-17",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Chapter 3: Kitchen Stadium - The narrative continues",
+    "sha": "fc47277"
+  },
+  {
+    "date": "2025-12-17",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Kitchen Stadium preparation + Mac Mini setup guide",
+    "sha": "e4f54c9"
+  },
+  {
+    "date": "2025-12-17",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Update session handoff - Tiger enters the catfight arena",
+    "sha": "c765066"
+  },
+  {
+    "date": "2025-12-17",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Merge pull request #43 from dirtybirdnj/lore/overnight-spirits",
+    "sha": "f266bce"
+  },
+  {
+    "date": "2025-12-17",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Merge pull request #47 from dirtybirdnj/feature/focus-guardian-29",
+    "sha": "625ba00"
+  },
+  {
+    "date": "2025-12-17",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Merge pull request #46 from dirtybirdnj/feature/issue-20-garden",
+    "sha": "af4481f"
+  },
+  {
+    "date": "2025-12-17",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Add --garden flag to hosts command for Server Garden visualization (#20)",
+    "sha": "18982ad"
+  },
+  {
+    "date": "2025-12-17",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Merge pull request #45 from dirtybirdnj/feature/issue-18-bonsai",
+    "sha": "2555b48"
+  },
+  {
+    "date": "2025-12-17",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Merge pull request #44 from dirtybirdnj/feature/issue-13-verbose-json",
+    "sha": "a77d9a7"
+  },
+  {
+    "date": "2025-12-17",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Update session handoff - Gamera-kun implemented",
+    "sha": "54085c8"
+  },
+  {
+    "date": "2025-12-17",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Add Focus Guardian (Gamera-kun) to chat command (#29)",
+    "sha": "9b5e337"
+  },
+  {
+    "date": "2025-12-17",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Document overnight catfight session - The Garden Heals",
+    "sha": "a051e2a"
+  },
+  {
+    "date": "2025-12-17",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Add clood bonsai command for ASCII tree generation",
+    "sha": "8711115"
+  },
+  {
+    "date": "2025-12-17",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Add --verbose and --json flags to ask command",
+    "sha": "b0b3b33"
+  },
+  {
+    "date": "2025-12-17",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Add overnight spirits haiku collection",
+    "sha": "cabbd66"
+  },
+  {
+    "date": "2025-12-17",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Update session handoff - Agent Delegation Sprint",
+    "sha": "442858c"
+  },
+  {
+    "date": "2025-12-17",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Add clood delegate command for task handoff (#38)",
+    "sha": "0fe9169"
+  },
+  {
+    "date": "2025-12-17",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Add agent role configuration system (#36)",
+    "sha": "1827eb5"
+  },
+  {
+    "date": "2025-12-17",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Add clood run command for agent delegation (#35)",
+    "sha": "ca6f5fc"
+  },
+  {
+    "date": "2025-12-17",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Add agent delegation epic and The Two Paths lore",
+    "sha": "b067e69"
+  },
+  {
+    "date": "2025-12-17",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Add THE_COMPLETE_LEGEND.md - unified narrative",
+    "sha": "b169c35"
+  },
+  {
+    "date": "2025-12-17",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Add clood pull command, fix IP, improve host display",
+    "sha": "90e4a70"
+  },
+  {
+    "date": "2025-12-17",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Add session command and AGENTS.md for cross-agent context",
+    "sha": "35e983c"
+  },
+  {
+    "date": "2025-12-17",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Fix LAST_SESSION.md gitignore + add haiku collection",
+    "sha": "ea092c5"
+  },
+  {
+    "date": "2025-12-17",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Fix hardcoded IP for ubuntu25 (.64 -> .63)",
+    "sha": "e862b51"
+  },
+  {
+    "date": "2025-12-17",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Add 'Stupid Faster' philosophy - credit Shen Comix",
+    "sha": "66a5bbc"
+  },
+  {
+    "date": "2025-12-17",
     "project": "clood",
     "type": "commit",
     "msg": "Fix ubuntu25 IP (.63 → .64) and introduce Gamera-kun",
@@ -5562,6 +5793,13 @@
     "date": "2025-12-17",
     "project": "commit-charts",
     "type": "commit",
+    "msg": "Update commit data 2025-12-17",
+    "sha": "be536fa"
+  },
+  {
+    "date": "2025-12-17",
+    "project": "commit-charts",
+    "type": "commit",
     "msg": "Add session summary for 2025-12-16",
     "sha": "fd12c21"
   },
@@ -5571,5 +5809,64 @@
     "type": "commit",
     "msg": "Add implementation plan for beautiful charts integration",
     "sha": "0a884e0"
+  },
+  {
+    "date": "2025-12-17",
+    "project": "rat-king",
+    "type": "commit",
+    "msg": "Added edge case / difficult file argentia stamp logo",
+    "sha": "bd464de"
+  },
+  {
+    "date": "2025-12-17",
+    "project": "svg-grouper",
+    "type": "commit",
+    "msg": "Fix import error handling and zoom issues",
+    "sha": "16faa7b"
+  },
+  {
+    "date": "2025-12-17",
+    "project": "clood",
+    "type": "pr",
+    "msg": "PR #47: Add Focus Guardian (Gamera-kun) to chat command",
+    "number": 47,
+    "state": "closed",
+    "merged": true
+  },
+  {
+    "date": "2025-12-17",
+    "project": "clood",
+    "type": "pr",
+    "msg": "PR #46: Add --garden flag to hosts command for Server Garden visualization",
+    "number": 46,
+    "state": "closed",
+    "merged": true
+  },
+  {
+    "date": "2025-12-17",
+    "project": "clood",
+    "type": "pr",
+    "msg": "PR #45: Add clood bonsai command for ASCII tree generation",
+    "number": 45,
+    "state": "closed",
+    "merged": true
+  },
+  {
+    "date": "2025-12-17",
+    "project": "clood",
+    "type": "pr",
+    "msg": "PR #44: Add --verbose and --json flags to ask command",
+    "number": 44,
+    "state": "closed",
+    "merged": true
+  },
+  {
+    "date": "2025-12-17",
+    "project": "clood",
+    "type": "pr",
+    "msg": "PR #43: Add overnight spirits haiku collection",
+    "number": 43,
+    "state": "closed",
+    "merged": true
   }
 ]
