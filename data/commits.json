@@ -5868,5 +5868,187 @@
     "number": 43,
     "state": "closed",
     "merged": true
+  },
+  {
+    "date": "2025-12-18",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Garden tending: mise en place while Bird-san rests",
+    "sha": "255a42d"
+  },
+  {
+    "date": "2025-12-18",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Iron Chef: clood beans command implemented",
+    "sha": "5146fe2"
+  },
+  {
+    "date": "2025-12-18",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Lore expansion: Spinal Tap canon & new characters",
+    "sha": "f2ccfb1"
+  },
+  {
+    "date": "2025-12-18",
+    "project": "clood",
+    "type": "commit",
+    "msg": "The Deepest Layer: Soul of the Project",
+    "sha": "4fe0b12"
+  },
+  {
+    "date": "2025-12-18",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Emergency context dump: The Containment session",
+    "sha": "972528b"
+  },
+  {
+    "date": "2025-12-18",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Catfight analysis: Prune weak branches, strengthen the garden",
+    "sha": "9fc15d3"
+  },
+  {
+    "date": "2025-12-18",
+    "project": "clood",
+    "type": "commit",
+    "msg": "The Containment: Chapter of the 1000 Facet Bean",
+    "sha": "d00bff6"
+  },
+  {
+    "date": "2025-12-18",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Triage Post-Mortem Suite: Reports, Quality Scoring & Fast Mode",
+    "sha": "3b5851a"
+  },
+  {
+    "date": "2025-12-18",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Triage infrastructure: JSONL logging & post-mortem analysis tools",
+    "sha": "7c8f919"
+  },
+  {
+    "date": "2025-12-18",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Triage grows wiser: Label-aware processing & auto-tagging",
+    "sha": "e4dc3b9"
+  },
+  {
+    "date": "2025-12-18",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Fix heredoc escaping in issue_catfight.sh",
+    "sha": "1c899fe"
+  },
+  {
+    "date": "2025-12-18",
+    "project": "clood",
+    "type": "commit",
+    "msg": "All Along the Watchtower: TUI for catfight observation",
+    "sha": "3369b48"
+  },
+  {
+    "date": "2025-12-18",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Catfight gets claws: streaming spinner & GitHub issue integration",
+    "sha": "a73248d"
+  },
+  {
+    "date": "2025-12-18",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Overnight catfight triage: Issue processor for unattended analysis",
+    "sha": "3787a4c"
+  },
+  {
+    "date": "2025-12-18",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Flying Cats of Delaware: Static prompt scaffolding",
+    "sha": "dcf1fbf"
+  },
+  {
+    "date": "2025-12-18",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Adding uncommited work from mac mini. image gen reccomendations from claude chat",
+    "sha": "d604960"
+  },
+  {
+    "date": "2025-12-18",
+    "project": "clood",
+    "type": "commit",
+    "msg": "The Bar Session Finale: Bean #8 & Session History",
+    "sha": "92928b1"
+  },
+  {
+    "date": "2025-12-18",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Bean #6 & #7: Infodump Detection & Token Visualization",
+    "sha": "e237985"
+  },
+  {
+    "date": "2025-12-18",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Engage! SSE MCP Server & Golden Paths",
+    "sha": "4b42589"
+  },
+  {
+    "date": "2025-12-18",
+    "project": "clood",
+    "type": "commit",
+    "msg": "The Jelly Bean of 1000 Facets: MCP Integration & Zen Mode",
+    "sha": "daaae73"
+  },
+  {
+    "date": "2025-12-18",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Session 6: The Bar Session haikus - Pop Culture Catfight",
+    "sha": "87ccc5a"
+  },
+  {
+    "date": "2025-12-18",
+    "project": "clood",
+    "type": "commit",
+    "msg": "The Vertical Garden: Fish, Shrimp, and The Cave",
+    "sha": "4b5ee58"
+  },
+  {
+    "date": "2025-12-18",
+    "project": "clood",
+    "type": "commit",
+    "msg": "The Gate of Silent Thunder: Three Needs revealed",
+    "sha": "ce374d7"
+  },
+  {
+    "date": "2025-12-18",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Sauce Detection: Gucci Mane names the feature",
+    "sha": "ab64211"
+  },
+  {
+    "date": "2025-12-18",
+    "project": "clood",
+    "type": "commit",
+    "msg": "The Genpei Catfight: Two kitchens, one arena",
+    "sha": "e96a476"
+  },
+  {
+    "date": "2025-12-18",
+    "project": "commit-charts",
+    "type": "commit",
+    "msg": "Update commit data 2025-12-18",
+    "sha": "0f27a13"
   }
 ]
