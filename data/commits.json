@@ -6050,5 +6050,427 @@
     "type": "commit",
     "msg": "Update commit data 2025-12-18",
     "sha": "0f27a13"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "feat: clood models --storage flag (#54)",
+    "sha": "87ecb17"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "docs: Issue Triage Ritual - 82 open issues organized",
+    "sha": "c8144b0"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "docs: Add Historical Phases from full git archaeology (215 commits)",
+    "sha": "f700e81"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "docs: Development Spears - the five parallel threads",
+    "sha": "91d49ee"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "bean: #17 Project Portfolio Awareness (The Neglected Gardens)",
+    "sha": "90e09ee"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "bean: #16 TUI Kitchen Sink",
+    "sha": "2ddc7e8"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "docs: Natural language reasoning about sauce",
+    "sha": "4e34186"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "docs: Storytime complete rewrite - sauce on/off + two functions",
+    "sha": "9c61a06"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "docs: Sauce Matrix - detection vs expression",
+    "sha": "2ff2a10"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "docs: Storytime Architecture + Bean #15 System of Sauce",
+    "sha": "f57d8c8"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "lore: The Spirits emerge + Bean #14 --flying-cats",
+    "sha": "ac8d65b"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "story: The Mic Drop + Bean #13 Storytime",
+    "sha": "1c58020"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "bean: #12 Flying Cats & Project Personalities (bcbc ethos)",
+    "sha": "c286022"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "story: The Inception - Chapter 7 + Test Plan for ubuntu25",
+    "sha": "039b0ce"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "feat: LLM Inception + Live Streaming Catfight (Bean #150)",
+    "sha": "bd9c5b3"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "feat: bcbc runs static analysis and launches Claude with context",
+    "sha": "7a65c19"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "build: `clood bcbc` as top-level command",
+    "sha": "8fb3caa"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "build: Add `clood build bcbc` shorthand",
+    "sha": "a1c2615"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "story: Honest fourth wall break - Mat builds the guardrails",
+    "sha": "d57c6c0"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "story: AI-specific anti-patterns + fourth wall break",
+    "sha": "2d6b128"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "story: YOLO MODE MONTAGE - the anti-patterns we prevent",
+    "sha": "7e8c23d"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "story: Wojacks yolo anyway, world explodes",
+    "sha": "21269f5"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "story: Fix ending - clood prevents yolo, not enables it",
+    "sha": "840ea42"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "story: Rewrite kabuki theater with README wojacks",
+    "sha": "af1f7af"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "local-first: The Council of Wojacks convenes",
+    "sha": "840a0a0"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "mcp: Add local discovery tools + simple `clood mcp` command",
+    "sha": "a06cf84"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "snakeway-proto: Fix UI jumping and number input bugs",
+    "sha": "6c5ad1b"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "snakeway-proto: Persistent input box + Follow tail (F key)",
+    "sha": "1cd7133"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "snakeway-proto: Show typing inline in scroll + bottom bar",
+    "sha": "3b2b3f1"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "snakeway-proto: User enters initial prompt before streaming",
+    "sha": "11b7805"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "snakeway-proto: Add conversation history and context overlay",
+    "sha": "87cb6c1"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "snakeway-proto: Add question summary overlay (Tab)",
+    "sha": "a95ab2c"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "snakeway-proto: Add chained interaction and type-anywhere input",
+    "sha": "c67e73b"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "snakeway-proto: Add word wrapping for LLM responses",
+    "sha": "29500dd"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "snakeway-proto: Show model name in header",
+    "sha": "e946d7b"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "build: Show version, ollama, and system info after build",
+    "sha": "5b35553"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "flying-cats: Add LoremIpsum and Novel bulk generators",
+    "sha": "f6e715d"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "snakeway-proto: REALTIME STREAMING MODE 🐍",
+    "sha": "9fb3de1"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "snakeway-proto: FLYING CATS NOVEL MODE - 2000 tokens, chaos prompts",
+    "sha": "ad9d705"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "snakeway-proto: Add --live flag for real ollama content",
+    "sha": "3b716bc"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "snakeway-proto: Center content in viewport",
+    "sha": "6987d6e"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "snakeway-proto: Enable mouse/trackpad scrolling",
+    "sha": "08ba57c"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Snake Way Phase 1 prototype: viewport navigation",
+    "sha": "04c7a3c"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "PATTERNS.md & LORE-WIKI.md: The map and the mythology",
+    "sha": "7d0d28c"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Bean #10 & #11: Agent Shorthand & Windows Support",
+    "sha": "9918f97"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "clood build: Cross-platform support (Linux, Windows)",
+    "sha": "d71fa9d"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "clood serve: Add --host flag for network exposure",
+    "sha": "c8df7c7"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "clood build clood: Meta self-building command",
+    "sha": "87aad44"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Update LAST_SESSION with all Snake Way prep commits",
+    "sha": "db72ddb"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Snake Way: Pokédex pattern for seamless two-mode UI",
+    "sha": "dc0c772"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "SWOT: Add Plan B - MVP without inline input zones",
+    "sha": "4b4c77c"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Nimbus Airlines: Meme Lore & Marketing Imagery",
+    "sha": "b1fb469"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Update LAST_SESSION with SWOT findings & layer cake",
+    "sha": "44388d9"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "SWOT Analysis: Snake Way Component Breakdown",
+    "sha": "db932c4"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Chapter 6: The Nimbus Revelation",
+    "sha": "f15b682"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Bean #9: Snake Way & The Flying Nimbus",
+    "sha": "331c028"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "commit",
+    "msg": "MCP: Add clood_ask tool for local model dialogue",
+    "sha": "500fec2"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "commit-charts",
+    "type": "commit",
+    "msg": "Update commit data 2025-12-19",
+    "sha": "9346bc0"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "rat-king",
+    "type": "commit",
+    "msg": "Add lore: The Watching and Letter to the Rat King",
+    "sha": "0f2ab38"
+  },
+  {
+    "date": "2025-12-19",
+    "project": "clood",
+    "type": "pr",
+    "msg": "PR #142: feat(sd): Stack Deconstruction Engine - CivitAI Remix System",
+    "number": 142,
+    "state": "open",
+    "merged": false
   }
 ]
