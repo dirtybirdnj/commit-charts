@@ -6472,5 +6472,306 @@
     "number": 142,
     "state": "open",
     "merged": false
+  },
+  {
+    "date": "2025-12-20",
+    "project": "clood",
+    "type": "commit",
+    "msg": "docs: Add ELEVATOR_PITCH.md - the professional intro",
+    "sha": "b0ba557"
+  },
+  {
+    "date": "2025-12-20",
+    "project": "clood",
+    "type": "commit",
+    "msg": "lore: The Council of Polish - Spirit of Jobs unveils the plan",
+    "sha": "00a26b0"
+  },
+  {
+    "date": "2025-12-20",
+    "project": "clood",
+    "type": "commit",
+    "msg": "lore: Full session chronicle + storytime bean #183",
+    "sha": "153dfa2"
+  },
+  {
+    "date": "2025-12-20",
+    "project": "clood",
+    "type": "commit",
+    "msg": "lore: Memeception - a love letter to the internet",
+    "sha": "65275c3"
+  },
+  {
+    "date": "2025-12-20",
+    "project": "clood",
+    "type": "commit",
+    "msg": "fix: Wojaks crash into Rust crates, Rat King is annoyed",
+    "sha": "8d7dfe4"
+  },
+  {
+    "date": "2025-12-20",
+    "project": "clood",
+    "type": "commit",
+    "msg": "lore: The Storm Rolls In - expedition's end",
+    "sha": "d9a4e3f"
+  },
+  {
+    "date": "2025-12-20",
+    "project": "clood",
+    "type": "commit",
+    "msg": "lore: The Apollo Doctrine - understanding before implementation",
+    "sha": "200c8a6"
+  },
+  {
+    "date": "2025-12-20",
+    "project": "clood",
+    "type": "commit",
+    "msg": "lore: The Moonshot - DOOM from Rat King patterns",
+    "sha": "86ae56b"
+  },
+  {
+    "date": "2025-12-20",
+    "project": "clood",
+    "type": "commit",
+    "msg": "docs: Claude Vacuum protocol and summit prep chronicle",
+    "sha": "bd5780e"
+  },
+  {
+    "date": "2025-12-20",
+    "project": "clood",
+    "type": "commit",
+    "msg": "feat: Model classification system with category-based recommendations",
+    "sha": "9fd0156"
+  },
+  {
+    "date": "2025-12-20",
+    "project": "clood",
+    "type": "commit",
+    "msg": "feat: Agent infrastructure for Strata parity (#41, #48, #97, #6)",
+    "sha": "78b0789"
+  },
+  {
+    "date": "2025-12-20",
+    "project": "clood",
+    "type": "commit",
+    "msg": "docs: Update lore with flying cats and failed summit context",
+    "sha": "bd88d7b"
+  },
+  {
+    "date": "2025-12-20",
+    "project": "clood",
+    "type": "commit",
+    "msg": "feat: LLM Inception streaming, auto-continuation, and parallel skeleton",
+    "sha": "eb66b90"
+  },
+  {
+    "date": "2025-12-20",
+    "project": "clood",
+    "type": "commit",
+    "msg": "feat: Add clood extract for unstructured→structured data (#131)",
+    "sha": "a15a282"
+  },
+  {
+    "date": "2025-12-20",
+    "project": "clood",
+    "type": "commit",
+    "msg": "feat: Add clood generate-tests for AI-powered test scaffolding (#126)",
+    "sha": "eca455e"
+  },
+  {
+    "date": "2025-12-20",
+    "project": "clood",
+    "type": "commit",
+    "msg": "docs: Add Catfight Model Rankings analysis (#122)",
+    "sha": "923aacd"
+  },
+  {
+    "date": "2025-12-20",
+    "project": "clood",
+    "type": "commit",
+    "msg": "feat: Add clood update command for self-updating (#170)",
+    "sha": "852879e"
+  },
+  {
+    "date": "2025-12-20",
+    "project": "clood",
+    "type": "commit",
+    "msg": "docs: Add De-Icing Safety Protocol (#49)",
+    "sha": "4cd0d16"
+  },
+  {
+    "date": "2025-12-20",
+    "project": "clood",
+    "type": "commit",
+    "msg": "feat: Add model attribution to commit-msg output (#88)",
+    "sha": "1ca1540"
+  },
+  {
+    "date": "2025-12-20",
+    "project": "clood",
+    "type": "commit",
+    "msg": "docs: Add lore INDEX.md and CHARACTERS.md for navigation (#105)",
+    "sha": "b78740c"
+  },
+  {
+    "date": "2025-12-20",
+    "project": "clood",
+    "type": "commit",
+    "msg": "feat: Add clood focus command and integrate with handoff (#120)",
+    "sha": "fe56ce6"
+  },
+  {
+    "date": "2025-12-20",
+    "project": "clood",
+    "type": "commit",
+    "msg": "docs: Add catfight battle log and Chimborazo Chronicles lore",
+    "sha": "ff6f0e9"
+  },
+  {
+    "date": "2025-12-20",
+    "project": "clood",
+    "type": "commit",
+    "msg": "test: Add integration tests for router and flyingcats packages (#110)",
+    "sha": "5790766"
+  },
+  {
+    "date": "2025-12-20",
+    "project": "clood",
+    "type": "commit",
+    "msg": "feat: Add clood review-pr for automated PR review (#127)",
+    "sha": "7dc3309"
+  },
+  {
+    "date": "2025-12-20",
+    "project": "clood",
+    "type": "commit",
+    "msg": "feat: Add clood setup first-run wizard (#157)",
+    "sha": "61045f5"
+  },
+  {
+    "date": "2025-12-20",
+    "project": "clood",
+    "type": "commit",
+    "msg": "feat: Add Homebrew formula, release workflow, and shell completions (#114, #170)",
+    "sha": "d237fcd"
+  },
+  {
+    "date": "2025-12-20",
+    "project": "clood",
+    "type": "commit",
+    "msg": "docs: Add comprehensive troubleshooting guide (#113)",
+    "sha": "5f70569"
+  },
+  {
+    "date": "2025-12-20",
+    "project": "clood",
+    "type": "commit",
+    "msg": "docs: Add comprehensive godoc for router package (#109)",
+    "sha": "2de444f"
+  },
+  {
+    "date": "2025-12-20",
+    "project": "clood",
+    "type": "commit",
+    "msg": "fix: Update go.sum for Windows cross-compilation",
+    "sha": "42f0a2d"
+  },
+  {
+    "date": "2025-12-20",
+    "project": "clood",
+    "type": "commit",
+    "msg": "fix: Add X11 dependencies to CI for clipboard package",
+    "sha": "10be735"
+  },
+  {
+    "date": "2025-12-20",
+    "project": "clood",
+    "type": "commit",
+    "msg": "feat: Add clood agent command with tool-calling support",
+    "sha": "ff9516a"
+  },
+  {
+    "date": "2025-12-20",
+    "project": "clood",
+    "type": "commit",
+    "msg": "feat: catfight-live output capture - stdout dump + --log flag",
+    "sha": "15e0a73"
+  },
+  {
+    "date": "2025-12-20",
+    "project": "clood",
+    "type": "commit",
+    "msg": "feat: Add build-check command for BCBC verification loops",
+    "sha": "db1cf9d"
+  },
+  {
+    "date": "2025-12-20",
+    "project": "clood",
+    "type": "commit",
+    "msg": "feat: Add settings-audit command to detect Claude Code permission corruption",
+    "sha": "3676b86"
+  },
+  {
+    "date": "2025-12-20",
+    "project": "clood",
+    "type": "commit",
+    "msg": "feat: CI/CD pipeline and clood commit-msg command (#119, #125)",
+    "sha": "1b15e55"
+  },
+  {
+    "date": "2025-12-20",
+    "project": "clood",
+    "type": "commit",
+    "msg": "feat: MCP tools expansion + ATC viewer dashboard (#168)",
+    "sha": "2eb4eee"
+  },
+  {
+    "date": "2025-12-20",
+    "project": "clood",
+    "type": "commit",
+    "msg": "feat: Windows support - build targets, hardware detection, config paths (#153, #154, #155)",
+    "sha": "0080ae5"
+  },
+  {
+    "date": "2025-12-20",
+    "project": "clood",
+    "type": "commit",
+    "msg": "feat: clood verify - installation verification suite (#159)",
+    "sha": "bd38846"
+  },
+  {
+    "date": "2025-12-20",
+    "project": "clood",
+    "type": "commit",
+    "msg": "feat: clood doctor - unified diagnostic command (#156)",
+    "sha": "0971d75"
+  },
+  {
+    "date": "2025-12-20",
+    "project": "clood",
+    "type": "commit",
+    "msg": "feat: clood health --json for agent-friendly output",
+    "sha": "f3bdc27"
+  },
+  {
+    "date": "2025-12-20",
+    "project": "clood",
+    "type": "commit",
+    "msg": "docs: Multi-machine setup guide (#117)",
+    "sha": "55cb5c7"
+  },
+  {
+    "date": "2025-12-20",
+    "project": "clood",
+    "type": "commit",
+    "msg": "feat: clood discover - network scanner for Ollama instances (#65)",
+    "sha": "9e0c082"
+  },
+  {
+    "date": "2025-12-20",
+    "project": "commit-charts",
+    "type": "commit",
+    "msg": "Update commit data 2025-12-20",
+    "sha": "3ca2813"
   }
 ]
