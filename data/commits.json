@@ -6773,5 +6773,40 @@
     "type": "commit",
     "msg": "Update commit data 2025-12-20",
     "sha": "3ca2813"
+  },
+  {
+    "date": "2025-12-21",
+    "project": "clood",
+    "type": "commit",
+    "msg": "docs: Add MODEL_EVALUATION_GUIDE.md for Chimborazo experiments",
+    "sha": "ccd34bd"
+  },
+  {
+    "date": "2025-12-21",
+    "project": "clood",
+    "type": "commit",
+    "msg": "docs: Add plain English USAGE_GUIDE.md",
+    "sha": "61bc5fd"
+  },
+  {
+    "date": "2025-12-21",
+    "project": "clood",
+    "type": "commit",
+    "msg": "fix: Disable cbonsai in zen greeting - ncurses breaks terminal output",
+    "sha": "982202b"
+  },
+  {
+    "date": "2025-12-21",
+    "project": "clood",
+    "type": "commit",
+    "msg": "feat: Organized help menu + CLI guide + bonsai terminal fix",
+    "sha": "5cb6b25"
+  },
+  {
+    "date": "2025-12-21",
+    "project": "commit-charts",
+    "type": "commit",
+    "msg": "Update commit data 2025-12-21",
+    "sha": "f25f7cd"
   }
 ]
