@@ -6815,5 +6815,215 @@
     "type": "commit",
     "msg": "Update commit data 2025-12-22",
     "sha": "bdc918e"
+  },
+  {
+    "date": "2025-12-23",
+    "project": "clood",
+    "type": "commit",
+    "msg": "feat: Add clood batch command for bulk processing (#132)",
+    "sha": "e06b47e"
+  },
+  {
+    "date": "2025-12-23",
+    "project": "clood",
+    "type": "commit",
+    "msg": "feat: Add clood document command for context-aware docs (#129)",
+    "sha": "48313e6"
+  },
+  {
+    "date": "2025-12-23",
+    "project": "clood",
+    "type": "commit",
+    "msg": "feat: Add clood diagnose command for AI log analysis (#128)",
+    "sha": "30e6844"
+  },
+  {
+    "date": "2025-12-23",
+    "project": "clood",
+    "type": "commit",
+    "msg": "feat: Add clood triage command for automated issue analysis (#102)",
+    "sha": "85a5ccb"
+  },
+  {
+    "date": "2025-12-23",
+    "project": "clood",
+    "type": "commit",
+    "msg": "refactor: Deprecate thunderdome in favor of catfight --all-hosts",
+    "sha": "39aca2e"
+  },
+  {
+    "date": "2025-12-23",
+    "project": "clood",
+    "type": "commit",
+    "msg": "feat: Add topology indicator to whoami command",
+    "sha": "35e3525"
+  },
+  {
+    "date": "2025-12-23",
+    "project": "clood",
+    "type": "commit",
+    "msg": "feat: Add --all-hosts flag to catfight for garden mode",
+    "sha": "513525b"
+  },
+  {
+    "date": "2025-12-23",
+    "project": "clood",
+    "type": "commit",
+    "msg": "docs: Update Windows docs for single-machine users like Adam",
+    "sha": "786a1bd"
+  },
+  {
+    "date": "2025-12-23",
+    "project": "clood",
+    "type": "commit",
+    "msg": "feat: Add clood_catfight MCP tool for single-host comparisons",
+    "sha": "4f66d86"
+  },
+  {
+    "date": "2025-12-23",
+    "project": "clood",
+    "type": "commit",
+    "msg": "feat: Add clood_delegate MCP tool for task delegation",
+    "sha": "af29e7c"
+  },
+  {
+    "date": "2025-12-23",
+    "project": "clood",
+    "type": "commit",
+    "msg": "feat: Add clood_whoami MCP tool for garden identity",
+    "sha": "2d145d9"
+  },
+  {
+    "date": "2025-12-23",
+    "project": "clood",
+    "type": "commit",
+    "msg": "feat: Add clood whoami command for garden identity",
+    "sha": "ace08bd"
+  },
+  {
+    "date": "2025-12-23",
+    "project": "clood",
+    "type": "commit",
+    "msg": "feat: Add hosts --live flag for continuous monitoring",
+    "sha": "5c52c69"
+  },
+  {
+    "date": "2025-12-23",
+    "project": "clood",
+    "type": "commit",
+    "msg": "feat: Add clood_thunderdome MCP tool for agent-triggered battles",
+    "sha": "620c484"
+  },
+  {
+    "date": "2025-12-23",
+    "project": "clood",
+    "type": "commit",
+    "msg": "feat: Add clood thunderdome for parallel multi-host catfights",
+    "sha": "05ca46c"
+  },
+  {
+    "date": "2025-12-23",
+    "project": "clood",
+    "type": "commit",
+    "msg": "feat: ATC dashboard with planning/active modes",
+    "sha": "abd7d7e"
+  },
+  {
+    "date": "2025-12-23",
+    "project": "clood",
+    "type": "commit",
+    "msg": "docs: Session context - triage complete, ATC designed",
+    "sha": "7c2d07c"
+  },
+  {
+    "date": "2025-12-23",
+    "project": "clood",
+    "type": "commit",
+    "msg": "feat: Add clood_conductor MCP tool for remote orchestration",
+    "sha": "b801c42"
+  },
+  {
+    "date": "2025-12-23",
+    "project": "clood",
+    "type": "commit",
+    "msg": "feat: Conductor delegates to mac-laptop, add agent context",
+    "sha": "45dea3d"
+  },
+  {
+    "date": "2025-12-23",
+    "project": "clood",
+    "type": "commit",
+    "msg": "fix: Ancient bonsais now fill maximum screen space",
+    "sha": "66ccffd"
+  },
+  {
+    "date": "2025-12-23",
+    "project": "clood",
+    "type": "commit",
+    "msg": "feat: Add orchestrator agent and conductor benchmarking",
+    "sha": "a29d522"
+  },
+  {
+    "date": "2025-12-23",
+    "project": "clood",
+    "type": "commit",
+    "msg": "docs: Clean up duplicates and obsolete files",
+    "sha": "3bde6e0"
+  },
+  {
+    "date": "2025-12-23",
+    "project": "clood",
+    "type": "commit",
+    "msg": "refactor: Remove all Crush references, make clood CLI the star",
+    "sha": "8aa64f9"
+  },
+  {
+    "date": "2025-12-23",
+    "project": "clood",
+    "type": "commit",
+    "msg": "feat: Default bonsai to colored ASCII output",
+    "sha": "4a8f5e5"
+  },
+  {
+    "date": "2025-12-23",
+    "project": "clood",
+    "type": "commit",
+    "msg": "docs: Add piping examples to bonsai --help",
+    "sha": "85b8908"
+  },
+  {
+    "date": "2025-12-23",
+    "project": "clood",
+    "type": "commit",
+    "msg": "docs: Add piping examples to bonsai README",
+    "sha": "a4f7516"
+  },
+  {
+    "date": "2025-12-23",
+    "project": "clood",
+    "type": "commit",
+    "msg": "fix: Default bonsai format to ascii for reliable CLI output",
+    "sha": "ed1904a"
+  },
+  {
+    "date": "2025-12-23",
+    "project": "clood",
+    "type": "commit",
+    "msg": "feat: Add SVG export with single-line fonts for pen plotters",
+    "sha": "3e0edea"
+  },
+  {
+    "date": "2025-12-23",
+    "project": "commit-charts",
+    "type": "commit",
+    "msg": "Update commit data 2025-12-23",
+    "sha": "e932c75"
+  },
+  {
+    "date": "2025-12-24",
+    "project": "clood",
+    "type": "commit",
+    "msg": "feat: Add OpenAI-compatible client and multi-backend support (#187)",
+    "sha": "ba80187"
   }
 ]
