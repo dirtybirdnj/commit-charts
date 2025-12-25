@@ -7023,7 +7023,42 @@
     "date": "2025-12-24",
     "project": "clood",
     "type": "commit",
+    "msg": "feat: ATC dashboard row layout, model highlighting, and post-battle analysis",
+    "sha": "3d7857e"
+  },
+  {
+    "date": "2025-12-24",
+    "project": "clood",
+    "type": "commit",
+    "msg": "feat: Redesign ATC dashboard with color-coded hosts and full-width events",
+    "sha": "fc8ba69"
+  },
+  {
+    "date": "2025-12-24",
+    "project": "clood",
+    "type": "commit",
+    "msg": "feat: Add ATC event streaming to catfight command",
+    "sha": "da812a3"
+  },
+  {
+    "date": "2025-12-24",
+    "project": "clood",
+    "type": "commit",
+    "msg": "feat: Enhanced ATC dashboard with hardware specs, events panel, and poll controls",
+    "sha": "d6a3c04"
+  },
+  {
+    "date": "2025-12-24",
+    "project": "clood",
+    "type": "commit",
     "msg": "feat: Add OpenAI-compatible client and multi-backend support (#187)",
     "sha": "ba80187"
+  },
+  {
+    "date": "2025-12-24",
+    "project": "commit-charts",
+    "type": "commit",
+    "msg": "Update commit data 2025-12-24",
+    "sha": "52683fd"
   }
 ]
