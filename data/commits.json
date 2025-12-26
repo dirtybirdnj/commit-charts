@@ -7060,5 +7060,40 @@
     "type": "commit",
     "msg": "Update commit data 2025-12-24",
     "sha": "52683fd"
+  },
+  {
+    "date": "2025-12-25",
+    "project": "clood",
+    "type": "commit",
+    "msg": "feat: ATC experiment mode for multi-step agent challenges",
+    "sha": "9a10260"
+  },
+  {
+    "date": "2025-12-25",
+    "project": "clood",
+    "type": "commit",
+    "msg": "docs: Update LAST_SESSION with proxy and issue #190 summary",
+    "sha": "7ac5bbe"
+  },
+  {
+    "date": "2025-12-25",
+    "project": "clood",
+    "type": "commit",
+    "msg": "wip: ATC analysis panel (not yet working)",
+    "sha": "74e182f"
+  },
+  {
+    "date": "2025-12-25",
+    "project": "clood",
+    "type": "commit",
+    "msg": "feat: Add clood proxy - OpenAI-compatible API server for multi-host routing",
+    "sha": "08141fe"
+  },
+  {
+    "date": "2025-12-25",
+    "project": "commit-charts",
+    "type": "commit",
+    "msg": "Update commit data 2025-12-25",
+    "sha": "98ad961"
   }
 ]
