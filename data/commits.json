@@ -7098,9 +7098,30 @@
   },
   {
     "date": "2025-12-26",
+    "project": "clood",
+    "type": "commit",
+    "msg": "feat: ATC experiment mode timing and output display",
+    "sha": "a0cff11"
+  },
+  {
+    "date": "2025-12-26",
     "project": "commit-charts",
     "type": "commit",
     "msg": "Update commit data 2025-12-26",
     "sha": "4d948d8"
+  },
+  {
+    "date": "2025-12-27",
+    "project": "clood",
+    "type": "commit",
+    "msg": "docs: Add chimborazo agent session artifacts",
+    "sha": "b4eaa7a"
+  },
+  {
+    "date": "2025-12-27",
+    "project": "commit-charts",
+    "type": "commit",
+    "msg": "Update commit data 2025-12-27",
+    "sha": "f757d82"
   }
 ]
