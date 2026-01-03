@@ -515,6 +515,11 @@
     "commits": 1
   },
   {
+    "date": "2025-12-18",
+    "project": "dogfood",
+    "commits": 1
+  },
+  {
     "date": "2025-12-19",
     "project": "clood",
     "commits": 57
@@ -627,6 +632,21 @@
   {
     "date": "2026-01-01",
     "project": "commit-charts",
+    "commits": 1
+  },
+  {
+    "date": "2026-01-02",
+    "project": "clood",
+    "commits": 3
+  },
+  {
+    "date": "2026-01-02",
+    "project": "commit-charts",
+    "commits": 1
+  },
+  {
+    "date": "2026-01-02",
+    "project": "dogfood",
     "commits": 1
   }
 ]

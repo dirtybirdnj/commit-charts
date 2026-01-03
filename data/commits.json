@@ -6052,6 +6052,13 @@
     "sha": "0f27a13"
   },
   {
+    "date": "2025-12-18",
+    "project": "dogfood",
+    "type": "commit",
+    "msg": "feat: Add dog-themed decorations to TUI",
+    "sha": "b5901c0"
+  },
+  {
     "date": "2025-12-19",
     "project": "clood",
     "type": "commit",
@@ -7158,5 +7165,40 @@
     "type": "commit",
     "msg": "Update commit data 2026-01-01",
     "sha": "dc9e963"
+  },
+  {
+    "date": "2026-01-02",
+    "project": "clood",
+    "type": "commit",
+    "msg": "docs: Rewrite Windows guide for complete beginners",
+    "sha": "07bfa53"
+  },
+  {
+    "date": "2026-01-02",
+    "project": "clood",
+    "type": "commit",
+    "msg": "feat: Add clood ui command and Code Reader tool for Open WebUI",
+    "sha": "03d188b"
+  },
+  {
+    "date": "2026-01-02",
+    "project": "clood",
+    "type": "commit",
+    "msg": "Clarify dev environment setup in documentation",
+    "sha": "4e05dca"
+  },
+  {
+    "date": "2026-01-02",
+    "project": "commit-charts",
+    "type": "commit",
+    "msg": "Update commit data 2026-01-02",
+    "sha": "980fc54"
+  },
+  {
+    "date": "2026-01-02",
+    "project": "dogfood",
+    "type": "commit",
+    "msg": "feat: Add agentic CLI mode and multi-agent pipeline support",
+    "sha": "5360f30"
   }
 ]
