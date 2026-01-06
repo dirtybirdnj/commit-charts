@@ -7214,5 +7214,33 @@
     "type": "commit",
     "msg": "Update commit data 2026-01-04",
     "sha": "b0d39de"
+  },
+  {
+    "date": "2026-01-05",
+    "project": "commit-charts",
+    "type": "commit",
+    "msg": "Update commit data 2026-01-05",
+    "sha": "28ca963"
+  },
+  {
+    "date": "2026-01-05",
+    "project": "rat-king",
+    "type": "commit",
+    "msg": "feat: Add per-polygon pattern and color support to fill command",
+    "sha": "67189e3"
+  },
+  {
+    "date": "2026-01-05",
+    "project": "rat-king",
+    "type": "commit",
+    "msg": "Add recipe system, HTML swatches, update pattern ratings",
+    "sha": "9157c34"
+  },
+  {
+    "date": "2026-01-05",
+    "project": "rat-king",
+    "type": "commit",
+    "msg": "Fix Peano curve, add Meander pattern, remove Grid, improve patterns",
+    "sha": "cb0628b"
   }
 ]
