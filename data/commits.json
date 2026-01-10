@@ -7263,5 +7263,19 @@
     "type": "commit",
     "msg": "Update commit data 2026-01-08",
     "sha": "53089e0"
+  },
+  {
+    "date": "2026-01-09",
+    "project": "commit-charts",
+    "type": "commit",
+    "msg": "Update commit data 2026-01-09",
+    "sha": "a37e4e0"
+  },
+  {
+    "date": "2026-01-09",
+    "project": "rat-king",
+    "type": "commit",
+    "msg": "feat: Read data-pattern attributes from SVG paths",
+    "sha": "de17bbc"
   }
 ]
