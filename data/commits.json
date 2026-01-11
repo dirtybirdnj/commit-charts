@@ -7277,5 +7277,35 @@
     "type": "commit",
     "msg": "feat: Read data-pattern attributes from SVG paths",
     "sha": "de17bbc"
+  },
+  {
+    "date": "2026-01-10",
+    "project": "commit-charts",
+    "type": "commit",
+    "msg": "Update commit data 2026-01-10",
+    "sha": "fbb1a08"
+  },
+  {
+    "date": "2026-01-10",
+    "project": "rat-king",
+    "type": "commit",
+    "msg": "feat: Add per-polygon colors and --preserve-boundaries flag",
+    "sha": "442d625"
+  },
+  {
+    "date": "2026-01-10",
+    "project": "rat-king",
+    "type": "commit",
+    "msg": "feat: Read data-spacing and data-angle attributes from SVG paths",
+    "sha": "7765466"
+  },
+  {
+    "date": "2026-01-10",
+    "project": "clood",
+    "type": "pr",
+    "msg": "PR #203: refactor: Simplify MCP tools (35 → 20)",
+    "number": 203,
+    "state": "open",
+    "merged": false
   }
 ]
