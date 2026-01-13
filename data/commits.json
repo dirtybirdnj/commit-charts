@@ -7314,5 +7314,19 @@
     "type": "commit",
     "msg": "Update commit data 2026-01-11",
     "sha": "7f30843"
+  },
+  {
+    "date": "2026-01-12",
+    "project": "commit-charts",
+    "type": "commit",
+    "msg": "Update commit data 2026-01-12",
+    "sha": "0326615"
+  },
+  {
+    "date": "2026-01-12",
+    "project": "rat-king",
+    "type": "commit",
+    "msg": "feat: Add --require-pattern flag to fill command",
+    "sha": "e3a5ad3"
   }
 ]
