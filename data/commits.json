@@ -8154,5 +8154,12 @@
     "type": "commit",
     "msg": "Update commit data 2026-05-07",
     "sha": "91c12ce"
+  },
+  {
+    "date": "2026-05-08",
+    "project": "commit-charts",
+    "type": "commit",
+    "msg": "Update commit data 2026-05-08",
+    "sha": "0f0d6c8"
   }
 ]
